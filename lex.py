@@ -9,7 +9,18 @@ tokens = (
    'DIVIDE',
    'LPAREN',
    'RPAREN',
+   'ID',
 )
+
+'''
+# Reserved words
+reserved = {
+   'if' : 'IF',
+   'then' : 'THEN',
+   'else' : 'ELSE',
+   'while' : 'WHILE',
+}
+'''
 
 # Regular expression rules for simple tokens
 t_PLUS    = r'\+'
@@ -23,6 +34,12 @@ t_RPAREN  = r'\)'
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)    
+    return t
+
+# Identifiers handler
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    #t.type = reserved.get(t.value,'ID')    # Check for reserved words
     return t
 
 # Define a rule so we can track line numbers
@@ -42,9 +59,10 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test
-data = "3 + 4 * variable_1 - 2"
+data = "3 + 4 * variable_1 - 2 + els"
 lexer.input(data)
 
 # Print tokens
 for token in lexer:
     print(token)
+
