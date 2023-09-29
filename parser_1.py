@@ -1,30 +1,7 @@
 import ply.yacc as yacc
 from lex import tokens
 
-def p_program(p):
-    '''
-    program : PROGRAM ID SEMICOLON ENDL declare_vars
-    '''
-    p[0] = "COMPILED"
 
-def p_declare_vars(p):
-    '''
-    declare_vars : VARS type vars SEMICOLON
-    '''
-
-def p_vars(p):
-    '''
-    vars : ID
-         | ID COMMA vars
-         | empty
-    '''
-
-def p_type(p):
-    '''
-    type : INT
-         | FLOAT
-         | BOOL 
-    '''
 
 def p_expression(p):
     '''

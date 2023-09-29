@@ -2,240 +2,377 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    BOOL
     COLON
+    COMMA
     ELSE
+    ENDL
     EQUAL
+    FLOAT
     GREATERTHAN
     IF
+    INT
     LBRACE
     LBRACKET
     OR
+    PROGRAM
     RBRACE
     RBRACKET
+    SEMICOLON
     SMALLERTHAN
     THEN
+    VARS
     WHILE
 
 Grammar
 
-Rule 0     S' -> program
-Rule 1     program -> PROGRAM ID SEMICOLON ENDL declare_vars
-Rule 2     declare_vars -> VARS type vars SEMICOLON
-Rule 3     vars -> ID
-Rule 4     vars -> ID COMMA vars
-Rule 5     vars -> empty
-Rule 6     type -> INT
-Rule 7     type -> FLOAT
-Rule 8     type -> BOOL
-Rule 9     expression -> term PLUS term
-Rule 10    expression -> term MINUS term
-Rule 11    expression -> term
-Rule 12    term -> factor TIMES factor
-Rule 13    term -> factor DIVIDE factor
-Rule 14    term -> factor
-Rule 15    factor -> NUMBER
-Rule 16    factor -> ID
-Rule 17    factor -> PLUS factor
-Rule 18    factor -> MINUS factor
-Rule 19    factor -> LPAREN expression RPAREN
-Rule 20    empty -> <empty>
+Rule 0     S' -> expression
+Rule 1     expression -> term PLUS term
+Rule 2     expression -> term MINUS term
+Rule 3     expression -> term
+Rule 4     term -> factor TIMES factor
+Rule 5     term -> factor DIVIDE factor
+Rule 6     term -> factor
+Rule 7     factor -> NUMBER
+Rule 8     factor -> ID
+Rule 9     factor -> PLUS factor
+Rule 10    factor -> MINUS factor
+Rule 11    factor -> LPAREN expression RPAREN
+Rule 12    empty -> <empty>
 
 Terminals, with rules where they appear
 
-BOOL                 : 8
+BOOL                 : 
 COLON                : 
-COMMA                : 4
-DIVIDE               : 13
+COMMA                : 
+DIVIDE               : 5
 ELSE                 : 
-ENDL                 : 1
+ENDL                 : 
 EQUAL                : 
-FLOAT                : 7
+FLOAT                : 
 GREATERTHAN          : 
-ID                   : 1 3 4 16
+ID                   : 8
 IF                   : 
-INT                  : 6
+INT                  : 
 LBRACE               : 
 LBRACKET             : 
-LPAREN               : 19
-MINUS                : 10 18
-NUMBER               : 15
+LPAREN               : 11
+MINUS                : 2 10
+NUMBER               : 7
 OR                   : 
-PLUS                 : 9 17
-PROGRAM              : 1
+PLUS                 : 1 9
+PROGRAM              : 
 RBRACE               : 
 RBRACKET             : 
-RPAREN               : 19
-SEMICOLON            : 1 2
+RPAREN               : 11
+SEMICOLON            : 
 SMALLERTHAN          : 
 THEN                 : 
-TIMES                : 12
-VARS                 : 2
+TIMES                : 4
+VARS                 : 
 WHILE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-declare_vars         : 1
-empty                : 5
-expression           : 19
-factor               : 12 12 13 13 14 17 18
-program              : 0
-term                 : 9 9 10 10 11
-type                 : 2
-vars                 : 2 4
+empty                : 
+expression           : 11 0
+factor               : 4 4 5 5 6 9 10
+term                 : 1 1 2 2 3
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . program
-    (1) program -> . PROGRAM ID SEMICOLON ENDL declare_vars
+    (0) S' -> . expression
+    (1) expression -> . term PLUS term
+    (2) expression -> . term MINUS term
+    (3) expression -> . term
+    (4) term -> . factor TIMES factor
+    (5) term -> . factor DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . NUMBER
+    (8) factor -> . ID
+    (9) factor -> . PLUS factor
+    (10) factor -> . MINUS factor
+    (11) factor -> . LPAREN expression RPAREN
 
-    PROGRAM         shift and go to state 2
+    NUMBER          shift and go to state 6
+    ID              shift and go to state 7
+    PLUS            shift and go to state 3
+    MINUS           shift and go to state 4
+    LPAREN          shift and go to state 8
 
-    program                        shift and go to state 1
+    expression                     shift and go to state 1
+    term                           shift and go to state 2
+    factor                         shift and go to state 5
 
 state 1
 
-    (0) S' -> program .
+    (0) S' -> expression .
 
 
 
 state 2
 
-    (1) program -> PROGRAM . ID SEMICOLON ENDL declare_vars
+    (1) expression -> term . PLUS term
+    (2) expression -> term . MINUS term
+    (3) expression -> term .
 
-    ID              shift and go to state 3
+    PLUS            shift and go to state 9
+    MINUS           shift and go to state 10
+    $end            reduce using rule 3 (expression -> term .)
+    RPAREN          reduce using rule 3 (expression -> term .)
 
 
 state 3
 
-    (1) program -> PROGRAM ID . SEMICOLON ENDL declare_vars
+    (9) factor -> PLUS . factor
+    (7) factor -> . NUMBER
+    (8) factor -> . ID
+    (9) factor -> . PLUS factor
+    (10) factor -> . MINUS factor
+    (11) factor -> . LPAREN expression RPAREN
 
-    SEMICOLON       shift and go to state 4
+    NUMBER          shift and go to state 6
+    ID              shift and go to state 7
+    PLUS            shift and go to state 3
+    MINUS           shift and go to state 4
+    LPAREN          shift and go to state 8
 
+    factor                         shift and go to state 11
 
 state 4
 
-    (1) program -> PROGRAM ID SEMICOLON . ENDL declare_vars
+    (10) factor -> MINUS . factor
+    (7) factor -> . NUMBER
+    (8) factor -> . ID
+    (9) factor -> . PLUS factor
+    (10) factor -> . MINUS factor
+    (11) factor -> . LPAREN expression RPAREN
 
-    ENDL            shift and go to state 5
+    NUMBER          shift and go to state 6
+    ID              shift and go to state 7
+    PLUS            shift and go to state 3
+    MINUS           shift and go to state 4
+    LPAREN          shift and go to state 8
 
+    factor                         shift and go to state 12
 
 state 5
 
-    (1) program -> PROGRAM ID SEMICOLON ENDL . declare_vars
-    (2) declare_vars -> . VARS type vars SEMICOLON
+    (4) term -> factor . TIMES factor
+    (5) term -> factor . DIVIDE factor
+    (6) term -> factor .
 
-    VARS            shift and go to state 7
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
+    PLUS            reduce using rule 6 (term -> factor .)
+    MINUS           reduce using rule 6 (term -> factor .)
+    $end            reduce using rule 6 (term -> factor .)
+    RPAREN          reduce using rule 6 (term -> factor .)
 
-    declare_vars                   shift and go to state 6
 
 state 6
 
-    (1) program -> PROGRAM ID SEMICOLON ENDL declare_vars .
+    (7) factor -> NUMBER .
 
-    $end            reduce using rule 1 (program -> PROGRAM ID SEMICOLON ENDL declare_vars .)
+    TIMES           reduce using rule 7 (factor -> NUMBER .)
+    DIVIDE          reduce using rule 7 (factor -> NUMBER .)
+    PLUS            reduce using rule 7 (factor -> NUMBER .)
+    MINUS           reduce using rule 7 (factor -> NUMBER .)
+    $end            reduce using rule 7 (factor -> NUMBER .)
+    RPAREN          reduce using rule 7 (factor -> NUMBER .)
 
 
 state 7
 
-    (2) declare_vars -> VARS . type vars SEMICOLON
-    (6) type -> . INT
-    (7) type -> . FLOAT
-    (8) type -> . BOOL
+    (8) factor -> ID .
 
-    INT             shift and go to state 9
-    FLOAT           shift and go to state 10
-    BOOL            shift and go to state 11
+    TIMES           reduce using rule 8 (factor -> ID .)
+    DIVIDE          reduce using rule 8 (factor -> ID .)
+    PLUS            reduce using rule 8 (factor -> ID .)
+    MINUS           reduce using rule 8 (factor -> ID .)
+    $end            reduce using rule 8 (factor -> ID .)
+    RPAREN          reduce using rule 8 (factor -> ID .)
 
-    type                           shift and go to state 8
 
 state 8
 
-    (2) declare_vars -> VARS type . vars SEMICOLON
-    (3) vars -> . ID
-    (4) vars -> . ID COMMA vars
-    (5) vars -> . empty
-    (20) empty -> .
+    (11) factor -> LPAREN . expression RPAREN
+    (1) expression -> . term PLUS term
+    (2) expression -> . term MINUS term
+    (3) expression -> . term
+    (4) term -> . factor TIMES factor
+    (5) term -> . factor DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . NUMBER
+    (8) factor -> . ID
+    (9) factor -> . PLUS factor
+    (10) factor -> . MINUS factor
+    (11) factor -> . LPAREN expression RPAREN
 
-    ID              shift and go to state 13
-    SEMICOLON       reduce using rule 20 (empty -> .)
+    NUMBER          shift and go to state 6
+    ID              shift and go to state 7
+    PLUS            shift and go to state 3
+    MINUS           shift and go to state 4
+    LPAREN          shift and go to state 8
 
-    vars                           shift and go to state 12
-    empty                          shift and go to state 14
+    expression                     shift and go to state 15
+    term                           shift and go to state 2
+    factor                         shift and go to state 5
 
 state 9
 
-    (6) type -> INT .
+    (1) expression -> term PLUS . term
+    (4) term -> . factor TIMES factor
+    (5) term -> . factor DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . NUMBER
+    (8) factor -> . ID
+    (9) factor -> . PLUS factor
+    (10) factor -> . MINUS factor
+    (11) factor -> . LPAREN expression RPAREN
 
-    ID              reduce using rule 6 (type -> INT .)
-    SEMICOLON       reduce using rule 6 (type -> INT .)
+    NUMBER          shift and go to state 6
+    ID              shift and go to state 7
+    PLUS            shift and go to state 3
+    MINUS           shift and go to state 4
+    LPAREN          shift and go to state 8
 
+    term                           shift and go to state 16
+    factor                         shift and go to state 5
 
 state 10
 
-    (7) type -> FLOAT .
+    (2) expression -> term MINUS . term
+    (4) term -> . factor TIMES factor
+    (5) term -> . factor DIVIDE factor
+    (6) term -> . factor
+    (7) factor -> . NUMBER
+    (8) factor -> . ID
+    (9) factor -> . PLUS factor
+    (10) factor -> . MINUS factor
+    (11) factor -> . LPAREN expression RPAREN
 
-    ID              reduce using rule 7 (type -> FLOAT .)
-    SEMICOLON       reduce using rule 7 (type -> FLOAT .)
+    NUMBER          shift and go to state 6
+    ID              shift and go to state 7
+    PLUS            shift and go to state 3
+    MINUS           shift and go to state 4
+    LPAREN          shift and go to state 8
 
+    term                           shift and go to state 17
+    factor                         shift and go to state 5
 
 state 11
 
-    (8) type -> BOOL .
+    (9) factor -> PLUS factor .
 
-    ID              reduce using rule 8 (type -> BOOL .)
-    SEMICOLON       reduce using rule 8 (type -> BOOL .)
+    TIMES           reduce using rule 9 (factor -> PLUS factor .)
+    DIVIDE          reduce using rule 9 (factor -> PLUS factor .)
+    PLUS            reduce using rule 9 (factor -> PLUS factor .)
+    MINUS           reduce using rule 9 (factor -> PLUS factor .)
+    $end            reduce using rule 9 (factor -> PLUS factor .)
+    RPAREN          reduce using rule 9 (factor -> PLUS factor .)
 
 
 state 12
 
-    (2) declare_vars -> VARS type vars . SEMICOLON
+    (10) factor -> MINUS factor .
 
-    SEMICOLON       shift and go to state 15
+    TIMES           reduce using rule 10 (factor -> MINUS factor .)
+    DIVIDE          reduce using rule 10 (factor -> MINUS factor .)
+    PLUS            reduce using rule 10 (factor -> MINUS factor .)
+    MINUS           reduce using rule 10 (factor -> MINUS factor .)
+    $end            reduce using rule 10 (factor -> MINUS factor .)
+    RPAREN          reduce using rule 10 (factor -> MINUS factor .)
 
 
 state 13
 
-    (3) vars -> ID .
-    (4) vars -> ID . COMMA vars
+    (4) term -> factor TIMES . factor
+    (7) factor -> . NUMBER
+    (8) factor -> . ID
+    (9) factor -> . PLUS factor
+    (10) factor -> . MINUS factor
+    (11) factor -> . LPAREN expression RPAREN
 
-    SEMICOLON       reduce using rule 3 (vars -> ID .)
-    COMMA           shift and go to state 16
+    NUMBER          shift and go to state 6
+    ID              shift and go to state 7
+    PLUS            shift and go to state 3
+    MINUS           shift and go to state 4
+    LPAREN          shift and go to state 8
 
+    factor                         shift and go to state 18
 
 state 14
 
-    (5) vars -> empty .
+    (5) term -> factor DIVIDE . factor
+    (7) factor -> . NUMBER
+    (8) factor -> . ID
+    (9) factor -> . PLUS factor
+    (10) factor -> . MINUS factor
+    (11) factor -> . LPAREN expression RPAREN
 
-    SEMICOLON       reduce using rule 5 (vars -> empty .)
+    NUMBER          shift and go to state 6
+    ID              shift and go to state 7
+    PLUS            shift and go to state 3
+    MINUS           shift and go to state 4
+    LPAREN          shift and go to state 8
 
+    factor                         shift and go to state 19
 
 state 15
 
-    (2) declare_vars -> VARS type vars SEMICOLON .
+    (11) factor -> LPAREN expression . RPAREN
 
-    $end            reduce using rule 2 (declare_vars -> VARS type vars SEMICOLON .)
+    RPAREN          shift and go to state 20
 
 
 state 16
 
-    (4) vars -> ID COMMA . vars
-    (3) vars -> . ID
-    (4) vars -> . ID COMMA vars
-    (5) vars -> . empty
-    (20) empty -> .
+    (1) expression -> term PLUS term .
 
-    ID              shift and go to state 13
-    SEMICOLON       reduce using rule 20 (empty -> .)
+    $end            reduce using rule 1 (expression -> term PLUS term .)
+    RPAREN          reduce using rule 1 (expression -> term PLUS term .)
 
-    vars                           shift and go to state 17
-    empty                          shift and go to state 14
 
 state 17
 
-    (4) vars -> ID COMMA vars .
+    (2) expression -> term MINUS term .
 
-    SEMICOLON       reduce using rule 4 (vars -> ID COMMA vars .)
+    $end            reduce using rule 2 (expression -> term MINUS term .)
+    RPAREN          reduce using rule 2 (expression -> term MINUS term .)
+
+
+state 18
+
+    (4) term -> factor TIMES factor .
+
+    PLUS            reduce using rule 4 (term -> factor TIMES factor .)
+    MINUS           reduce using rule 4 (term -> factor TIMES factor .)
+    $end            reduce using rule 4 (term -> factor TIMES factor .)
+    RPAREN          reduce using rule 4 (term -> factor TIMES factor .)
+
+
+state 19
+
+    (5) term -> factor DIVIDE factor .
+
+    PLUS            reduce using rule 5 (term -> factor DIVIDE factor .)
+    MINUS           reduce using rule 5 (term -> factor DIVIDE factor .)
+    $end            reduce using rule 5 (term -> factor DIVIDE factor .)
+    RPAREN          reduce using rule 5 (term -> factor DIVIDE factor .)
+
+
+state 20
+
+    (11) factor -> LPAREN expression RPAREN .
+
+    TIMES           reduce using rule 11 (factor -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 11 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 11 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 11 (factor -> LPAREN expression RPAREN .)
+    $end            reduce using rule 11 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 11 (factor -> LPAREN expression RPAREN .)
 
