@@ -1,0 +1,241 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COLON
+    ELSE
+    EQUAL
+    GREATERTHAN
+    IF
+    LBRACE
+    LBRACKET
+    OR
+    RBRACE
+    RBRACKET
+    SMALLERTHAN
+    THEN
+    WHILE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM ID SEMICOLON ENDL declare_vars
+Rule 2     declare_vars -> VARS type vars SEMICOLON
+Rule 3     vars -> ID
+Rule 4     vars -> ID COMMA vars
+Rule 5     vars -> empty
+Rule 6     type -> INT
+Rule 7     type -> FLOAT
+Rule 8     type -> BOOL
+Rule 9     expression -> term PLUS term
+Rule 10    expression -> term MINUS term
+Rule 11    expression -> term
+Rule 12    term -> factor TIMES factor
+Rule 13    term -> factor DIVIDE factor
+Rule 14    term -> factor
+Rule 15    factor -> NUMBER
+Rule 16    factor -> ID
+Rule 17    factor -> PLUS factor
+Rule 18    factor -> MINUS factor
+Rule 19    factor -> LPAREN expression RPAREN
+Rule 20    empty -> <empty>
+
+Terminals, with rules where they appear
+
+BOOL                 : 8
+COLON                : 
+COMMA                : 4
+DIVIDE               : 13
+ELSE                 : 
+ENDL                 : 1
+EQUAL                : 
+FLOAT                : 7
+GREATERTHAN          : 
+ID                   : 1 3 4 16
+IF                   : 
+INT                  : 6
+LBRACE               : 
+LBRACKET             : 
+LPAREN               : 19
+MINUS                : 10 18
+NUMBER               : 15
+OR                   : 
+PLUS                 : 9 17
+PROGRAM              : 1
+RBRACE               : 
+RBRACKET             : 
+RPAREN               : 19
+SEMICOLON            : 1 2
+SMALLERTHAN          : 
+THEN                 : 
+TIMES                : 12
+VARS                 : 2
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+declare_vars         : 1
+empty                : 5
+expression           : 19
+factor               : 12 12 13 13 14 17 18
+program              : 0
+term                 : 9 9 10 10 11
+type                 : 2
+vars                 : 2 4
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAM ID SEMICOLON ENDL declare_vars
+
+    PROGRAM         shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PROGRAM . ID SEMICOLON ENDL declare_vars
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) program -> PROGRAM ID . SEMICOLON ENDL declare_vars
+
+    SEMICOLON       shift and go to state 4
+
+
+state 4
+
+    (1) program -> PROGRAM ID SEMICOLON . ENDL declare_vars
+
+    ENDL            shift and go to state 5
+
+
+state 5
+
+    (1) program -> PROGRAM ID SEMICOLON ENDL . declare_vars
+    (2) declare_vars -> . VARS type vars SEMICOLON
+
+    VARS            shift and go to state 7
+
+    declare_vars                   shift and go to state 6
+
+state 6
+
+    (1) program -> PROGRAM ID SEMICOLON ENDL declare_vars .
+
+    $end            reduce using rule 1 (program -> PROGRAM ID SEMICOLON ENDL declare_vars .)
+
+
+state 7
+
+    (2) declare_vars -> VARS . type vars SEMICOLON
+    (6) type -> . INT
+    (7) type -> . FLOAT
+    (8) type -> . BOOL
+
+    INT             shift and go to state 9
+    FLOAT           shift and go to state 10
+    BOOL            shift and go to state 11
+
+    type                           shift and go to state 8
+
+state 8
+
+    (2) declare_vars -> VARS type . vars SEMICOLON
+    (3) vars -> . ID
+    (4) vars -> . ID COMMA vars
+    (5) vars -> . empty
+    (20) empty -> .
+
+    ID              shift and go to state 13
+    SEMICOLON       reduce using rule 20 (empty -> .)
+
+    vars                           shift and go to state 12
+    empty                          shift and go to state 14
+
+state 9
+
+    (6) type -> INT .
+
+    ID              reduce using rule 6 (type -> INT .)
+    SEMICOLON       reduce using rule 6 (type -> INT .)
+
+
+state 10
+
+    (7) type -> FLOAT .
+
+    ID              reduce using rule 7 (type -> FLOAT .)
+    SEMICOLON       reduce using rule 7 (type -> FLOAT .)
+
+
+state 11
+
+    (8) type -> BOOL .
+
+    ID              reduce using rule 8 (type -> BOOL .)
+    SEMICOLON       reduce using rule 8 (type -> BOOL .)
+
+
+state 12
+
+    (2) declare_vars -> VARS type vars . SEMICOLON
+
+    SEMICOLON       shift and go to state 15
+
+
+state 13
+
+    (3) vars -> ID .
+    (4) vars -> ID . COMMA vars
+
+    SEMICOLON       reduce using rule 3 (vars -> ID .)
+    COMMA           shift and go to state 16
+
+
+state 14
+
+    (5) vars -> empty .
+
+    SEMICOLON       reduce using rule 5 (vars -> empty .)
+
+
+state 15
+
+    (2) declare_vars -> VARS type vars SEMICOLON .
+
+    $end            reduce using rule 2 (declare_vars -> VARS type vars SEMICOLON .)
+
+
+state 16
+
+    (4) vars -> ID COMMA . vars
+    (3) vars -> . ID
+    (4) vars -> . ID COMMA vars
+    (5) vars -> . empty
+    (20) empty -> .
+
+    ID              shift and go to state 13
+    SEMICOLON       reduce using rule 20 (empty -> .)
+
+    vars                           shift and go to state 17
+    empty                          shift and go to state 14
+
+state 17
+
+    (4) vars -> ID COMMA vars .
+
+    SEMICOLON       reduce using rule 4 (vars -> ID COMMA vars .)
+

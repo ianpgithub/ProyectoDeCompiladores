@@ -6,6 +6,11 @@ reserved = {
    'then' : 'THEN',
    'else' : 'ELSE',
    'while' : 'WHILE',
+   'VARS' : 'VARS',
+   'int' : 'INT',
+   'float' : 'FLOAT',
+   'bool' : 'BOOL',
+   'program' : 'PROGRAM'
 }
 
 # List of token names.   This is always required
@@ -23,9 +28,17 @@ tokens = [
    'LBRACE',
    'RBRACE',
    'COLON',
+   'SEMICOLON',
    'COMMA',
    'GREATERTHAN',
    'SMALLERTHAN',
+   'VARS',
+   'INT',
+   'FLOAT',
+   'BOOL',
+   'OR',
+   'ENDL',
+   'PROGRAM',
    'ID',
 ] + list(reserved.values())
 
@@ -42,9 +55,13 @@ t_RBRACKET = r'\]'
 t_LBRACE  = r'\{'
 t_RBRACE  = r'\}'
 t_COLON   = r':'
+t_SEMICOLON = r';'
 t_COMMA   = r','
 t_GREATERTHAN = '>'
 t_SMALLERTHAN = '<'
+t_INT = r'\d+'
+t_FLOAT = r'\d+\.\d+'
+t_OR = r'\|'
 
 # A regular expression rule with some action code
 def t_NUMBER(t):
@@ -58,11 +75,15 @@ def t_ID(t):
     t.type = reserved.get(t.value,'ID')    # Check for reserved words
     return t
 
-
 # Define a rule so we can track line numbers
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+
+def t_ENDL(t):
+    r'\r\n|\n'
+    t.lexer.lineno += 1
+    return t
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore  = ' \t'
@@ -76,10 +97,9 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test
-data = "z = [ 3 + 4 ] * variable_1 - 2 + else { Hola }, s: 1,2"
+data = "z = [ 3 + 4 ] * variable_1 - 2 + else Hola\nMundo\r\nSaludos { Hola }, s: 1,2 | ;"
 lexer.input(data)
 
 # Print tokens
 for token in lexer:
     print(token)
-
