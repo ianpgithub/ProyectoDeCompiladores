@@ -3,7 +3,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     ELSE
-    EQUAL
     GREATERTHAN
     IF
     LBRACKET
@@ -23,64 +22,69 @@ Rule 4     type -> INT
 Rule 5     type -> FLOAT
 Rule 6     vars -> ID COMMA vars
 Rule 7     vars -> ID
-Rule 8     define_function -> FUNCTION type ID parameters ENDL VARS define_vars LBRACE RBRACE
+Rule 8     define_function -> FUNCTION type ID parameters ENDL VARS define_vars LBRACE statute RBRACE
 Rule 9     parameters -> LPAREN type COLON vars RPAREN
-Rule 10    expression -> term PLUS term
-Rule 11    expression -> term MINUS term
-Rule 12    expression -> term
-Rule 13    term -> factor TIMES factor
-Rule 14    term -> factor DIVIDE factor
-Rule 15    term -> factor
-Rule 16    factor -> NUMBER
-Rule 17    factor -> ID
-Rule 18    factor -> PLUS factor
-Rule 19    factor -> MINUS factor
-Rule 20    factor -> LPAREN expression RPAREN
-Rule 21    empty -> <empty>
+Rule 10    statute -> assignation
+Rule 11    assignation -> ID EQUAL expression
+Rule 12    assignation -> empty
+Rule 13    expression -> expression PLUS term
+Rule 14    expression -> expression MINUS term
+Rule 15    expression -> term
+Rule 16    term -> term TIMES factor
+Rule 17    term -> term DIVIDE factor
+Rule 18    term -> factor
+Rule 19    factor -> NUMBER
+Rule 20    factor -> ID
+Rule 21    factor -> PLUS factor
+Rule 22    factor -> MINUS factor
+Rule 23    factor -> LPAREN expression RPAREN
+Rule 24    empty -> <empty>
 
 Terminals, with rules where they appear
 
 COLON                : 2 9
 COMMA                : 6
-DIVIDE               : 14
+DIVIDE               : 17
 ELSE                 : 
 ENDL                 : 1 8
-EQUAL                : 
+EQUAL                : 11
 FLOAT                : 5
 FUNCTION             : 8
 GREATERTHAN          : 
-ID                   : 1 6 7 8 17
+ID                   : 1 6 7 8 11 20
 IF                   : 
 INT                  : 4
 LBRACE               : 8
 LBRACKET             : 
-LPAREN               : 9 20
-MINUS                : 11 19
-NUMBER               : 16
+LPAREN               : 9 23
+MINUS                : 14 22
+NUMBER               : 19
 OR                   : 
-PLUS                 : 10 18
+PLUS                 : 13 21
 PROGRAM              : 1
 RBRACE               : 8
 RBRACKET             : 
-RPAREN               : 9 20
+RPAREN               : 9 23
 SEMICOLON            : 1 2
 SMALLERTHAN          : 
 THEN                 : 
-TIMES                : 13
+TIMES                : 16
 VARS                 : 1 8
 WHILE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
+assignation          : 10
 define_function      : 1
 define_vars          : 1 2 8
-empty                : 3
-expression           : 20
-factor               : 13 13 14 14 15 18 19
+empty                : 3 12
+expression           : 11 13 14 23
+factor               : 16 17 18 21 22
 parameters           : 8
 program              : 0
-term                 : 10 10 11 11 12
+statute              : 8
+term                 : 13 14 15 16 17
 type                 : 2 8 9
 vars                 : 2 6 9
 
@@ -136,11 +140,11 @@ state 6
     (3) define_vars -> . empty
     (4) type -> . INT
     (5) type -> . FLOAT
-    (21) empty -> .
+    (24) empty -> .
 
     INT             shift and go to state 10
     FLOAT           shift and go to state 11
-    FUNCTION        reduce using rule 21 (empty -> .)
+    FUNCTION        reduce using rule 24 (empty -> .)
 
     define_vars                    shift and go to state 7
     type                           shift and go to state 8
@@ -149,7 +153,7 @@ state 6
 state 7
 
     (1) program -> PROGRAM ID SEMICOLON ENDL VARS define_vars . define_function
-    (8) define_function -> . FUNCTION type ID parameters ENDL VARS define_vars LBRACE RBRACE
+    (8) define_function -> . FUNCTION type ID parameters ENDL VARS define_vars LBRACE statute RBRACE
 
     FUNCTION        shift and go to state 13
 
@@ -195,7 +199,7 @@ state 12
 
 state 13
 
-    (8) define_function -> FUNCTION . type ID parameters ENDL VARS define_vars LBRACE RBRACE
+    (8) define_function -> FUNCTION . type ID parameters ENDL VARS define_vars LBRACE statute RBRACE
     (4) type -> . INT
     (5) type -> . FLOAT
 
@@ -216,7 +220,7 @@ state 14
 
 state 15
 
-    (8) define_function -> FUNCTION type . ID parameters ENDL VARS define_vars LBRACE RBRACE
+    (8) define_function -> FUNCTION type . ID parameters ENDL VARS define_vars LBRACE statute RBRACE
 
     ID              shift and go to state 18
 
@@ -240,7 +244,7 @@ state 17
 
 state 18
 
-    (8) define_function -> FUNCTION type ID . parameters ENDL VARS define_vars LBRACE RBRACE
+    (8) define_function -> FUNCTION type ID . parameters ENDL VARS define_vars LBRACE statute RBRACE
     (9) parameters -> . LPAREN type COLON vars RPAREN
 
     LPAREN          shift and go to state 22
@@ -254,12 +258,12 @@ state 19
     (3) define_vars -> . empty
     (4) type -> . INT
     (5) type -> . FLOAT
-    (21) empty -> .
+    (24) empty -> .
 
     INT             shift and go to state 10
     FLOAT           shift and go to state 11
-    FUNCTION        reduce using rule 21 (empty -> .)
-    LBRACE          reduce using rule 21 (empty -> .)
+    FUNCTION        reduce using rule 24 (empty -> .)
+    LBRACE          reduce using rule 24 (empty -> .)
 
     type                           shift and go to state 8
     define_vars                    shift and go to state 23
@@ -277,7 +281,7 @@ state 20
 
 state 21
 
-    (8) define_function -> FUNCTION type ID parameters . ENDL VARS define_vars LBRACE RBRACE
+    (8) define_function -> FUNCTION type ID parameters . ENDL VARS define_vars LBRACE statute RBRACE
 
     ENDL            shift and go to state 25
 
@@ -311,7 +315,7 @@ state 24
 
 state 25
 
-    (8) define_function -> FUNCTION type ID parameters ENDL . VARS define_vars LBRACE RBRACE
+    (8) define_function -> FUNCTION type ID parameters ENDL . VARS define_vars LBRACE statute RBRACE
 
     VARS            shift and go to state 27
 
@@ -325,16 +329,16 @@ state 26
 
 state 27
 
-    (8) define_function -> FUNCTION type ID parameters ENDL VARS . define_vars LBRACE RBRACE
+    (8) define_function -> FUNCTION type ID parameters ENDL VARS . define_vars LBRACE statute RBRACE
     (2) define_vars -> . type COLON vars SEMICOLON define_vars
     (3) define_vars -> . empty
     (4) type -> . INT
     (5) type -> . FLOAT
-    (21) empty -> .
+    (24) empty -> .
 
     INT             shift and go to state 10
     FLOAT           shift and go to state 11
-    LBRACE          reduce using rule 21 (empty -> .)
+    LBRACE          reduce using rule 24 (empty -> .)
 
     type                           shift and go to state 8
     define_vars                    shift and go to state 29
@@ -352,7 +356,7 @@ state 28
 
 state 29
 
-    (8) define_function -> FUNCTION type ID parameters ENDL VARS define_vars . LBRACE RBRACE
+    (8) define_function -> FUNCTION type ID parameters ENDL VARS define_vars . LBRACE statute RBRACE
 
     LBRACE          shift and go to state 31
 
@@ -366,10 +370,18 @@ state 30
 
 state 31
 
-    (8) define_function -> FUNCTION type ID parameters ENDL VARS define_vars LBRACE . RBRACE
+    (8) define_function -> FUNCTION type ID parameters ENDL VARS define_vars LBRACE . statute RBRACE
+    (10) statute -> . assignation
+    (11) assignation -> . ID EQUAL expression
+    (12) assignation -> . empty
+    (24) empty -> .
 
-    RBRACE          shift and go to state 33
+    ID              shift and go to state 33
+    RBRACE          reduce using rule 24 (empty -> .)
 
+    statute                        shift and go to state 34
+    assignation                    shift and go to state 35
+    empty                          shift and go to state 36
 
 state 32
 
@@ -380,7 +392,355 @@ state 32
 
 state 33
 
-    (8) define_function -> FUNCTION type ID parameters ENDL VARS define_vars LBRACE RBRACE .
+    (11) assignation -> ID . EQUAL expression
 
-    $end            reduce using rule 8 (define_function -> FUNCTION type ID parameters ENDL VARS define_vars LBRACE RBRACE .)
+    EQUAL           shift and go to state 37
+
+
+state 34
+
+    (8) define_function -> FUNCTION type ID parameters ENDL VARS define_vars LBRACE statute . RBRACE
+
+    RBRACE          shift and go to state 38
+
+
+state 35
+
+    (10) statute -> assignation .
+
+    RBRACE          reduce using rule 10 (statute -> assignation .)
+
+
+state 36
+
+    (12) assignation -> empty .
+
+    RBRACE          reduce using rule 12 (assignation -> empty .)
+
+
+state 37
+
+    (11) assignation -> ID EQUAL . expression
+    (13) expression -> . expression PLUS term
+    (14) expression -> . expression MINUS term
+    (15) expression -> . term
+    (16) term -> . term TIMES factor
+    (17) term -> . term DIVIDE factor
+    (18) term -> . factor
+    (19) factor -> . NUMBER
+    (20) factor -> . ID
+    (21) factor -> . PLUS factor
+    (22) factor -> . MINUS factor
+    (23) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 45
+    ID              shift and go to state 39
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 46
+
+    expression                     shift and go to state 40
+    term                           shift and go to state 42
+    factor                         shift and go to state 44
+
+state 38
+
+    (8) define_function -> FUNCTION type ID parameters ENDL VARS define_vars LBRACE statute RBRACE .
+
+    $end            reduce using rule 8 (define_function -> FUNCTION type ID parameters ENDL VARS define_vars LBRACE statute RBRACE .)
+
+
+state 39
+
+    (20) factor -> ID .
+
+    TIMES           reduce using rule 20 (factor -> ID .)
+    DIVIDE          reduce using rule 20 (factor -> ID .)
+    PLUS            reduce using rule 20 (factor -> ID .)
+    MINUS           reduce using rule 20 (factor -> ID .)
+    RBRACE          reduce using rule 20 (factor -> ID .)
+    RPAREN          reduce using rule 20 (factor -> ID .)
+
+
+state 40
+
+    (11) assignation -> ID EQUAL expression .
+    (13) expression -> expression . PLUS term
+    (14) expression -> expression . MINUS term
+
+    RBRACE          reduce using rule 11 (assignation -> ID EQUAL expression .)
+    PLUS            shift and go to state 47
+    MINUS           shift and go to state 48
+
+
+state 41
+
+    (21) factor -> PLUS . factor
+    (19) factor -> . NUMBER
+    (20) factor -> . ID
+    (21) factor -> . PLUS factor
+    (22) factor -> . MINUS factor
+    (23) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 45
+    ID              shift and go to state 39
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 46
+
+    factor                         shift and go to state 49
+
+state 42
+
+    (15) expression -> term .
+    (16) term -> term . TIMES factor
+    (17) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 15 (expression -> term .)
+    MINUS           reduce using rule 15 (expression -> term .)
+    RBRACE          reduce using rule 15 (expression -> term .)
+    RPAREN          reduce using rule 15 (expression -> term .)
+    TIMES           shift and go to state 50
+    DIVIDE          shift and go to state 51
+
+
+state 43
+
+    (22) factor -> MINUS . factor
+    (19) factor -> . NUMBER
+    (20) factor -> . ID
+    (21) factor -> . PLUS factor
+    (22) factor -> . MINUS factor
+    (23) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 45
+    ID              shift and go to state 39
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 46
+
+    factor                         shift and go to state 52
+
+state 44
+
+    (18) term -> factor .
+
+    TIMES           reduce using rule 18 (term -> factor .)
+    DIVIDE          reduce using rule 18 (term -> factor .)
+    PLUS            reduce using rule 18 (term -> factor .)
+    MINUS           reduce using rule 18 (term -> factor .)
+    RBRACE          reduce using rule 18 (term -> factor .)
+    RPAREN          reduce using rule 18 (term -> factor .)
+
+
+state 45
+
+    (19) factor -> NUMBER .
+
+    TIMES           reduce using rule 19 (factor -> NUMBER .)
+    DIVIDE          reduce using rule 19 (factor -> NUMBER .)
+    PLUS            reduce using rule 19 (factor -> NUMBER .)
+    MINUS           reduce using rule 19 (factor -> NUMBER .)
+    RBRACE          reduce using rule 19 (factor -> NUMBER .)
+    RPAREN          reduce using rule 19 (factor -> NUMBER .)
+
+
+state 46
+
+    (23) factor -> LPAREN . expression RPAREN
+    (13) expression -> . expression PLUS term
+    (14) expression -> . expression MINUS term
+    (15) expression -> . term
+    (16) term -> . term TIMES factor
+    (17) term -> . term DIVIDE factor
+    (18) term -> . factor
+    (19) factor -> . NUMBER
+    (20) factor -> . ID
+    (21) factor -> . PLUS factor
+    (22) factor -> . MINUS factor
+    (23) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 45
+    ID              shift and go to state 39
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 46
+
+    expression                     shift and go to state 53
+    term                           shift and go to state 42
+    factor                         shift and go to state 44
+
+state 47
+
+    (13) expression -> expression PLUS . term
+    (16) term -> . term TIMES factor
+    (17) term -> . term DIVIDE factor
+    (18) term -> . factor
+    (19) factor -> . NUMBER
+    (20) factor -> . ID
+    (21) factor -> . PLUS factor
+    (22) factor -> . MINUS factor
+    (23) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 45
+    ID              shift and go to state 39
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 46
+
+    term                           shift and go to state 54
+    factor                         shift and go to state 44
+
+state 48
+
+    (14) expression -> expression MINUS . term
+    (16) term -> . term TIMES factor
+    (17) term -> . term DIVIDE factor
+    (18) term -> . factor
+    (19) factor -> . NUMBER
+    (20) factor -> . ID
+    (21) factor -> . PLUS factor
+    (22) factor -> . MINUS factor
+    (23) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 45
+    ID              shift and go to state 39
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 46
+
+    term                           shift and go to state 55
+    factor                         shift and go to state 44
+
+state 49
+
+    (21) factor -> PLUS factor .
+
+    TIMES           reduce using rule 21 (factor -> PLUS factor .)
+    DIVIDE          reduce using rule 21 (factor -> PLUS factor .)
+    PLUS            reduce using rule 21 (factor -> PLUS factor .)
+    MINUS           reduce using rule 21 (factor -> PLUS factor .)
+    RBRACE          reduce using rule 21 (factor -> PLUS factor .)
+    RPAREN          reduce using rule 21 (factor -> PLUS factor .)
+
+
+state 50
+
+    (16) term -> term TIMES . factor
+    (19) factor -> . NUMBER
+    (20) factor -> . ID
+    (21) factor -> . PLUS factor
+    (22) factor -> . MINUS factor
+    (23) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 45
+    ID              shift and go to state 39
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 46
+
+    factor                         shift and go to state 56
+
+state 51
+
+    (17) term -> term DIVIDE . factor
+    (19) factor -> . NUMBER
+    (20) factor -> . ID
+    (21) factor -> . PLUS factor
+    (22) factor -> . MINUS factor
+    (23) factor -> . LPAREN expression RPAREN
+
+    NUMBER          shift and go to state 45
+    ID              shift and go to state 39
+    PLUS            shift and go to state 41
+    MINUS           shift and go to state 43
+    LPAREN          shift and go to state 46
+
+    factor                         shift and go to state 57
+
+state 52
+
+    (22) factor -> MINUS factor .
+
+    TIMES           reduce using rule 22 (factor -> MINUS factor .)
+    DIVIDE          reduce using rule 22 (factor -> MINUS factor .)
+    PLUS            reduce using rule 22 (factor -> MINUS factor .)
+    MINUS           reduce using rule 22 (factor -> MINUS factor .)
+    RBRACE          reduce using rule 22 (factor -> MINUS factor .)
+    RPAREN          reduce using rule 22 (factor -> MINUS factor .)
+
+
+state 53
+
+    (23) factor -> LPAREN expression . RPAREN
+    (13) expression -> expression . PLUS term
+    (14) expression -> expression . MINUS term
+
+    RPAREN          shift and go to state 58
+    PLUS            shift and go to state 47
+    MINUS           shift and go to state 48
+
+
+state 54
+
+    (13) expression -> expression PLUS term .
+    (16) term -> term . TIMES factor
+    (17) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 13 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 13 (expression -> expression PLUS term .)
+    RBRACE          reduce using rule 13 (expression -> expression PLUS term .)
+    RPAREN          reduce using rule 13 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 50
+    DIVIDE          shift and go to state 51
+
+
+state 55
+
+    (14) expression -> expression MINUS term .
+    (16) term -> term . TIMES factor
+    (17) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 14 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 14 (expression -> expression MINUS term .)
+    RBRACE          reduce using rule 14 (expression -> expression MINUS term .)
+    RPAREN          reduce using rule 14 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 50
+    DIVIDE          shift and go to state 51
+
+
+state 56
+
+    (16) term -> term TIMES factor .
+
+    TIMES           reduce using rule 16 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 16 (term -> term TIMES factor .)
+    PLUS            reduce using rule 16 (term -> term TIMES factor .)
+    MINUS           reduce using rule 16 (term -> term TIMES factor .)
+    RBRACE          reduce using rule 16 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 16 (term -> term TIMES factor .)
+
+
+state 57
+
+    (17) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 17 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 17 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 17 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 17 (term -> term DIVIDE factor .)
+    RBRACE          reduce using rule 17 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 17 (term -> term DIVIDE factor .)
+
+
+state 58
+
+    (23) factor -> LPAREN expression RPAREN .
+
+    TIMES           reduce using rule 23 (factor -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 23 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 23 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 23 (factor -> LPAREN expression RPAREN .)
+    RBRACE          reduce using rule 23 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 23 (factor -> LPAREN expression RPAREN .)
 
