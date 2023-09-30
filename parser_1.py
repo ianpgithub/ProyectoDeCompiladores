@@ -1,6 +1,39 @@
 import ply.yacc as yacc
 from lex import tokens
 
+def p_program(p):
+    '''
+    program : PROGRAM ID SEMICOLON ENDL VARS define_vars define_function
+    '''
+    
+def p_define_vars(p):
+    '''
+    define_vars : type COLON vars SEMICOLON define_vars
+                | empty
+    '''
+   
+def p_type(p):
+    '''
+    type : INT
+         | FLOAT
+    '''
+   
+def p_vars(p):
+    '''
+    vars : ID COMMA vars
+         | ID
+    '''
+
+def p_define_function(p):
+    '''
+    define_function : FUNCTION type ID parameters ENDL VARS define_vars LBRACE RBRACE
+    '''
+
+def p_parameters(p):
+    '''
+    parameters : LPAREN type COLON vars RPAREN
+    '''
+
 
 
 def p_expression(p):
@@ -70,11 +103,16 @@ print(ast)
 
 # Ejemplo de entrada
 entrada = '''
-PROGRAM MyL
+PROGRAM MyL; \r\n
+VARS 
+int: i, j, k; 
+float: x,y;
+function int calcular(int: x) \r\n
 VARS
-int: i, j, k
-float: x, y
+int: m,n;
+{}
 '''
 
 # Analizar la entrada
-parser.parse(entrada)
+oso = parser.parse(entrada)
+print("Compiled!")

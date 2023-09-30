@@ -9,8 +9,8 @@ reserved = {
    'VARS' : 'VARS',
    'int' : 'INT',
    'float' : 'FLOAT',
-   'bool' : 'BOOL',
-   'program' : 'PROGRAM'
+   'program' : 'PROGRAM',
+   'function' : 'FUNCTION'
 }
 
 # List of token names.   This is always required
@@ -32,13 +32,8 @@ tokens = [
    'COMMA',
    'GREATERTHAN',
    'SMALLERTHAN',
-   'VARS',
-   'INT',
-   'FLOAT',
-   'BOOL',
    'OR',
    'ENDL',
-   'PROGRAM',
    'ID',
 ] + list(reserved.values())
 
@@ -69,6 +64,24 @@ def t_NUMBER(t):
     t.value = int(t.value)    
     return t
 
+#Defines PROGRAM before id so it doesnt gets confused
+def t_PROGRAM(t):
+    r'PROGRAM'
+    t.type = reserved.get(t.value, 'PROGRAM')
+    return t
+
+#Defines VARS
+def t_VARS(t):
+    r'VARS'
+    t.type = reserved.get(t.value, 'VARS')
+    return t
+
+#Defines Function
+def t_FUNCTION(t):
+    r'FUNCTION'
+    t.type = reserved.get(t.value, 'FUNCTION')
+    return t
+
 # Identifiers handler
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -97,9 +110,9 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test
-data = "z = [ 3 + 4 ] * variable_1 - 2 + else Hola\nMundo\r\nSaludos { Hola }, s: 1,2 | ;"
-lexer.input(data)
+#data = "PROGRAM VARS = [ 3 + 4 ] * variable_1 - 2 + else Hola\nMundo\r\nSaludos { Hola }, s: 1,2 | ;"
+#lexer.input(data)
 
 # Print tokens
-for token in lexer:
-    print(token)
+#for token in lexer:
+#    print(token)

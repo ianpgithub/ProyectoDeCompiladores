@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BOOL BOOL COLON COMMA DIVIDE ELSE ENDL EQUAL FLOAT FLOAT GREATERTHAN ID IF INT INT LBRACE LBRACKET LPAREN MINUS NUMBER OR PLUS PROGRAM PROGRAM RBRACE RBRACKET RPAREN SEMICOLON SMALLERTHAN THEN TIMES VARS VARS WHILE\n    expression : term PLUS term\n               | term MINUS term\n    \n    expression : term\n    \n    term : factor TIMES factor\n         | factor DIVIDE factor\n    \n    term : factor\n    \n    factor : NUMBER\n    \n    factor : ID\n    \n    factor : PLUS factor\n           | MINUS factor\n    \n    factor : LPAREN expression RPAREN\n    empty :'
+_lr_signature = 'COLON COMMA DIVIDE ELSE ENDL EQUAL FLOAT FUNCTION GREATERTHAN ID IF INT LBRACE LBRACKET LPAREN MINUS NUMBER OR PLUS PROGRAM RBRACE RBRACKET RPAREN SEMICOLON SMALLERTHAN THEN TIMES VARS WHILE\n    program : PROGRAM ID SEMICOLON ENDL VARS define_vars define_function\n    \n    define_vars : type COLON vars SEMICOLON define_vars\n                | empty\n    \n    type : INT\n         | FLOAT\n    \n    vars : ID COMMA vars\n         | ID\n    \n    define_function : FUNCTION type ID parameters ENDL VARS define_vars LBRACE RBRACE\n    \n    parameters : LPAREN type COLON vars RPAREN\n    \n    expression : term PLUS term\n               | term MINUS term\n    \n    expression : term\n    \n    term : factor TIMES factor\n         | factor DIVIDE factor\n    \n    term : factor\n    \n    factor : NUMBER\n    \n    factor : ID\n    \n    factor : PLUS factor\n           | MINUS factor\n    \n    factor : LPAREN expression RPAREN\n    empty :'
     
-_lr_action_items = {'NUMBER':([0,3,4,8,9,10,13,14,],[6,6,6,6,6,6,6,6,]),'ID':([0,3,4,8,9,10,13,14,],[7,7,7,7,7,7,7,7,]),'PLUS':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,18,19,20,],[3,9,3,3,-6,-7,-8,3,3,3,-9,-10,3,3,-4,-5,-11,]),'MINUS':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,18,19,20,],[4,10,4,4,-6,-7,-8,4,4,4,-9,-10,4,4,-4,-5,-11,]),'LPAREN':([0,3,4,8,9,10,13,14,],[8,8,8,8,8,8,8,8,]),'$end':([1,2,5,6,7,11,12,16,17,18,19,20,],[0,-3,-6,-7,-8,-9,-10,-1,-2,-4,-5,-11,]),'RPAREN':([2,5,6,7,11,12,15,16,17,18,19,20,],[-3,-6,-7,-8,-9,-10,20,-1,-2,-4,-5,-11,]),'TIMES':([5,6,7,11,12,20,],[13,-7,-8,-9,-10,-11,]),'DIVIDE':([5,6,7,11,12,20,],[14,-7,-8,-9,-10,-11,]),}
+_lr_action_items = {'PROGRAM':([0,],[2,]),'$end':([1,12,33,],[0,-1,-8,]),'ID':([2,10,11,14,15,20,28,],[3,-4,-5,17,18,17,17,]),'SEMICOLON':([3,16,17,24,],[4,19,-7,-6,]),'ENDL':([4,21,32,],[5,25,-9,]),'VARS':([5,25,],[6,27,]),'INT':([6,13,19,22,27,],[10,10,10,10,10,]),'FLOAT':([6,13,19,22,27,],[11,11,11,11,11,]),'FUNCTION':([6,7,9,19,23,],[-21,13,-3,-21,-2,]),'COLON':([8,10,11,26,],[14,-4,-5,28,]),'LBRACE':([9,19,23,27,29,],[-3,-21,-2,-21,31,]),'COMMA':([17,],[20,]),'RPAREN':([17,24,30,],[-7,-6,32,]),'LPAREN':([18,],[22,]),'RBRACE':([31,],[33,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'expression':([0,8,],[1,15,]),'term':([0,8,9,10,],[2,2,16,17,]),'factor':([0,3,4,8,9,10,13,14,],[5,11,12,5,5,5,18,19,]),}
+_lr_goto_items = {'program':([0,],[1,]),'define_vars':([6,19,27,],[7,23,29,]),'type':([6,13,19,22,27,],[8,15,8,26,8,]),'empty':([6,19,27,],[9,9,9,]),'define_function':([7,],[12,]),'vars':([14,20,28,],[16,24,30,]),'parameters':([18,],[21,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,17 +26,26 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> expression","S'",1,None,None,None),
-  ('expression -> term PLUS term','expression',3,'p_expression','parser_1.py',8),
-  ('expression -> term MINUS term','expression',3,'p_expression','parser_1.py',9),
-  ('expression -> term','expression',1,'p_expression_term','parser_1.py',15),
-  ('term -> factor TIMES factor','term',3,'p_term','parser_1.py',21),
-  ('term -> factor DIVIDE factor','term',3,'p_term','parser_1.py',22),
-  ('term -> factor','term',1,'p_term_factor','parser_1.py',28),
-  ('factor -> NUMBER','factor',1,'p_factor_number','parser_1.py',34),
-  ('factor -> ID','factor',1,'p_factor_id','parser_1.py',40),
-  ('factor -> PLUS factor','factor',2,'p_factor_unary','parser_1.py',46),
-  ('factor -> MINUS factor','factor',2,'p_factor_unary','parser_1.py',47),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_grouped','parser_1.py',53),
-  ('empty -> <empty>','empty',0,'p_empty','parser_1.py',61),
+  ("S' -> program","S'",1,None,None,None),
+  ('program -> PROGRAM ID SEMICOLON ENDL VARS define_vars define_function','program',7,'p_program','parser_1.py',6),
+  ('define_vars -> type COLON vars SEMICOLON define_vars','define_vars',5,'p_define_vars','parser_1.py',11),
+  ('define_vars -> empty','define_vars',1,'p_define_vars','parser_1.py',12),
+  ('type -> INT','type',1,'p_type','parser_1.py',17),
+  ('type -> FLOAT','type',1,'p_type','parser_1.py',18),
+  ('vars -> ID COMMA vars','vars',3,'p_vars','parser_1.py',23),
+  ('vars -> ID','vars',1,'p_vars','parser_1.py',24),
+  ('define_function -> FUNCTION type ID parameters ENDL VARS define_vars LBRACE RBRACE','define_function',9,'p_define_function','parser_1.py',29),
+  ('parameters -> LPAREN type COLON vars RPAREN','parameters',5,'p_parameters','parser_1.py',34),
+  ('expression -> term PLUS term','expression',3,'p_expression','parser_1.py',41),
+  ('expression -> term MINUS term','expression',3,'p_expression','parser_1.py',42),
+  ('expression -> term','expression',1,'p_expression_term','parser_1.py',48),
+  ('term -> factor TIMES factor','term',3,'p_term','parser_1.py',54),
+  ('term -> factor DIVIDE factor','term',3,'p_term','parser_1.py',55),
+  ('term -> factor','term',1,'p_term_factor','parser_1.py',61),
+  ('factor -> NUMBER','factor',1,'p_factor_number','parser_1.py',67),
+  ('factor -> ID','factor',1,'p_factor_id','parser_1.py',73),
+  ('factor -> PLUS factor','factor',2,'p_factor_unary','parser_1.py',79),
+  ('factor -> MINUS factor','factor',2,'p_factor_unary','parser_1.py',80),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_grouped','parser_1.py',86),
+  ('empty -> <empty>','empty',0,'p_empty','parser_1.py',94),
 ]
