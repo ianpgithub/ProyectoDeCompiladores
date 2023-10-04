@@ -32,7 +32,7 @@ def p_define_function(p):
 
 def p_function(p):
     '''
-    
+    function : ID LPAREN expression RPAREN SEMICOLON
     '''
 
 def p_main(p):
@@ -54,6 +54,7 @@ def p_statute(p):
             | return statute
             | define_write statute
             | read statute
+            | function statute
             | empty
             
     '''
@@ -197,7 +198,8 @@ float: y;
 x = y;
 } \r\n
 main(){
-i = calcula(p);
+calcula(1 + p);
+i = 2 + j;
 }
 
 '''
