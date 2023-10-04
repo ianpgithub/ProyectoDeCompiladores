@@ -16,7 +16,8 @@ reserved = {
    'read' : 'READ',
    'write' : 'WRITE',
    'for' : 'FOR',
-   'to' : 'TO'
+   'to' : 'TO',
+   'main' : 'MAIN'
 }
 
 # List of token names.   This is always required
@@ -132,7 +133,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test
-#data = " while (x + 2) do{ write read for x to y do 1 \"Hola\"}"
+#data = " while (x + 2) do{ write read for x to y do 1 \"Hola\"} main"
 #lexer.input(data)
 
 # Print tokens

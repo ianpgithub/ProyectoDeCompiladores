@@ -3,7 +3,7 @@ from lex import tokens
 
 def p_program(p):
     '''
-    program : PROGRAM ID SEMICOLON ENDL VARS define_vars define_function
+    program : PROGRAM ID SEMICOLON ENDL VARS define_vars define_function main
     '''
     
 def p_define_vars(p):
@@ -26,7 +26,18 @@ def p_id_list(p):
 
 def p_define_function(p):
     '''
-    define_function : FUNCTION type ID parameters ENDL VARS define_vars LBRACE statute RBRACE
+    define_function : FUNCTION type ID parameters ENDL VARS define_vars LBRACE statute RBRACE ENDL
+                    | FUNCTION type ID parameters ENDL VARS define_vars LBRACE statute RBRACE ENDL define_function
+    '''
+
+def p_function(p):
+    '''
+    
+    '''
+
+def p_main(p):
+    '''
+    main : MAIN LPAREN RPAREN LBRACE statute RBRACE
     '''
 
 def p_parameters(p):
@@ -177,6 +188,16 @@ j = 10;}
 for i = 3 to 9 do{
 j = j - 2;
 }
+} \r\n
+function int fact(int: j, k) \r\n
+VARS
+int: x;
+float: y;
+{
+x = y;
+} \r\n
+main(){
+i = calcula(p);
 }
 
 '''
