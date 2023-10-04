@@ -8,7 +8,7 @@ def p_program(p):
     
 def p_define_vars(p):
     '''
-    define_vars : type COLON vars SEMICOLON define_vars
+    define_vars : type COLON id_list SEMICOLON define_vars
                 | empty
     '''
    
@@ -18,10 +18,10 @@ def p_type(p):
          | FLOAT
     '''
    
-def p_vars(p):
+def p_id_list(p):
     '''
-    vars : ID COMMA vars
-         | ID
+    id_list : ID COMMA id_list
+            | ID
     '''
 
 def p_define_function(p):
@@ -31,16 +31,17 @@ def p_define_function(p):
 
 def p_parameters(p):
     '''
-    parameters : LPAREN type COLON vars RPAREN
+    parameters : LPAREN type COLON id_list RPAREN
     '''
 
 def p_statute(p):
     '''
     statute : assignation statute
-            | desicion statute
+            | decision statute
             | condition statute
+            | no_condition statute
             | return statute
-            | write statute
+            | define_write statute
             | read statute
             | empty
             
@@ -54,9 +55,20 @@ def p_assignation(p):
                 | ID EQUALTO expression SEMICOLON
                 
     '''
-def p_desicion(p):
+def p_decision(p):
     '''
-    desicion : IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
+    decision : IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
+             | IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
+    '''
+
+def p_condition(p):
+    '''
+    condition : WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
+    '''
+
+def p_no_condition(p):
+    '''
+    no_condition : FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
     '''
 
 def p_return(p):
@@ -76,7 +88,11 @@ def p_write(p):
           | expression
           | STRING COMMA write
           | expression COMMA write
-          | empty
+    '''
+
+def p_read(p):
+    '''
+    read : READ LPAREN id_list RPAREN SEMICOLON
     '''
 
 def p_expression(p):
@@ -151,7 +167,16 @@ if (j == x + 2) then
 {j > j + 1;} else
 {x = j + 2;}
 return(j);
-write("Hola mundo");
+write("Hola mundo", 3, j);
+read(p,j);
+while(i == 3) do {
+i = i + 1; 
+if(i > 5) then{
+j = 10;}
+}
+for i = 3 to 9 do{
+j = j - 2;
+}
 }
 
 '''
