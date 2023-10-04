@@ -6,11 +6,17 @@ reserved = {
    'then' : 'THEN',
    'else' : 'ELSE',
    'while' : 'WHILE',
+   'do' : 'DO',
    'VARS' : 'VARS',
    'int' : 'INT',
    'float' : 'FLOAT',
    'program' : 'PROGRAM',
-   'function' : 'FUNCTION'
+   'function' : 'FUNCTION',
+   'return' : 'RETURN',
+   'read' : 'READ',
+   'write' : 'WRITE',
+   'for' : 'FOR',
+   'to' : 'TO'
 }
 
 # List of token names.   This is always required
@@ -20,9 +26,11 @@ tokens = [
    'MINUS',
    'TIMES',
    'DIVIDE',
+   'STRING',
    'LPAREN',
    'RPAREN',
    'EQUAL',
+   'EQUALTO',
    'LBRACKET',
    'RBRACKET',
    'LBRACE',
@@ -44,7 +52,9 @@ t_TIMES   = r'\*'
 t_DIVIDE  = r'/'
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
+t_STRING = r'\".*?\"'
 t_EQUAL   = r'='
+t_EQUALTO = r'=='
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
 t_LBRACE  = r'\{'
@@ -82,6 +92,18 @@ def t_FUNCTION(t):
     t.type = reserved.get(t.value, 'FUNCTION')
     return t
 
+#Defines return
+def t_RETURN(t):
+    r'RETURN'
+    t.type = reserved.get(t.value, 'RETURN')
+    return t
+
+#Defines do to use with conditionals
+def t_DO(t):
+    r'DO'
+    t.type = reserved.get(t.value, 'DO')
+    return t
+
 # Identifiers handler
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -110,7 +132,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test
-#data = "PROGRAM VARS = [ 3 + 4 ] * variable_1 - 2 + else Hola\nMundo\r\nSaludos { Hola }, s: 1,2 | ;"
+#data = " while (x + 2) do{ write read for x to y do 1 \"Hola\"}"
 #lexer.input(data)
 
 # Print tokens

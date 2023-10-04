@@ -37,7 +37,11 @@ def p_parameters(p):
 def p_statute(p):
     '''
     statute : assignation statute
+            | desicion statute
             | condition statute
+            | return statute
+            | write statute
+            | read statute
             | empty
             
     '''
@@ -47,11 +51,32 @@ def p_assignation(p):
     assignation : ID EQUAL expression SEMICOLON
                 | ID GREATERTHAN expression SEMICOLON
                 | ID SMALLERTHAN expression SEMICOLON
+                | ID EQUALTO expression SEMICOLON
                 
     '''
-def p_condition(p):
+def p_desicion(p):
     '''
-    condition : IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
+    desicion : IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
+    '''
+
+def p_return(p):
+    '''
+    return : RETURN LPAREN expression RPAREN SEMICOLON
+    '''
+
+def p_define_write(p):
+    '''
+    define_write : WRITE LPAREN write RPAREN SEMICOLON
+
+    '''
+
+def p_write(p):
+    '''
+    write : STRING
+          | expression
+          | STRING COMMA write
+          | expression COMMA write
+          | empty
     '''
 
 def p_expression(p):
@@ -60,6 +85,7 @@ def p_expression(p):
                | expression MINUS term
                | expression GREATERTHAN term
                | expression SMALLERTHAN term
+               | expression EQUALTO term
     '''
 
 def p_expression_term(p):
@@ -121,9 +147,11 @@ VARS
 int: m,n;
 {
 i = 2 + 3 + (j - 2);
-if (j > x + 2) then
+if (j == x + 2) then
 {j > j + 1;} else
-{x = j + 2;} 
+{x = j + 2;}
+return(j);
+write("Hola mundo");
 }
 
 '''
