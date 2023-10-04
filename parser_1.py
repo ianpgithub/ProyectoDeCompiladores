@@ -36,25 +36,30 @@ def p_parameters(p):
 
 def p_statute(p):
     '''
-    statute : assignation SEMICOLON
-            | condition SEMICOLON
+    statute : assignation statute
+            | condition statute
+            | empty
             
     '''
 
 def p_assignation(p):
     '''
-    assignation : ID EQUAL expression
-                | empty
+    assignation : ID EQUAL expression SEMICOLON
+                | ID GREATERTHAN expression SEMICOLON
+                | ID SMALLERTHAN expression SEMICOLON
+                
     '''
 def p_condition(p):
     '''
-    
+    condition : IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
     '''
 
 def p_expression(p):
     '''
     expression : expression PLUS term
                | expression MINUS term
+               | expression GREATERTHAN term
+               | expression SMALLERTHAN term
     '''
 
 def p_expression_term(p):
@@ -97,6 +102,7 @@ def p_factor_grouped(p):
 def p_error(p):
     print(f'Syntax error at {p.value!r}')
 
+
 def p_empty(p):
     '''empty :'''
     pass
@@ -113,7 +119,13 @@ float: x,y;
 function int calcular(int: x) \r\n
 VARS
 int: m,n;
-{i = 2 + 3 + (j - 2)}
+{
+i = 2 + 3 + (j - 2);
+if (j > x + 2) then
+{j > j + 1;} else
+{x = j + 2;} 
+}
+
 '''
 
 # Analizar la entrada
