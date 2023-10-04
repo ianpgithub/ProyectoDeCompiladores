@@ -48,9 +48,25 @@ semantic_cube = {
         'bool': {
             '==': 'bool',
         },
+    },
+    'bool': {
+        'int': {
+            '<': 'bool',
+            '>': 'bool',
+            '==': 'bool',
+        },
+        'float': {
+            '<': 'bool',
+            '>': 'bool',
+            '==': 'bool',
+        },
+        'bool': {
+            '==': 'bool',
+        },
     }
 }
 
 print(semantic_cube['int']['int']['/']) 
 print(semantic_cube['int']['float']['*']) 
+print(semantic_cube['bool']['bool']['=='])
 
