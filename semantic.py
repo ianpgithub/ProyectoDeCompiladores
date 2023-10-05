@@ -63,6 +63,9 @@ semantic_cube = {
         'bool': {
             '==': 'bool',
         },
+    },
+    'string' : {
+
     }
 }
 
