@@ -200,6 +200,9 @@ x = y;
 main(){
 calcula(1 + p);
 i = 2 + j;
+while(j > 2) do{
+j = j + 1;
+}
 }
 
 '''
