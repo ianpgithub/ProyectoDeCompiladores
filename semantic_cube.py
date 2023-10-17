@@ -62,7 +62,7 @@ semantic_cube = {
 }
 
 print(semantic_cube['int']['int']['/']) 
-print(semantic_cube['int']['float']['*']) 
+print(semantic_cube['float']['int']['*']) 
 print(semantic_cube['bool']['bool']['=='])
 print(semantic_cube['string']['string']['=='])
 
