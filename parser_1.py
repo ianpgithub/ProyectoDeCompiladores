@@ -1,5 +1,7 @@
 import ply.yacc as yacc
 from lex import tokens
+from symbol_table import symbol_table
+import sys
 
 def p_program(p):
     '''
@@ -115,7 +117,7 @@ def p_expression(p):
                | expression SMALLERTHAN term
                | expression EQUALTO term
     '''
-
+    
 def p_expression_term(p):
     '''
     expression : term
@@ -210,3 +212,19 @@ j = j + 1;
 # Analizar la entrada
 oso = parser.parse(entrada)
 print("Compiled!")
+
+if __name__ == '__main__':
+
+    if len(sys.argv) > 1:
+        file = sys.argv[1]
+        try:
+            f = open(file, 'r')
+            data = f.read()
+            f.close()
+            dat = yacc.parse(data)
+            if dat == "COMPILED":
+                print("Compilado")
+        except EOFError:
+            print(EOFError)
+    else:
+        print("No hay archivo")
