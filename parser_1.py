@@ -7,7 +7,8 @@ def p_program(p):
     '''
     program : PROGRAM ID SEMICOLON ENDL VARS define_vars define_function main
     '''
-    
+    p[0] = "COMPILED"
+
 def p_define_vars(p):
     '''
     define_vars : type COLON id_list SEMICOLON define_vars
