@@ -1,5 +1,5 @@
 PROGRAM MyL;
-VARS int: i, j, k; 
+VARS int: i, j, k;
 float: x,y;
 function int calcular(int: x)
 VARS

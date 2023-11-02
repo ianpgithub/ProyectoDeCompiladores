@@ -157,7 +157,7 @@ def p_factor_grouped(p):
     '''
 
 def p_error(p):
-    print(f'Syntax error at {p.value!r}')
+    exit("Error: Sintax Error - {} ".format(p))
 
 
 def p_empty(p):
@@ -165,54 +165,8 @@ def p_empty(p):
     pass
 
 # Build the parser
-parser = yacc.yacc()
+yacc.yacc()
 
-# Ejemplo de entrada
-entrada = '''
-PROGRAM MyL; \r\n
-VARS 
-int: i, j, k; 
-float: x,y;
-function int calcular(int: x) \r\n
-VARS
-int: m,n;
-{
-i = 2 + 3 + (j - 2);
-if (j == x + 2) then
-{j > j + 1;} else
-{x = j + 2;}
-return(j);
-write("Hola mundo", 3, j);
-read(p,j);
-while(i == 3) do {
-i = i + 1; 
-if(i > 5) then{
-j = 10;}
-}
-for i = 3 to 9 do{
-j = j - 2;
-}
-} \r\n
-function int fact(int: j, k) \r\n
-VARS
-int: x;
-float: y;
-{
-x = y;
-} \r\n
-main(){
-calcula(1 + p);
-i = 2 + j;
-while(j > 2) do{
-j = j + 1;
-}
-}
-
-'''
-
-# Analizar la entrada
-oso = parser.parse(entrada)
-print("Compiled!")
 
 if __name__ == '__main__':
 
