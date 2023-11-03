@@ -1,5 +1,5 @@
 import ply.yacc as yacc
-from lex import tokens
+from lexer import tokens
 from parser_1 import parser
 
 semantic_cube = {
