@@ -4,6 +4,42 @@ from symbol_table import symbol_table, get_variable_type
 from semantic_cube import SemanticCube
 import sys
 
+def p_define_function(p):
+    '''
+    define_function : VARS define_vars LBRACE statute RBRACE
+                    | VARS define_vars LBRACE statute RBRACE define_function
+    '''
+
+def p_id_list(p):
+    '''
+    id_list : ID COMMA id_list
+            | ID
+    '''
+    # Construye una lista de identificadores
+    if len(p) == 2:
+        p[0] = [p[1]]  # Si hay solo un identificador
+    else:
+        p[0] = [p[1]] + p[3]
+
+def p_define_vars(p):
+    '''
+    define_vars : type COLON id_list SEMICOLON define_vars
+                | empty
+    '''
+    var_type = p[1]
+    id_list = p[3]
+
+    # Asocia cada identificador con su tipo en la tabla de símbolos
+    for var_id in id_list:
+        symbol_table[var_id] = var_type
+
+def p_type(p):
+    '''
+    type : INT
+         | FLOAT
+    '''
+    p[0] = p[1]
+   
 def p_statute(p):
     '''
     statute : assignation statute

@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COLON COMMA DIVIDE DO ELSE ENDL EQUAL EQUALTO FLOAT FOR FUNCTION GREATERTHAN ID IF INT LBRACE LBRACKET LPAREN MAIN MINUS NUMBER OR PLUS PROGRAM RBRACE RBRACKET READ RETURN RPAREN SEMICOLON SMALLERTHAN STRING THEN TIMES TO VARS WHILE WRITE\n    statute : assignation statute\n            | empty\n    \n    assignation : ID EQUAL expression SEMICOLON\n                | ID GREATERTHAN expression SEMICOLON\n                | ID SMALLERTHAN expression SEMICOLON\n                | ID EQUALTO expression SEMICOLON \n    \n    expression : expression PLUS term\n               | expression MINUS term\n               | expression GREATERTHAN term\n               | expression SMALLERTHAN term\n               | expression EQUALTO term\n    \n    expression : term\n    \n    term : term TIMES factor\n         | term DIVIDE factor\n    \n    term : factor\n    \n    factor : FLOAT\n           | INT\n           | STRING\n           \n    \n    factor : ID\n    \n    factor : PLUS factor\n           | MINUS factor\n    \n    factor : LPAREN expression RPAREN\n    empty :'
+_lr_signature = 'COLON COMMA DIVIDE DO ELSE ENDL EQUAL EQUALTO FLOAT FOR FUNCTION GREATERTHAN ID IF INT LBRACE LBRACKET LPAREN MAIN MINUS NUMBER OR PLUS PROGRAM RBRACE RBRACKET READ RETURN RPAREN SEMICOLON SMALLERTHAN STRING THEN TIMES TO VARS WHILE WRITE\n    define_function : VARS define_vars LBRACE statute RBRACE\n                    | VARS define_vars LBRACE statute RBRACE define_function\n    \n    id_list : ID COMMA id_list\n            | ID\n    \n    define_vars : type COLON id_list SEMICOLON define_vars\n                | empty\n    \n    type : INT\n         | FLOAT\n    \n    statute : assignation statute\n            | empty\n    \n    assignation : ID EQUAL expression SEMICOLON\n                | ID GREATERTHAN expression SEMICOLON\n                | ID SMALLERTHAN expression SEMICOLON\n                | ID EQUALTO expression SEMICOLON \n    \n    expression : expression PLUS term\n               | expression MINUS term\n               | expression GREATERTHAN term\n               | expression SMALLERTHAN term\n               | expression EQUALTO term\n    \n    expression : term\n    \n    term : term TIMES factor\n         | term DIVIDE factor\n    \n    term : factor\n    \n    factor : FLOAT\n           | INT\n           | STRING\n           \n    \n    factor : ID\n    \n    factor : PLUS factor\n           | MINUS factor\n    \n    factor : LPAREN expression RPAREN\n    empty :'
     
-_lr_action_items = {'ID':([0,2,6,7,8,9,12,14,19,23,24,25,26,27,28,30,31,34,35,36,],[4,4,10,10,10,10,10,10,10,-3,10,10,10,10,10,10,10,-4,-5,-6,]),'$end':([0,1,2,3,5,23,34,35,36,],[-23,0,-23,-2,-1,-3,-4,-5,-6,]),'EQUAL':([4,],[6,]),'GREATERTHAN':([4,10,11,13,15,16,17,18,20,21,22,29,32,33,37,38,39,40,41,42,43,44,],[7,-19,26,-12,-15,-16,-17,-18,26,26,26,-20,-21,26,-7,-8,-9,-10,-11,-13,-14,-22,]),'SMALLERTHAN':([4,10,11,13,15,16,17,18,20,21,22,29,32,33,37,38,39,40,41,42,43,44,],[8,-19,27,-12,-15,-16,-17,-18,27,27,27,-20,-21,27,-7,-8,-9,-10,-11,-13,-14,-22,]),'EQUALTO':([4,10,11,13,15,16,17,18,20,21,22,29,32,33,37,38,39,40,41,42,43,44,],[9,-19,28,-12,-15,-16,-17,-18,28,28,28,-20,-21,28,-7,-8,-9,-10,-11,-13,-14,-22,]),'FLOAT':([6,7,8,9,12,14,19,24,25,26,27,28,30,31,],[16,16,16,16,16,16,16,16,16,16,16,16,16,16,]),'INT':([6,7,8,9,12,14,19,24,25,26,27,28,30,31,],[17,17,17,17,17,17,17,17,17,17,17,17,17,17,]),'STRING':([6,7,8,9,12,14,19,24,25,26,27,28,30,31,],[18,18,18,18,18,18,18,18,18,18,18,18,18,18,]),'PLUS':([6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,25,26,27,28,29,30,31,32,33,37,38,39,40,41,42,43,44,],[12,12,12,12,-19,24,12,-12,12,-15,-16,-17,-18,12,24,24,24,12,12,12,12,12,-20,12,12,-21,24,-7,-8,-9,-10,-11,-13,-14,-22,]),'MINUS':([6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,25,26,27,28,29,30,31,32,33,37,38,39,40,41,42,43,44,],[14,14,14,14,-19,25,14,-12,14,-15,-16,-17,-18,14,25,25,25,14,14,14,14,14,-20,14,14,-21,25,-7,-8,-9,-10,-11,-13,-14,-22,]),'LPAREN':([6,7,8,9,12,14,19,24,25,26,27,28,30,31,],[19,19,19,19,19,19,19,19,19,19,19,19,19,19,]),'TIMES':([10,13,15,16,17,18,29,32,37,38,39,40,41,42,43,44,],[-19,30,-15,-16,-17,-18,-20,-21,30,30,30,30,30,-13,-14,-22,]),'DIVIDE':([10,13,15,16,17,18,29,32,37,38,39,40,41,42,43,44,],[-19,31,-15,-16,-17,-18,-20,-21,31,31,31,31,31,-13,-14,-22,]),'SEMICOLON':([10,11,13,15,16,17,18,20,21,22,29,32,37,38,39,40,41,42,43,44,],[-19,23,-12,-15,-16,-17,-18,34,35,36,-20,-21,-7,-8,-9,-10,-11,-13,-14,-22,]),'RPAREN':([10,13,15,16,17,18,29,32,33,37,38,39,40,41,42,43,44,],[-19,-12,-15,-16,-17,-18,-20,-21,44,-7,-8,-9,-10,-11,-13,-14,-22,]),}
+_lr_action_items = {'VARS':([0,16,],[2,2,]),'$end':([1,16,24,],[0,-1,-2,]),'INT':([2,18,19,20,21,22,27,29,34,41,42,43,44,45,47,48,],[6,32,32,32,32,6,32,32,32,32,32,32,32,32,32,32,]),'FLOAT':([2,18,19,20,21,22,27,29,34,41,42,43,44,45,47,48,],[7,31,31,31,31,7,31,31,31,31,31,31,31,31,31,31,]),'LBRACE':([2,3,5,22,38,],[-31,8,-6,-31,-5,]),'COLON':([4,6,7,],[9,-7,-8,]),'ID':([8,9,11,18,19,20,21,23,27,29,34,40,41,42,43,44,45,47,48,51,52,53,],[13,15,13,25,25,25,25,15,25,25,25,-11,25,25,25,25,25,25,25,-12,-13,-14,]),'RBRACE':([8,10,11,12,17,40,51,52,53,],[-31,16,-31,-10,-9,-11,-12,-13,-14,]),'EQUAL':([13,],[18,]),'GREATERTHAN':([13,25,26,28,30,31,32,33,35,36,37,46,49,50,54,55,56,57,58,59,60,61,],[19,-27,43,-20,-23,-24,-25,-26,43,43,43,-28,-29,43,-15,-16,-17,-18,-19,-21,-22,-30,]),'SMALLERTHAN':([13,25,26,28,30,31,32,33,35,36,37,46,49,50,54,55,56,57,58,59,60,61,],[20,-27,44,-20,-23,-24,-25,-26,44,44,44,-28,-29,44,-15,-16,-17,-18,-19,-21,-22,-30,]),'EQUALTO':([13,25,26,28,30,31,32,33,35,36,37,46,49,50,54,55,56,57,58,59,60,61,],[21,-27,45,-20,-23,-24,-25,-26,45,45,45,-28,-29,45,-15,-16,-17,-18,-19,-21,-22,-30,]),'SEMICOLON':([14,15,25,26,28,30,31,32,33,35,36,37,39,46,49,54,55,56,57,58,59,60,61,],[22,-4,-27,40,-20,-23,-24,-25,-26,51,52,53,-3,-28,-29,-15,-16,-17,-18,-19,-21,-22,-30,]),'COMMA':([15,],[23,]),'STRING':([18,19,20,21,27,29,34,41,42,43,44,45,47,48,],[33,33,33,33,33,33,33,33,33,33,33,33,33,33,]),'PLUS':([18,19,20,21,25,26,27,28,29,30,31,32,33,34,35,36,37,41,42,43,44,45,46,47,48,49,50,54,55,56,57,58,59,60,61,],[27,27,27,27,-27,41,27,-20,27,-23,-24,-25,-26,27,41,41,41,27,27,27,27,27,-28,27,27,-29,41,-15,-16,-17,-18,-19,-21,-22,-30,]),'MINUS':([18,19,20,21,25,26,27,28,29,30,31,32,33,34,35,36,37,41,42,43,44,45,46,47,48,49,50,54,55,56,57,58,59,60,61,],[29,29,29,29,-27,42,29,-20,29,-23,-24,-25,-26,29,42,42,42,29,29,29,29,29,-28,29,29,-29,42,-15,-16,-17,-18,-19,-21,-22,-30,]),'LPAREN':([18,19,20,21,27,29,34,41,42,43,44,45,47,48,],[34,34,34,34,34,34,34,34,34,34,34,34,34,34,]),'TIMES':([25,28,30,31,32,33,46,49,54,55,56,57,58,59,60,61,],[-27,47,-23,-24,-25,-26,-28,-29,47,47,47,47,47,-21,-22,-30,]),'DIVIDE':([25,28,30,31,32,33,46,49,54,55,56,57,58,59,60,61,],[-27,48,-23,-24,-25,-26,-28,-29,48,48,48,48,48,-21,-22,-30,]),'RPAREN':([25,28,30,31,32,33,46,49,50,54,55,56,57,58,59,60,61,],[-27,-20,-23,-24,-25,-26,-28,-29,61,-15,-16,-17,-18,-19,-21,-22,-30,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statute':([0,2,],[1,5,]),'assignation':([0,2,],[2,2,]),'empty':([0,2,],[3,3,]),'expression':([6,7,8,9,19,],[11,20,21,22,33,]),'term':([6,7,8,9,19,24,25,26,27,28,],[13,13,13,13,13,37,38,39,40,41,]),'factor':([6,7,8,9,12,14,19,24,25,26,27,28,30,31,],[15,15,15,15,29,32,15,15,15,15,15,15,42,43,]),}
+_lr_goto_items = {'define_function':([0,16,],[1,24,]),'define_vars':([2,22,],[3,38,]),'type':([2,22,],[4,4,]),'empty':([2,8,11,22,],[5,12,12,5,]),'statute':([8,11,],[10,17,]),'assignation':([8,11,],[11,11,]),'id_list':([9,23,],[14,39,]),'expression':([18,19,20,21,34,],[26,35,36,37,50,]),'term':([18,19,20,21,34,41,42,43,44,45,],[28,28,28,28,28,54,55,56,57,58,]),'factor':([18,19,20,21,27,29,34,41,42,43,44,45,47,48,],[30,30,30,30,46,49,30,30,30,30,30,30,59,60,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,28 +26,36 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> statute","S'",1,None,None,None),
-  ('statute -> assignation statute','statute',2,'p_statute','parser_p.py',9),
-  ('statute -> empty','statute',1,'p_statute','parser_p.py',10),
-  ('assignation -> ID EQUAL expression SEMICOLON','assignation',4,'p_assignation','parser_p.py',15),
-  ('assignation -> ID GREATERTHAN expression SEMICOLON','assignation',4,'p_assignation','parser_p.py',16),
-  ('assignation -> ID SMALLERTHAN expression SEMICOLON','assignation',4,'p_assignation','parser_p.py',17),
-  ('assignation -> ID EQUALTO expression SEMICOLON','assignation',4,'p_assignation','parser_p.py',18),
-  ('expression -> expression PLUS term','expression',3,'p_expression','parser_p.py',26),
-  ('expression -> expression MINUS term','expression',3,'p_expression','parser_p.py',27),
-  ('expression -> expression GREATERTHAN term','expression',3,'p_expression','parser_p.py',28),
-  ('expression -> expression SMALLERTHAN term','expression',3,'p_expression','parser_p.py',29),
-  ('expression -> expression EQUALTO term','expression',3,'p_expression','parser_p.py',30),
-  ('expression -> term','expression',1,'p_expression_term','parser_p.py',58),
-  ('term -> term TIMES factor','term',3,'p_term','parser_p.py',64),
-  ('term -> term DIVIDE factor','term',3,'p_term','parser_p.py',65),
-  ('term -> factor','term',1,'p_term_factor','parser_p.py',78),
-  ('factor -> FLOAT','factor',1,'p_factor_number','parser_p.py',85),
-  ('factor -> INT','factor',1,'p_factor_number','parser_p.py',86),
-  ('factor -> STRING','factor',1,'p_factor_number','parser_p.py',87),
-  ('factor -> ID','factor',1,'p_factor_id','parser_p.py',95),
-  ('factor -> PLUS factor','factor',2,'p_factor_unary','parser_p.py',106),
-  ('factor -> MINUS factor','factor',2,'p_factor_unary','parser_p.py',107),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_grouped','parser_p.py',116),
-  ('empty -> <empty>','empty',0,'p_empty','parser_p.py',126),
+  ("S' -> define_function","S'",1,None,None,None),
+  ('define_function -> VARS define_vars LBRACE statute RBRACE','define_function',5,'p_define_function','parser_p.py',9),
+  ('define_function -> VARS define_vars LBRACE statute RBRACE define_function','define_function',6,'p_define_function','parser_p.py',10),
+  ('id_list -> ID COMMA id_list','id_list',3,'p_id_list','parser_p.py',15),
+  ('id_list -> ID','id_list',1,'p_id_list','parser_p.py',16),
+  ('define_vars -> type COLON id_list SEMICOLON define_vars','define_vars',5,'p_define_vars','parser_p.py',26),
+  ('define_vars -> empty','define_vars',1,'p_define_vars','parser_p.py',27),
+  ('type -> INT','type',1,'p_type','parser_p.py',38),
+  ('type -> FLOAT','type',1,'p_type','parser_p.py',39),
+  ('statute -> assignation statute','statute',2,'p_statute','parser_p.py',45),
+  ('statute -> empty','statute',1,'p_statute','parser_p.py',46),
+  ('assignation -> ID EQUAL expression SEMICOLON','assignation',4,'p_assignation','parser_p.py',51),
+  ('assignation -> ID GREATERTHAN expression SEMICOLON','assignation',4,'p_assignation','parser_p.py',52),
+  ('assignation -> ID SMALLERTHAN expression SEMICOLON','assignation',4,'p_assignation','parser_p.py',53),
+  ('assignation -> ID EQUALTO expression SEMICOLON','assignation',4,'p_assignation','parser_p.py',54),
+  ('expression -> expression PLUS term','expression',3,'p_expression','parser_p.py',62),
+  ('expression -> expression MINUS term','expression',3,'p_expression','parser_p.py',63),
+  ('expression -> expression GREATERTHAN term','expression',3,'p_expression','parser_p.py',64),
+  ('expression -> expression SMALLERTHAN term','expression',3,'p_expression','parser_p.py',65),
+  ('expression -> expression EQUALTO term','expression',3,'p_expression','parser_p.py',66),
+  ('expression -> term','expression',1,'p_expression_term','parser_p.py',83),
+  ('term -> term TIMES factor','term',3,'p_term','parser_p.py',89),
+  ('term -> term DIVIDE factor','term',3,'p_term','parser_p.py',90),
+  ('term -> factor','term',1,'p_term_factor','parser_p.py',103),
+  ('factor -> FLOAT','factor',1,'p_factor_number','parser_p.py',110),
+  ('factor -> INT','factor',1,'p_factor_number','parser_p.py',111),
+  ('factor -> STRING','factor',1,'p_factor_number','parser_p.py',112),
+  ('factor -> ID','factor',1,'p_factor_id','parser_p.py',120),
+  ('factor -> PLUS factor','factor',2,'p_factor_unary','parser_p.py',131),
+  ('factor -> MINUS factor','factor',2,'p_factor_unary','parser_p.py',132),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_grouped','parser_p.py',141),
+  ('empty -> <empty>','empty',0,'p_empty','parser_p.py',151),
 ]

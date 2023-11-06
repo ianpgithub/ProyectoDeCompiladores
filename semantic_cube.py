@@ -66,4 +66,4 @@ class SemanticCube:
             print(f"Error: Operación no válida para tipos {operand1_type} y {operand2_type}.")
             return 'error'  # Devuelve un tipo de error para indicar que la operación no es válida
 
-
+semantic_cube = SemanticCube()
