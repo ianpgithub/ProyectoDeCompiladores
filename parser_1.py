@@ -70,6 +70,7 @@ def p_assignation(p):
                 | ID EQUALTO expression SEMICOLON
                 
     '''
+    
 def p_decision(p):
     '''
     decision : IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE

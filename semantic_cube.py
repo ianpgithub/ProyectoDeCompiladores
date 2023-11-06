@@ -1,8 +1,6 @@
-import ply.yacc as yacc
-from lexer import tokens
-from parser_1 import parser
-
-semantic_cube = {
+class SemanticCube:
+    def __init__(self):
+       self.cube = {
     'int': {
         'int': {
             '+': 'int',
@@ -61,5 +59,11 @@ semantic_cube = {
     }
 }
 
+    def get_result_type(self, operand1_type, operand2_type, operator):
+        if (operand1_type, operand2_type, operator) in self.cube:
+            return self.cube[(operand1_type, operand2_type, operator)]
+        else:
+            print(f"Error: Operación no válida para tipos {operand1_type} y {operand2_type}.")
+            return 'error'  # Devuelve un tipo de error para indicar que la operación no es válida
 
 

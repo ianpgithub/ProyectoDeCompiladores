@@ -65,12 +65,16 @@ t_SEMICOLON = r';'
 t_COMMA   = r','
 t_GREATERTHAN = '>'
 t_SMALLERTHAN = '<'
-t_INT = r'\d+'
-t_FLOAT = r'\d+\.\d+'
 t_OR = r'\|'
 
 # A regular expression rule with some action code
-def t_NUMBER(t):
+def t_FLOAT(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)    
+    return t
+
+# A regular expression rule with some action code
+def t_INT(t):
     r'\d+'
     t.value = int(t.value)    
     return t

@@ -2,2626 +2,913 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    COLON
+    COMMA
+    DO
+    ELSE
     ENDL
+    FOR
+    FUNCTION
+    IF
+    LBRACE
     LBRACKET
+    MAIN
+    NUMBER
     OR
+    PROGRAM
+    RBRACE
     RBRACKET
+    READ
+    RETURN
+    THEN
+    TO
+    VARS
+    WHILE
+    WRITE
 
 Grammar
 
-Rule 0     S' -> program
-Rule 1     program -> PROGRAM ID SEMICOLON VARS define_vars define_function main
-Rule 2     define_vars -> type COLON id_list SEMICOLON define_vars
-Rule 3     define_vars -> empty
-Rule 4     type -> INT
-Rule 5     type -> FLOAT
-Rule 6     id_list -> ID COMMA id_list
-Rule 7     id_list -> ID
-Rule 8     define_function -> FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE
-Rule 9     define_function -> FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE define_function
-Rule 10    function -> ID LPAREN expression RPAREN SEMICOLON
-Rule 11    main -> MAIN LPAREN RPAREN LBRACE statute RBRACE
-Rule 12    parameters -> LPAREN type COLON id_list RPAREN
-Rule 13    statute -> assignation statute
-Rule 14    statute -> decision statute
-Rule 15    statute -> condition statute
-Rule 16    statute -> no_condition statute
-Rule 17    statute -> return statute
-Rule 18    statute -> define_write statute
-Rule 19    statute -> read statute
-Rule 20    statute -> function statute
-Rule 21    statute -> empty
-Rule 22    assignation -> ID EQUAL expression SEMICOLON
-Rule 23    assignation -> ID GREATERTHAN expression SEMICOLON
-Rule 24    assignation -> ID SMALLERTHAN expression SEMICOLON
-Rule 25    assignation -> ID EQUALTO expression SEMICOLON
-Rule 26    decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-Rule 27    decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-Rule 28    condition -> WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-Rule 29    no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-Rule 30    return -> RETURN LPAREN expression RPAREN SEMICOLON
-Rule 31    define_write -> WRITE LPAREN write RPAREN SEMICOLON
-Rule 32    write -> STRING
-Rule 33    write -> expression
-Rule 34    write -> STRING COMMA write
-Rule 35    write -> expression COMMA write
-Rule 36    read -> READ LPAREN id_list RPAREN SEMICOLON
-Rule 37    expression -> expression PLUS term
-Rule 38    expression -> expression MINUS term
-Rule 39    expression -> expression GREATERTHAN term
-Rule 40    expression -> expression SMALLERTHAN term
-Rule 41    expression -> expression EQUALTO term
-Rule 42    expression -> term
-Rule 43    term -> term TIMES factor
-Rule 44    term -> term DIVIDE factor
-Rule 45    term -> factor
-Rule 46    factor -> NUMBER
-Rule 47    factor -> ID
-Rule 48    factor -> PLUS factor
-Rule 49    factor -> MINUS factor
-Rule 50    factor -> LPAREN expression RPAREN
-Rule 51    empty -> <empty>
+Rule 0     S' -> statute
+Rule 1     statute -> assignation statute
+Rule 2     statute -> empty
+Rule 3     assignation -> ID EQUAL expression SEMICOLON
+Rule 4     assignation -> ID GREATERTHAN expression SEMICOLON
+Rule 5     assignation -> ID SMALLERTHAN expression SEMICOLON
+Rule 6     assignation -> ID EQUALTO expression SEMICOLON
+Rule 7     expression -> expression PLUS term
+Rule 8     expression -> expression MINUS term
+Rule 9     expression -> expression GREATERTHAN term
+Rule 10    expression -> expression SMALLERTHAN term
+Rule 11    expression -> expression EQUALTO term
+Rule 12    expression -> term
+Rule 13    term -> term TIMES factor
+Rule 14    term -> term DIVIDE factor
+Rule 15    term -> factor
+Rule 16    factor -> FLOAT
+Rule 17    factor -> INT
+Rule 18    factor -> STRING
+Rule 19    factor -> ID
+Rule 20    factor -> PLUS factor
+Rule 21    factor -> MINUS factor
+Rule 22    factor -> LPAREN expression RPAREN
+Rule 23    empty -> <empty>
 
 Terminals, with rules where they appear
 
-COLON                : 2 12
-COMMA                : 6 34 35
-DIVIDE               : 44
-DO                   : 28 29
-ELSE                 : 26
+COLON                : 
+COMMA                : 
+DIVIDE               : 14
+DO                   : 
+ELSE                 : 
 ENDL                 : 
-EQUAL                : 22 29
-EQUALTO              : 25 41
-FLOAT                : 5
-FOR                  : 29
-FUNCTION             : 8 9
-GREATERTHAN          : 23 39
-ID                   : 1 6 7 8 9 10 22 23 24 25 29 47
-IF                   : 26 27
-INT                  : 4
-LBRACE               : 8 9 11 26 26 27 28 29
+EQUAL                : 3
+EQUALTO              : 6 11
+FLOAT                : 16
+FOR                  : 
+FUNCTION             : 
+GREATERTHAN          : 4 9
+ID                   : 3 4 5 6 19
+IF                   : 
+INT                  : 17
+LBRACE               : 
 LBRACKET             : 
-LPAREN               : 10 11 12 26 27 28 30 31 36 50
-MAIN                 : 11
-MINUS                : 38 49
-NUMBER               : 46
+LPAREN               : 22
+MAIN                 : 
+MINUS                : 8 21
+NUMBER               : 
 OR                   : 
-PLUS                 : 37 48
-PROGRAM              : 1
-RBRACE               : 8 9 11 26 26 27 28 29
+PLUS                 : 7 20
+PROGRAM              : 
+RBRACE               : 
 RBRACKET             : 
-READ                 : 36
-RETURN               : 30
-RPAREN               : 10 11 12 26 27 28 30 31 36 50
-SEMICOLON            : 1 2 10 22 23 24 25 30 31 36
-SMALLERTHAN          : 24 40
-STRING               : 32 34
-THEN                 : 26 27
-TIMES                : 43
-TO                   : 29
-VARS                 : 1 8 9
-WHILE                : 28
-WRITE                : 31
+READ                 : 
+RETURN               : 
+RPAREN               : 22
+SEMICOLON            : 3 4 5 6
+SMALLERTHAN          : 5 10
+STRING               : 18
+THEN                 : 
+TIMES                : 13
+TO                   : 
+VARS                 : 
+WHILE                : 
+WRITE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-assignation          : 13
-condition            : 15
-decision             : 14
-define_function      : 1 9
-define_vars          : 1 2 8 9
-define_write         : 18
-empty                : 3 21
-expression           : 10 22 23 24 25 26 27 28 29 29 30 33 35 37 38 39 40 41 50
-factor               : 43 44 45 48 49
-function             : 20
-id_list              : 2 6 12 36
-main                 : 1
-no_condition         : 16
-parameters           : 8 9
-program              : 0
-read                 : 19
-return               : 17
-statute              : 8 9 11 13 14 15 16 17 18 19 20 26 26 27 28 29
-term                 : 37 38 39 40 41 42 43 44
-type                 : 2 8 9 12
-write                : 31 34 35
+assignation          : 1
+empty                : 2
+expression           : 3 4 5 6 7 8 9 10 11 22
+factor               : 13 14 15 20 21
+statute              : 1 0
+term                 : 7 8 9 10 11 12 13 14
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . program
-    (1) program -> . PROGRAM ID SEMICOLON VARS define_vars define_function main
+    (0) S' -> . statute
+    (1) statute -> . assignation statute
+    (2) statute -> . empty
+    (3) assignation -> . ID EQUAL expression SEMICOLON
+    (4) assignation -> . ID GREATERTHAN expression SEMICOLON
+    (5) assignation -> . ID SMALLERTHAN expression SEMICOLON
+    (6) assignation -> . ID EQUALTO expression SEMICOLON
+    (23) empty -> .
 
-    PROGRAM         shift and go to state 2
+    ID              shift and go to state 4
+    $end            reduce using rule 23 (empty -> .)
 
-    program                        shift and go to state 1
+    statute                        shift and go to state 1
+    assignation                    shift and go to state 2
+    empty                          shift and go to state 3
 
 state 1
 
-    (0) S' -> program .
+    (0) S' -> statute .
 
 
 
 state 2
 
-    (1) program -> PROGRAM . ID SEMICOLON VARS define_vars define_function main
+    (1) statute -> assignation . statute
+    (1) statute -> . assignation statute
+    (2) statute -> . empty
+    (3) assignation -> . ID EQUAL expression SEMICOLON
+    (4) assignation -> . ID GREATERTHAN expression SEMICOLON
+    (5) assignation -> . ID SMALLERTHAN expression SEMICOLON
+    (6) assignation -> . ID EQUALTO expression SEMICOLON
+    (23) empty -> .
 
-    ID              shift and go to state 3
+    ID              shift and go to state 4
+    $end            reduce using rule 23 (empty -> .)
 
+    assignation                    shift and go to state 2
+    statute                        shift and go to state 5
+    empty                          shift and go to state 3
 
 state 3
 
-    (1) program -> PROGRAM ID . SEMICOLON VARS define_vars define_function main
+    (2) statute -> empty .
 
-    SEMICOLON       shift and go to state 4
+    $end            reduce using rule 2 (statute -> empty .)
 
 
 state 4
 
-    (1) program -> PROGRAM ID SEMICOLON . VARS define_vars define_function main
+    (3) assignation -> ID . EQUAL expression SEMICOLON
+    (4) assignation -> ID . GREATERTHAN expression SEMICOLON
+    (5) assignation -> ID . SMALLERTHAN expression SEMICOLON
+    (6) assignation -> ID . EQUALTO expression SEMICOLON
 
-    VARS            shift and go to state 5
+    EQUAL           shift and go to state 6
+    GREATERTHAN     shift and go to state 7
+    SMALLERTHAN     shift and go to state 8
+    EQUALTO         shift and go to state 9
 
 
 state 5
 
-    (1) program -> PROGRAM ID SEMICOLON VARS . define_vars define_function main
-    (2) define_vars -> . type COLON id_list SEMICOLON define_vars
-    (3) define_vars -> . empty
-    (4) type -> . INT
-    (5) type -> . FLOAT
-    (51) empty -> .
+    (1) statute -> assignation statute .
 
-    INT             shift and go to state 9
-    FLOAT           shift and go to state 10
-    FUNCTION        reduce using rule 51 (empty -> .)
+    $end            reduce using rule 1 (statute -> assignation statute .)
 
-    define_vars                    shift and go to state 6
-    type                           shift and go to state 7
-    empty                          shift and go to state 8
 
 state 6
 
-    (1) program -> PROGRAM ID SEMICOLON VARS define_vars . define_function main
-    (8) define_function -> . FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE
-    (9) define_function -> . FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE define_function
+    (3) assignation -> ID EQUAL . expression SEMICOLON
+    (7) expression -> . expression PLUS term
+    (8) expression -> . expression MINUS term
+    (9) expression -> . expression GREATERTHAN term
+    (10) expression -> . expression SMALLERTHAN term
+    (11) expression -> . expression EQUALTO term
+    (12) expression -> . term
+    (13) term -> . term TIMES factor
+    (14) term -> . term DIVIDE factor
+    (15) term -> . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    FUNCTION        shift and go to state 12
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
-    define_function                shift and go to state 11
+    expression                     shift and go to state 11
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
 
 state 7
 
-    (2) define_vars -> type . COLON id_list SEMICOLON define_vars
+    (4) assignation -> ID GREATERTHAN . expression SEMICOLON
+    (7) expression -> . expression PLUS term
+    (8) expression -> . expression MINUS term
+    (9) expression -> . expression GREATERTHAN term
+    (10) expression -> . expression SMALLERTHAN term
+    (11) expression -> . expression EQUALTO term
+    (12) expression -> . term
+    (13) term -> . term TIMES factor
+    (14) term -> . term DIVIDE factor
+    (15) term -> . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    COLON           shift and go to state 13
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
+    expression                     shift and go to state 20
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
 
 state 8
 
-    (3) define_vars -> empty .
+    (5) assignation -> ID SMALLERTHAN . expression SEMICOLON
+    (7) expression -> . expression PLUS term
+    (8) expression -> . expression MINUS term
+    (9) expression -> . expression GREATERTHAN term
+    (10) expression -> . expression SMALLERTHAN term
+    (11) expression -> . expression EQUALTO term
+    (12) expression -> . term
+    (13) term -> . term TIMES factor
+    (14) term -> . term DIVIDE factor
+    (15) term -> . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    FUNCTION        reduce using rule 3 (define_vars -> empty .)
-    LBRACE          reduce using rule 3 (define_vars -> empty .)
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
+    expression                     shift and go to state 21
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
 
 state 9
 
-    (4) type -> INT .
+    (6) assignation -> ID EQUALTO . expression SEMICOLON
+    (7) expression -> . expression PLUS term
+    (8) expression -> . expression MINUS term
+    (9) expression -> . expression GREATERTHAN term
+    (10) expression -> . expression SMALLERTHAN term
+    (11) expression -> . expression EQUALTO term
+    (12) expression -> . term
+    (13) term -> . term TIMES factor
+    (14) term -> . term DIVIDE factor
+    (15) term -> . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    COLON           reduce using rule 4 (type -> INT .)
-    ID              reduce using rule 4 (type -> INT .)
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
+    expression                     shift and go to state 22
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
 
 state 10
 
-    (5) type -> FLOAT .
+    (19) factor -> ID .
 
-    COLON           reduce using rule 5 (type -> FLOAT .)
-    ID              reduce using rule 5 (type -> FLOAT .)
+    TIMES           reduce using rule 19 (factor -> ID .)
+    DIVIDE          reduce using rule 19 (factor -> ID .)
+    SEMICOLON       reduce using rule 19 (factor -> ID .)
+    PLUS            reduce using rule 19 (factor -> ID .)
+    MINUS           reduce using rule 19 (factor -> ID .)
+    GREATERTHAN     reduce using rule 19 (factor -> ID .)
+    SMALLERTHAN     reduce using rule 19 (factor -> ID .)
+    EQUALTO         reduce using rule 19 (factor -> ID .)
+    RPAREN          reduce using rule 19 (factor -> ID .)
 
 
 state 11
 
-    (1) program -> PROGRAM ID SEMICOLON VARS define_vars define_function . main
-    (11) main -> . MAIN LPAREN RPAREN LBRACE statute RBRACE
+    (3) assignation -> ID EQUAL expression . SEMICOLON
+    (7) expression -> expression . PLUS term
+    (8) expression -> expression . MINUS term
+    (9) expression -> expression . GREATERTHAN term
+    (10) expression -> expression . SMALLERTHAN term
+    (11) expression -> expression . EQUALTO term
 
-    MAIN            shift and go to state 15
+    SEMICOLON       shift and go to state 23
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATERTHAN     shift and go to state 26
+    SMALLERTHAN     shift and go to state 27
+    EQUALTO         shift and go to state 28
 
-    main                           shift and go to state 14
 
 state 12
 
-    (8) define_function -> FUNCTION . type ID parameters VARS define_vars LBRACE statute RBRACE
-    (9) define_function -> FUNCTION . type ID parameters VARS define_vars LBRACE statute RBRACE define_function
-    (4) type -> . INT
-    (5) type -> . FLOAT
+    (20) factor -> PLUS . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    INT             shift and go to state 9
-    FLOAT           shift and go to state 10
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
-    type                           shift and go to state 16
+    factor                         shift and go to state 29
 
 state 13
 
-    (2) define_vars -> type COLON . id_list SEMICOLON define_vars
-    (6) id_list -> . ID COMMA id_list
-    (7) id_list -> . ID
+    (12) expression -> term .
+    (13) term -> term . TIMES factor
+    (14) term -> term . DIVIDE factor
 
-    ID              shift and go to state 18
+    SEMICOLON       reduce using rule 12 (expression -> term .)
+    PLUS            reduce using rule 12 (expression -> term .)
+    MINUS           reduce using rule 12 (expression -> term .)
+    GREATERTHAN     reduce using rule 12 (expression -> term .)
+    SMALLERTHAN     reduce using rule 12 (expression -> term .)
+    EQUALTO         reduce using rule 12 (expression -> term .)
+    RPAREN          reduce using rule 12 (expression -> term .)
+    TIMES           shift and go to state 30
+    DIVIDE          shift and go to state 31
 
-    id_list                        shift and go to state 17
 
 state 14
 
-    (1) program -> PROGRAM ID SEMICOLON VARS define_vars define_function main .
+    (21) factor -> MINUS . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    $end            reduce using rule 1 (program -> PROGRAM ID SEMICOLON VARS define_vars define_function main .)
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
+    factor                         shift and go to state 32
 
 state 15
 
-    (11) main -> MAIN . LPAREN RPAREN LBRACE statute RBRACE
+    (15) term -> factor .
 
-    LPAREN          shift and go to state 19
+    TIMES           reduce using rule 15 (term -> factor .)
+    DIVIDE          reduce using rule 15 (term -> factor .)
+    SEMICOLON       reduce using rule 15 (term -> factor .)
+    PLUS            reduce using rule 15 (term -> factor .)
+    MINUS           reduce using rule 15 (term -> factor .)
+    GREATERTHAN     reduce using rule 15 (term -> factor .)
+    SMALLERTHAN     reduce using rule 15 (term -> factor .)
+    EQUALTO         reduce using rule 15 (term -> factor .)
+    RPAREN          reduce using rule 15 (term -> factor .)
 
 
 state 16
 
-    (8) define_function -> FUNCTION type . ID parameters VARS define_vars LBRACE statute RBRACE
-    (9) define_function -> FUNCTION type . ID parameters VARS define_vars LBRACE statute RBRACE define_function
+    (16) factor -> FLOAT .
 
-    ID              shift and go to state 20
+    TIMES           reduce using rule 16 (factor -> FLOAT .)
+    DIVIDE          reduce using rule 16 (factor -> FLOAT .)
+    SEMICOLON       reduce using rule 16 (factor -> FLOAT .)
+    PLUS            reduce using rule 16 (factor -> FLOAT .)
+    MINUS           reduce using rule 16 (factor -> FLOAT .)
+    GREATERTHAN     reduce using rule 16 (factor -> FLOAT .)
+    SMALLERTHAN     reduce using rule 16 (factor -> FLOAT .)
+    EQUALTO         reduce using rule 16 (factor -> FLOAT .)
+    RPAREN          reduce using rule 16 (factor -> FLOAT .)
 
 
 state 17
 
-    (2) define_vars -> type COLON id_list . SEMICOLON define_vars
+    (17) factor -> INT .
 
-    SEMICOLON       shift and go to state 21
+    TIMES           reduce using rule 17 (factor -> INT .)
+    DIVIDE          reduce using rule 17 (factor -> INT .)
+    SEMICOLON       reduce using rule 17 (factor -> INT .)
+    PLUS            reduce using rule 17 (factor -> INT .)
+    MINUS           reduce using rule 17 (factor -> INT .)
+    GREATERTHAN     reduce using rule 17 (factor -> INT .)
+    SMALLERTHAN     reduce using rule 17 (factor -> INT .)
+    EQUALTO         reduce using rule 17 (factor -> INT .)
+    RPAREN          reduce using rule 17 (factor -> INT .)
 
 
 state 18
 
-    (6) id_list -> ID . COMMA id_list
-    (7) id_list -> ID .
+    (18) factor -> STRING .
 
-    COMMA           shift and go to state 22
-    SEMICOLON       reduce using rule 7 (id_list -> ID .)
-    RPAREN          reduce using rule 7 (id_list -> ID .)
+    TIMES           reduce using rule 18 (factor -> STRING .)
+    DIVIDE          reduce using rule 18 (factor -> STRING .)
+    SEMICOLON       reduce using rule 18 (factor -> STRING .)
+    PLUS            reduce using rule 18 (factor -> STRING .)
+    MINUS           reduce using rule 18 (factor -> STRING .)
+    GREATERTHAN     reduce using rule 18 (factor -> STRING .)
+    SMALLERTHAN     reduce using rule 18 (factor -> STRING .)
+    EQUALTO         reduce using rule 18 (factor -> STRING .)
+    RPAREN          reduce using rule 18 (factor -> STRING .)
 
 
 state 19
 
-    (11) main -> MAIN LPAREN . RPAREN LBRACE statute RBRACE
+    (22) factor -> LPAREN . expression RPAREN
+    (7) expression -> . expression PLUS term
+    (8) expression -> . expression MINUS term
+    (9) expression -> . expression GREATERTHAN term
+    (10) expression -> . expression SMALLERTHAN term
+    (11) expression -> . expression EQUALTO term
+    (12) expression -> . term
+    (13) term -> . term TIMES factor
+    (14) term -> . term DIVIDE factor
+    (15) term -> . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    RPAREN          shift and go to state 23
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
+    expression                     shift and go to state 33
+    term                           shift and go to state 13
+    factor                         shift and go to state 15
 
 state 20
 
-    (8) define_function -> FUNCTION type ID . parameters VARS define_vars LBRACE statute RBRACE
-    (9) define_function -> FUNCTION type ID . parameters VARS define_vars LBRACE statute RBRACE define_function
-    (12) parameters -> . LPAREN type COLON id_list RPAREN
+    (4) assignation -> ID GREATERTHAN expression . SEMICOLON
+    (7) expression -> expression . PLUS term
+    (8) expression -> expression . MINUS term
+    (9) expression -> expression . GREATERTHAN term
+    (10) expression -> expression . SMALLERTHAN term
+    (11) expression -> expression . EQUALTO term
 
-    LPAREN          shift and go to state 25
+    SEMICOLON       shift and go to state 34
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATERTHAN     shift and go to state 26
+    SMALLERTHAN     shift and go to state 27
+    EQUALTO         shift and go to state 28
 
-    parameters                     shift and go to state 24
 
 state 21
 
-    (2) define_vars -> type COLON id_list SEMICOLON . define_vars
-    (2) define_vars -> . type COLON id_list SEMICOLON define_vars
-    (3) define_vars -> . empty
-    (4) type -> . INT
-    (5) type -> . FLOAT
-    (51) empty -> .
+    (5) assignation -> ID SMALLERTHAN expression . SEMICOLON
+    (7) expression -> expression . PLUS term
+    (8) expression -> expression . MINUS term
+    (9) expression -> expression . GREATERTHAN term
+    (10) expression -> expression . SMALLERTHAN term
+    (11) expression -> expression . EQUALTO term
 
-    INT             shift and go to state 9
-    FLOAT           shift and go to state 10
-    FUNCTION        reduce using rule 51 (empty -> .)
-    LBRACE          reduce using rule 51 (empty -> .)
+    SEMICOLON       shift and go to state 35
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATERTHAN     shift and go to state 26
+    SMALLERTHAN     shift and go to state 27
+    EQUALTO         shift and go to state 28
 
-    type                           shift and go to state 7
-    define_vars                    shift and go to state 26
-    empty                          shift and go to state 8
 
 state 22
 
-    (6) id_list -> ID COMMA . id_list
-    (6) id_list -> . ID COMMA id_list
-    (7) id_list -> . ID
+    (6) assignation -> ID EQUALTO expression . SEMICOLON
+    (7) expression -> expression . PLUS term
+    (8) expression -> expression . MINUS term
+    (9) expression -> expression . GREATERTHAN term
+    (10) expression -> expression . SMALLERTHAN term
+    (11) expression -> expression . EQUALTO term
 
-    ID              shift and go to state 18
+    SEMICOLON       shift and go to state 36
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATERTHAN     shift and go to state 26
+    SMALLERTHAN     shift and go to state 27
+    EQUALTO         shift and go to state 28
 
-    id_list                        shift and go to state 27
 
 state 23
 
-    (11) main -> MAIN LPAREN RPAREN . LBRACE statute RBRACE
+    (3) assignation -> ID EQUAL expression SEMICOLON .
 
-    LBRACE          shift and go to state 28
+    ID              reduce using rule 3 (assignation -> ID EQUAL expression SEMICOLON .)
+    $end            reduce using rule 3 (assignation -> ID EQUAL expression SEMICOLON .)
 
 
 state 24
 
-    (8) define_function -> FUNCTION type ID parameters . VARS define_vars LBRACE statute RBRACE
-    (9) define_function -> FUNCTION type ID parameters . VARS define_vars LBRACE statute RBRACE define_function
+    (7) expression -> expression PLUS . term
+    (13) term -> . term TIMES factor
+    (14) term -> . term DIVIDE factor
+    (15) term -> . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    VARS            shift and go to state 29
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
+    term                           shift and go to state 37
+    factor                         shift and go to state 15
 
 state 25
 
-    (12) parameters -> LPAREN . type COLON id_list RPAREN
-    (4) type -> . INT
-    (5) type -> . FLOAT
+    (8) expression -> expression MINUS . term
+    (13) term -> . term TIMES factor
+    (14) term -> . term DIVIDE factor
+    (15) term -> . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    INT             shift and go to state 9
-    FLOAT           shift and go to state 10
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
-    type                           shift and go to state 30
+    term                           shift and go to state 38
+    factor                         shift and go to state 15
 
 state 26
 
-    (2) define_vars -> type COLON id_list SEMICOLON define_vars .
+    (9) expression -> expression GREATERTHAN . term
+    (13) term -> . term TIMES factor
+    (14) term -> . term DIVIDE factor
+    (15) term -> . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    FUNCTION        reduce using rule 2 (define_vars -> type COLON id_list SEMICOLON define_vars .)
-    LBRACE          reduce using rule 2 (define_vars -> type COLON id_list SEMICOLON define_vars .)
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
+    term                           shift and go to state 39
+    factor                         shift and go to state 15
 
 state 27
 
-    (6) id_list -> ID COMMA id_list .
+    (10) expression -> expression SMALLERTHAN . term
+    (13) term -> . term TIMES factor
+    (14) term -> . term DIVIDE factor
+    (15) term -> . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    SEMICOLON       reduce using rule 6 (id_list -> ID COMMA id_list .)
-    RPAREN          reduce using rule 6 (id_list -> ID COMMA id_list .)
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
+    term                           shift and go to state 40
+    factor                         shift and go to state 15
 
 state 28
 
-    (11) main -> MAIN LPAREN RPAREN LBRACE . statute RBRACE
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
+    (11) expression -> expression EQUALTO . term
+    (13) term -> . term TIMES factor
+    (14) term -> . term DIVIDE factor
+    (15) term -> . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
-    statute                        shift and go to state 31
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
+    term                           shift and go to state 41
+    factor                         shift and go to state 15
 
 state 29
 
-    (8) define_function -> FUNCTION type ID parameters VARS . define_vars LBRACE statute RBRACE
-    (9) define_function -> FUNCTION type ID parameters VARS . define_vars LBRACE statute RBRACE define_function
-    (2) define_vars -> . type COLON id_list SEMICOLON define_vars
-    (3) define_vars -> . empty
-    (4) type -> . INT
-    (5) type -> . FLOAT
-    (51) empty -> .
+    (20) factor -> PLUS factor .
 
-    INT             shift and go to state 9
-    FLOAT           shift and go to state 10
-    LBRACE          reduce using rule 51 (empty -> .)
+    TIMES           reduce using rule 20 (factor -> PLUS factor .)
+    DIVIDE          reduce using rule 20 (factor -> PLUS factor .)
+    SEMICOLON       reduce using rule 20 (factor -> PLUS factor .)
+    PLUS            reduce using rule 20 (factor -> PLUS factor .)
+    MINUS           reduce using rule 20 (factor -> PLUS factor .)
+    GREATERTHAN     reduce using rule 20 (factor -> PLUS factor .)
+    SMALLERTHAN     reduce using rule 20 (factor -> PLUS factor .)
+    EQUALTO         reduce using rule 20 (factor -> PLUS factor .)
+    RPAREN          reduce using rule 20 (factor -> PLUS factor .)
 
-    type                           shift and go to state 7
-    define_vars                    shift and go to state 48
-    empty                          shift and go to state 8
 
 state 30
 
-    (12) parameters -> LPAREN type . COLON id_list RPAREN
+    (13) term -> term TIMES . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    COLON           shift and go to state 49
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
+    factor                         shift and go to state 42
 
 state 31
 
-    (11) main -> MAIN LPAREN RPAREN LBRACE statute . RBRACE
+    (14) term -> term DIVIDE . factor
+    (16) factor -> . FLOAT
+    (17) factor -> . INT
+    (18) factor -> . STRING
+    (19) factor -> . ID
+    (20) factor -> . PLUS factor
+    (21) factor -> . MINUS factor
+    (22) factor -> . LPAREN expression RPAREN
 
-    RBRACE          shift and go to state 50
+    FLOAT           shift and go to state 16
+    INT             shift and go to state 17
+    STRING          shift and go to state 18
+    ID              shift and go to state 10
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 14
+    LPAREN          shift and go to state 19
 
+    factor                         shift and go to state 43
 
 state 32
 
-    (13) statute -> assignation . statute
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
+    (21) factor -> MINUS factor .
 
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
+    TIMES           reduce using rule 21 (factor -> MINUS factor .)
+    DIVIDE          reduce using rule 21 (factor -> MINUS factor .)
+    SEMICOLON       reduce using rule 21 (factor -> MINUS factor .)
+    PLUS            reduce using rule 21 (factor -> MINUS factor .)
+    MINUS           reduce using rule 21 (factor -> MINUS factor .)
+    GREATERTHAN     reduce using rule 21 (factor -> MINUS factor .)
+    SMALLERTHAN     reduce using rule 21 (factor -> MINUS factor .)
+    EQUALTO         reduce using rule 21 (factor -> MINUS factor .)
+    RPAREN          reduce using rule 21 (factor -> MINUS factor .)
 
-    assignation                    shift and go to state 32
-    statute                        shift and go to state 51
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
 
 state 33
 
-    (14) statute -> decision . statute
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
+    (22) factor -> LPAREN expression . RPAREN
+    (7) expression -> expression . PLUS term
+    (8) expression -> expression . MINUS term
+    (9) expression -> expression . GREATERTHAN term
+    (10) expression -> expression . SMALLERTHAN term
+    (11) expression -> expression . EQUALTO term
 
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
+    RPAREN          shift and go to state 44
+    PLUS            shift and go to state 24
+    MINUS           shift and go to state 25
+    GREATERTHAN     shift and go to state 26
+    SMALLERTHAN     shift and go to state 27
+    EQUALTO         shift and go to state 28
 
-    decision                       shift and go to state 33
-    statute                        shift and go to state 52
-    assignation                    shift and go to state 32
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
 
 state 34
 
-    (15) statute -> condition . statute
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
+    (4) assignation -> ID GREATERTHAN expression SEMICOLON .
 
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
+    ID              reduce using rule 4 (assignation -> ID GREATERTHAN expression SEMICOLON .)
+    $end            reduce using rule 4 (assignation -> ID GREATERTHAN expression SEMICOLON .)
 
-    condition                      shift and go to state 34
-    statute                        shift and go to state 53
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
 
 state 35
 
-    (16) statute -> no_condition . statute
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
+    (5) assignation -> ID SMALLERTHAN expression SEMICOLON .
 
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
+    ID              reduce using rule 5 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
+    $end            reduce using rule 5 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
 
-    no_condition                   shift and go to state 35
-    statute                        shift and go to state 54
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
 
 state 36
 
-    (17) statute -> return . statute
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
+    (6) assignation -> ID EQUALTO expression SEMICOLON .
 
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
+    ID              reduce using rule 6 (assignation -> ID EQUALTO expression SEMICOLON .)
+    $end            reduce using rule 6 (assignation -> ID EQUALTO expression SEMICOLON .)
 
-    return                         shift and go to state 36
-    statute                        shift and go to state 55
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
 
 state 37
 
-    (18) statute -> define_write . statute
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
+    (7) expression -> expression PLUS term .
+    (13) term -> term . TIMES factor
+    (14) term -> term . DIVIDE factor
 
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
+    SEMICOLON       reduce using rule 7 (expression -> expression PLUS term .)
+    PLUS            reduce using rule 7 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 7 (expression -> expression PLUS term .)
+    GREATERTHAN     reduce using rule 7 (expression -> expression PLUS term .)
+    SMALLERTHAN     reduce using rule 7 (expression -> expression PLUS term .)
+    EQUALTO         reduce using rule 7 (expression -> expression PLUS term .)
+    RPAREN          reduce using rule 7 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 30
+    DIVIDE          shift and go to state 31
 
-    define_write                   shift and go to state 37
-    statute                        shift and go to state 56
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
 
 state 38
 
-    (19) statute -> read . statute
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
+    (8) expression -> expression MINUS term .
+    (13) term -> term . TIMES factor
+    (14) term -> term . DIVIDE factor
 
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
+    SEMICOLON       reduce using rule 8 (expression -> expression MINUS term .)
+    PLUS            reduce using rule 8 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 8 (expression -> expression MINUS term .)
+    GREATERTHAN     reduce using rule 8 (expression -> expression MINUS term .)
+    SMALLERTHAN     reduce using rule 8 (expression -> expression MINUS term .)
+    EQUALTO         reduce using rule 8 (expression -> expression MINUS term .)
+    RPAREN          reduce using rule 8 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 30
+    DIVIDE          shift and go to state 31
 
-    read                           shift and go to state 38
-    statute                        shift and go to state 57
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
 
 state 39
 
-    (20) statute -> function . statute
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
+    (9) expression -> expression GREATERTHAN term .
+    (13) term -> term . TIMES factor
+    (14) term -> term . DIVIDE factor
 
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
+    SEMICOLON       reduce using rule 9 (expression -> expression GREATERTHAN term .)
+    PLUS            reduce using rule 9 (expression -> expression GREATERTHAN term .)
+    MINUS           reduce using rule 9 (expression -> expression GREATERTHAN term .)
+    GREATERTHAN     reduce using rule 9 (expression -> expression GREATERTHAN term .)
+    SMALLERTHAN     reduce using rule 9 (expression -> expression GREATERTHAN term .)
+    EQUALTO         reduce using rule 9 (expression -> expression GREATERTHAN term .)
+    RPAREN          reduce using rule 9 (expression -> expression GREATERTHAN term .)
+    TIMES           shift and go to state 30
+    DIVIDE          shift and go to state 31
 
-    function                       shift and go to state 39
-    statute                        shift and go to state 58
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    empty                          shift and go to state 40
 
 state 40
 
-    (21) statute -> empty .
+    (10) expression -> expression SMALLERTHAN term .
+    (13) term -> term . TIMES factor
+    (14) term -> term . DIVIDE factor
 
-    RBRACE          reduce using rule 21 (statute -> empty .)
+    SEMICOLON       reduce using rule 10 (expression -> expression SMALLERTHAN term .)
+    PLUS            reduce using rule 10 (expression -> expression SMALLERTHAN term .)
+    MINUS           reduce using rule 10 (expression -> expression SMALLERTHAN term .)
+    GREATERTHAN     reduce using rule 10 (expression -> expression SMALLERTHAN term .)
+    SMALLERTHAN     reduce using rule 10 (expression -> expression SMALLERTHAN term .)
+    EQUALTO         reduce using rule 10 (expression -> expression SMALLERTHAN term .)
+    RPAREN          reduce using rule 10 (expression -> expression SMALLERTHAN term .)
+    TIMES           shift and go to state 30
+    DIVIDE          shift and go to state 31
 
 
 state 41
 
-    (22) assignation -> ID . EQUAL expression SEMICOLON
-    (23) assignation -> ID . GREATERTHAN expression SEMICOLON
-    (24) assignation -> ID . SMALLERTHAN expression SEMICOLON
-    (25) assignation -> ID . EQUALTO expression SEMICOLON
-    (10) function -> ID . LPAREN expression RPAREN SEMICOLON
+    (11) expression -> expression EQUALTO term .
+    (13) term -> term . TIMES factor
+    (14) term -> term . DIVIDE factor
 
-    EQUAL           shift and go to state 59
-    GREATERTHAN     shift and go to state 60
-    SMALLERTHAN     shift and go to state 61
-    EQUALTO         shift and go to state 62
-    LPAREN          shift and go to state 63
+    SEMICOLON       reduce using rule 11 (expression -> expression EQUALTO term .)
+    PLUS            reduce using rule 11 (expression -> expression EQUALTO term .)
+    MINUS           reduce using rule 11 (expression -> expression EQUALTO term .)
+    GREATERTHAN     reduce using rule 11 (expression -> expression EQUALTO term .)
+    SMALLERTHAN     reduce using rule 11 (expression -> expression EQUALTO term .)
+    EQUALTO         reduce using rule 11 (expression -> expression EQUALTO term .)
+    RPAREN          reduce using rule 11 (expression -> expression EQUALTO term .)
+    TIMES           shift and go to state 30
+    DIVIDE          shift and go to state 31
 
 
 state 42
 
-    (26) decision -> IF . LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> IF . LPAREN expression RPAREN THEN LBRACE statute RBRACE
+    (13) term -> term TIMES factor .
 
-    LPAREN          shift and go to state 64
+    TIMES           reduce using rule 13 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 13 (term -> term TIMES factor .)
+    SEMICOLON       reduce using rule 13 (term -> term TIMES factor .)
+    PLUS            reduce using rule 13 (term -> term TIMES factor .)
+    MINUS           reduce using rule 13 (term -> term TIMES factor .)
+    GREATERTHAN     reduce using rule 13 (term -> term TIMES factor .)
+    SMALLERTHAN     reduce using rule 13 (term -> term TIMES factor .)
+    EQUALTO         reduce using rule 13 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 13 (term -> term TIMES factor .)
 
 
 state 43
 
-    (28) condition -> WHILE . LPAREN expression RPAREN DO LBRACE statute RBRACE
+    (14) term -> term DIVIDE factor .
 
-    LPAREN          shift and go to state 65
+    TIMES           reduce using rule 14 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 14 (term -> term DIVIDE factor .)
+    SEMICOLON       reduce using rule 14 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 14 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 14 (term -> term DIVIDE factor .)
+    GREATERTHAN     reduce using rule 14 (term -> term DIVIDE factor .)
+    SMALLERTHAN     reduce using rule 14 (term -> term DIVIDE factor .)
+    EQUALTO         reduce using rule 14 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 14 (term -> term DIVIDE factor .)
 
 
 state 44
 
-    (29) no_condition -> FOR . ID EQUAL expression TO expression DO LBRACE statute RBRACE
-
-    ID              shift and go to state 66
-
-
-state 45
-
-    (30) return -> RETURN . LPAREN expression RPAREN SEMICOLON
-
-    LPAREN          shift and go to state 67
-
-
-state 46
-
-    (31) define_write -> WRITE . LPAREN write RPAREN SEMICOLON
-
-    LPAREN          shift and go to state 68
-
-
-state 47
-
-    (36) read -> READ . LPAREN id_list RPAREN SEMICOLON
-
-    LPAREN          shift and go to state 69
-
-
-state 48
-
-    (8) define_function -> FUNCTION type ID parameters VARS define_vars . LBRACE statute RBRACE
-    (9) define_function -> FUNCTION type ID parameters VARS define_vars . LBRACE statute RBRACE define_function
-
-    LBRACE          shift and go to state 70
-
-
-state 49
-
-    (12) parameters -> LPAREN type COLON . id_list RPAREN
-    (6) id_list -> . ID COMMA id_list
-    (7) id_list -> . ID
-
-    ID              shift and go to state 18
-
-    id_list                        shift and go to state 71
-
-state 50
-
-    (11) main -> MAIN LPAREN RPAREN LBRACE statute RBRACE .
-
-    $end            reduce using rule 11 (main -> MAIN LPAREN RPAREN LBRACE statute RBRACE .)
-
-
-state 51
-
-    (13) statute -> assignation statute .
-
-    RBRACE          reduce using rule 13 (statute -> assignation statute .)
-
-
-state 52
-
-    (14) statute -> decision statute .
-
-    RBRACE          reduce using rule 14 (statute -> decision statute .)
-
-
-state 53
-
-    (15) statute -> condition statute .
-
-    RBRACE          reduce using rule 15 (statute -> condition statute .)
-
-
-state 54
-
-    (16) statute -> no_condition statute .
-
-    RBRACE          reduce using rule 16 (statute -> no_condition statute .)
-
-
-state 55
-
-    (17) statute -> return statute .
-
-    RBRACE          reduce using rule 17 (statute -> return statute .)
-
-
-state 56
-
-    (18) statute -> define_write statute .
-
-    RBRACE          reduce using rule 18 (statute -> define_write statute .)
-
-
-state 57
-
-    (19) statute -> read statute .
-
-    RBRACE          reduce using rule 19 (statute -> read statute .)
-
-
-state 58
-
-    (20) statute -> function statute .
-
-    RBRACE          reduce using rule 20 (statute -> function statute .)
-
-
-state 59
-
-    (22) assignation -> ID EQUAL . expression SEMICOLON
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 73
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 60
-
-    (23) assignation -> ID GREATERTHAN . expression SEMICOLON
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 80
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 61
-
-    (24) assignation -> ID SMALLERTHAN . expression SEMICOLON
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 81
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 62
-
-    (25) assignation -> ID EQUALTO . expression SEMICOLON
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 82
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 63
-
-    (10) function -> ID LPAREN . expression RPAREN SEMICOLON
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 83
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 64
-
-    (26) decision -> IF LPAREN . expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> IF LPAREN . expression RPAREN THEN LBRACE statute RBRACE
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 84
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 65
-
-    (28) condition -> WHILE LPAREN . expression RPAREN DO LBRACE statute RBRACE
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 85
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 66
-
-    (29) no_condition -> FOR ID . EQUAL expression TO expression DO LBRACE statute RBRACE
-
-    EQUAL           shift and go to state 86
-
-
-state 67
-
-    (30) return -> RETURN LPAREN . expression RPAREN SEMICOLON
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 87
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 68
-
-    (31) define_write -> WRITE LPAREN . write RPAREN SEMICOLON
-    (32) write -> . STRING
-    (33) write -> . expression
-    (34) write -> . STRING COMMA write
-    (35) write -> . expression COMMA write
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    STRING          shift and go to state 89
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    write                          shift and go to state 88
-    expression                     shift and go to state 90
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 69
-
-    (36) read -> READ LPAREN . id_list RPAREN SEMICOLON
-    (6) id_list -> . ID COMMA id_list
-    (7) id_list -> . ID
-
-    ID              shift and go to state 18
-
-    id_list                        shift and go to state 91
-
-state 70
-
-    (8) define_function -> FUNCTION type ID parameters VARS define_vars LBRACE . statute RBRACE
-    (9) define_function -> FUNCTION type ID parameters VARS define_vars LBRACE . statute RBRACE define_function
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
-
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
-
-    statute                        shift and go to state 92
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
-
-state 71
-
-    (12) parameters -> LPAREN type COLON id_list . RPAREN
-
-    RPAREN          shift and go to state 93
-
-
-state 72
-
-    (47) factor -> ID .
-
-    TIMES           reduce using rule 47 (factor -> ID .)
-    DIVIDE          reduce using rule 47 (factor -> ID .)
-    SEMICOLON       reduce using rule 47 (factor -> ID .)
-    PLUS            reduce using rule 47 (factor -> ID .)
-    MINUS           reduce using rule 47 (factor -> ID .)
-    GREATERTHAN     reduce using rule 47 (factor -> ID .)
-    SMALLERTHAN     reduce using rule 47 (factor -> ID .)
-    EQUALTO         reduce using rule 47 (factor -> ID .)
-    RPAREN          reduce using rule 47 (factor -> ID .)
-    COMMA           reduce using rule 47 (factor -> ID .)
-    TO              reduce using rule 47 (factor -> ID .)
-    DO              reduce using rule 47 (factor -> ID .)
-
-
-state 73
-
-    (22) assignation -> ID EQUAL expression . SEMICOLON
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    SEMICOLON       shift and go to state 94
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 74
-
-    (48) factor -> PLUS . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    factor                         shift and go to state 100
-
-state 75
-
-    (42) expression -> term .
-    (43) term -> term . TIMES factor
-    (44) term -> term . DIVIDE factor
-
-    SEMICOLON       reduce using rule 42 (expression -> term .)
-    PLUS            reduce using rule 42 (expression -> term .)
-    MINUS           reduce using rule 42 (expression -> term .)
-    GREATERTHAN     reduce using rule 42 (expression -> term .)
-    SMALLERTHAN     reduce using rule 42 (expression -> term .)
-    EQUALTO         reduce using rule 42 (expression -> term .)
-    RPAREN          reduce using rule 42 (expression -> term .)
-    COMMA           reduce using rule 42 (expression -> term .)
-    TO              reduce using rule 42 (expression -> term .)
-    DO              reduce using rule 42 (expression -> term .)
-    TIMES           shift and go to state 101
-    DIVIDE          shift and go to state 102
-
-
-state 76
-
-    (49) factor -> MINUS . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    factor                         shift and go to state 103
-
-state 77
-
-    (45) term -> factor .
-
-    TIMES           reduce using rule 45 (term -> factor .)
-    DIVIDE          reduce using rule 45 (term -> factor .)
-    SEMICOLON       reduce using rule 45 (term -> factor .)
-    PLUS            reduce using rule 45 (term -> factor .)
-    MINUS           reduce using rule 45 (term -> factor .)
-    GREATERTHAN     reduce using rule 45 (term -> factor .)
-    SMALLERTHAN     reduce using rule 45 (term -> factor .)
-    EQUALTO         reduce using rule 45 (term -> factor .)
-    RPAREN          reduce using rule 45 (term -> factor .)
-    COMMA           reduce using rule 45 (term -> factor .)
-    TO              reduce using rule 45 (term -> factor .)
-    DO              reduce using rule 45 (term -> factor .)
-
-
-state 78
-
-    (46) factor -> NUMBER .
-
-    TIMES           reduce using rule 46 (factor -> NUMBER .)
-    DIVIDE          reduce using rule 46 (factor -> NUMBER .)
-    SEMICOLON       reduce using rule 46 (factor -> NUMBER .)
-    PLUS            reduce using rule 46 (factor -> NUMBER .)
-    MINUS           reduce using rule 46 (factor -> NUMBER .)
-    GREATERTHAN     reduce using rule 46 (factor -> NUMBER .)
-    SMALLERTHAN     reduce using rule 46 (factor -> NUMBER .)
-    EQUALTO         reduce using rule 46 (factor -> NUMBER .)
-    RPAREN          reduce using rule 46 (factor -> NUMBER .)
-    COMMA           reduce using rule 46 (factor -> NUMBER .)
-    TO              reduce using rule 46 (factor -> NUMBER .)
-    DO              reduce using rule 46 (factor -> NUMBER .)
-
-
-state 79
-
-    (50) factor -> LPAREN . expression RPAREN
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 104
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 80
-
-    (23) assignation -> ID GREATERTHAN expression . SEMICOLON
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    SEMICOLON       shift and go to state 105
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 81
-
-    (24) assignation -> ID SMALLERTHAN expression . SEMICOLON
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    SEMICOLON       shift and go to state 106
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 82
-
-    (25) assignation -> ID EQUALTO expression . SEMICOLON
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    SEMICOLON       shift and go to state 107
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 83
-
-    (10) function -> ID LPAREN expression . RPAREN SEMICOLON
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    RPAREN          shift and go to state 108
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 84
-
-    (26) decision -> IF LPAREN expression . RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> IF LPAREN expression . RPAREN THEN LBRACE statute RBRACE
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    RPAREN          shift and go to state 109
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 85
-
-    (28) condition -> WHILE LPAREN expression . RPAREN DO LBRACE statute RBRACE
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    RPAREN          shift and go to state 110
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 86
-
-    (29) no_condition -> FOR ID EQUAL . expression TO expression DO LBRACE statute RBRACE
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 111
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 87
-
-    (30) return -> RETURN LPAREN expression . RPAREN SEMICOLON
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    RPAREN          shift and go to state 112
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 88
-
-    (31) define_write -> WRITE LPAREN write . RPAREN SEMICOLON
-
-    RPAREN          shift and go to state 113
-
-
-state 89
-
-    (32) write -> STRING .
-    (34) write -> STRING . COMMA write
-
-    RPAREN          reduce using rule 32 (write -> STRING .)
-    COMMA           shift and go to state 114
-
-
-state 90
-
-    (33) write -> expression .
-    (35) write -> expression . COMMA write
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    RPAREN          reduce using rule 33 (write -> expression .)
-    COMMA           shift and go to state 115
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 91
-
-    (36) read -> READ LPAREN id_list . RPAREN SEMICOLON
-
-    RPAREN          shift and go to state 116
-
-
-state 92
-
-    (8) define_function -> FUNCTION type ID parameters VARS define_vars LBRACE statute . RBRACE
-    (9) define_function -> FUNCTION type ID parameters VARS define_vars LBRACE statute . RBRACE define_function
-
-    RBRACE          shift and go to state 117
-
-
-state 93
-
-    (12) parameters -> LPAREN type COLON id_list RPAREN .
-
-    VARS            reduce using rule 12 (parameters -> LPAREN type COLON id_list RPAREN .)
-
-
-state 94
-
-    (22) assignation -> ID EQUAL expression SEMICOLON .
-
-    ID              reduce using rule 22 (assignation -> ID EQUAL expression SEMICOLON .)
-    IF              reduce using rule 22 (assignation -> ID EQUAL expression SEMICOLON .)
-    WHILE           reduce using rule 22 (assignation -> ID EQUAL expression SEMICOLON .)
-    FOR             reduce using rule 22 (assignation -> ID EQUAL expression SEMICOLON .)
-    RETURN          reduce using rule 22 (assignation -> ID EQUAL expression SEMICOLON .)
-    WRITE           reduce using rule 22 (assignation -> ID EQUAL expression SEMICOLON .)
-    READ            reduce using rule 22 (assignation -> ID EQUAL expression SEMICOLON .)
-    RBRACE          reduce using rule 22 (assignation -> ID EQUAL expression SEMICOLON .)
-
-
-state 95
-
-    (37) expression -> expression PLUS . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    term                           shift and go to state 118
-    factor                         shift and go to state 77
-
-state 96
-
-    (38) expression -> expression MINUS . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    term                           shift and go to state 119
-    factor                         shift and go to state 77
-
-state 97
-
-    (39) expression -> expression GREATERTHAN . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    term                           shift and go to state 120
-    factor                         shift and go to state 77
-
-state 98
-
-    (40) expression -> expression SMALLERTHAN . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    term                           shift and go to state 121
-    factor                         shift and go to state 77
-
-state 99
-
-    (41) expression -> expression EQUALTO . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    term                           shift and go to state 122
-    factor                         shift and go to state 77
-
-state 100
-
-    (48) factor -> PLUS factor .
-
-    TIMES           reduce using rule 48 (factor -> PLUS factor .)
-    DIVIDE          reduce using rule 48 (factor -> PLUS factor .)
-    SEMICOLON       reduce using rule 48 (factor -> PLUS factor .)
-    PLUS            reduce using rule 48 (factor -> PLUS factor .)
-    MINUS           reduce using rule 48 (factor -> PLUS factor .)
-    GREATERTHAN     reduce using rule 48 (factor -> PLUS factor .)
-    SMALLERTHAN     reduce using rule 48 (factor -> PLUS factor .)
-    EQUALTO         reduce using rule 48 (factor -> PLUS factor .)
-    RPAREN          reduce using rule 48 (factor -> PLUS factor .)
-    COMMA           reduce using rule 48 (factor -> PLUS factor .)
-    TO              reduce using rule 48 (factor -> PLUS factor .)
-    DO              reduce using rule 48 (factor -> PLUS factor .)
-
-
-state 101
-
-    (43) term -> term TIMES . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    factor                         shift and go to state 123
-
-state 102
-
-    (44) term -> term DIVIDE . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    factor                         shift and go to state 124
-
-state 103
-
-    (49) factor -> MINUS factor .
-
-    TIMES           reduce using rule 49 (factor -> MINUS factor .)
-    DIVIDE          reduce using rule 49 (factor -> MINUS factor .)
-    SEMICOLON       reduce using rule 49 (factor -> MINUS factor .)
-    PLUS            reduce using rule 49 (factor -> MINUS factor .)
-    MINUS           reduce using rule 49 (factor -> MINUS factor .)
-    GREATERTHAN     reduce using rule 49 (factor -> MINUS factor .)
-    SMALLERTHAN     reduce using rule 49 (factor -> MINUS factor .)
-    EQUALTO         reduce using rule 49 (factor -> MINUS factor .)
-    RPAREN          reduce using rule 49 (factor -> MINUS factor .)
-    COMMA           reduce using rule 49 (factor -> MINUS factor .)
-    TO              reduce using rule 49 (factor -> MINUS factor .)
-    DO              reduce using rule 49 (factor -> MINUS factor .)
-
-
-state 104
-
-    (50) factor -> LPAREN expression . RPAREN
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    RPAREN          shift and go to state 125
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 105
-
-    (23) assignation -> ID GREATERTHAN expression SEMICOLON .
-
-    ID              reduce using rule 23 (assignation -> ID GREATERTHAN expression SEMICOLON .)
-    IF              reduce using rule 23 (assignation -> ID GREATERTHAN expression SEMICOLON .)
-    WHILE           reduce using rule 23 (assignation -> ID GREATERTHAN expression SEMICOLON .)
-    FOR             reduce using rule 23 (assignation -> ID GREATERTHAN expression SEMICOLON .)
-    RETURN          reduce using rule 23 (assignation -> ID GREATERTHAN expression SEMICOLON .)
-    WRITE           reduce using rule 23 (assignation -> ID GREATERTHAN expression SEMICOLON .)
-    READ            reduce using rule 23 (assignation -> ID GREATERTHAN expression SEMICOLON .)
-    RBRACE          reduce using rule 23 (assignation -> ID GREATERTHAN expression SEMICOLON .)
-
-
-state 106
-
-    (24) assignation -> ID SMALLERTHAN expression SEMICOLON .
-
-    ID              reduce using rule 24 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
-    IF              reduce using rule 24 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
-    WHILE           reduce using rule 24 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
-    FOR             reduce using rule 24 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
-    RETURN          reduce using rule 24 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
-    WRITE           reduce using rule 24 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
-    READ            reduce using rule 24 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
-    RBRACE          reduce using rule 24 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
-
-
-state 107
-
-    (25) assignation -> ID EQUALTO expression SEMICOLON .
-
-    ID              reduce using rule 25 (assignation -> ID EQUALTO expression SEMICOLON .)
-    IF              reduce using rule 25 (assignation -> ID EQUALTO expression SEMICOLON .)
-    WHILE           reduce using rule 25 (assignation -> ID EQUALTO expression SEMICOLON .)
-    FOR             reduce using rule 25 (assignation -> ID EQUALTO expression SEMICOLON .)
-    RETURN          reduce using rule 25 (assignation -> ID EQUALTO expression SEMICOLON .)
-    WRITE           reduce using rule 25 (assignation -> ID EQUALTO expression SEMICOLON .)
-    READ            reduce using rule 25 (assignation -> ID EQUALTO expression SEMICOLON .)
-    RBRACE          reduce using rule 25 (assignation -> ID EQUALTO expression SEMICOLON .)
-
-
-state 108
-
-    (10) function -> ID LPAREN expression RPAREN . SEMICOLON
-
-    SEMICOLON       shift and go to state 126
-
-
-state 109
-
-    (26) decision -> IF LPAREN expression RPAREN . THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> IF LPAREN expression RPAREN . THEN LBRACE statute RBRACE
-
-    THEN            shift and go to state 127
-
-
-state 110
-
-    (28) condition -> WHILE LPAREN expression RPAREN . DO LBRACE statute RBRACE
-
-    DO              shift and go to state 128
-
-
-state 111
-
-    (29) no_condition -> FOR ID EQUAL expression . TO expression DO LBRACE statute RBRACE
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    TO              shift and go to state 129
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 112
-
-    (30) return -> RETURN LPAREN expression RPAREN . SEMICOLON
-
-    SEMICOLON       shift and go to state 130
-
-
-state 113
-
-    (31) define_write -> WRITE LPAREN write RPAREN . SEMICOLON
-
-    SEMICOLON       shift and go to state 131
-
-
-state 114
-
-    (34) write -> STRING COMMA . write
-    (32) write -> . STRING
-    (33) write -> . expression
-    (34) write -> . STRING COMMA write
-    (35) write -> . expression COMMA write
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    STRING          shift and go to state 89
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    write                          shift and go to state 132
-    expression                     shift and go to state 90
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 115
-
-    (35) write -> expression COMMA . write
-    (32) write -> . STRING
-    (33) write -> . expression
-    (34) write -> . STRING COMMA write
-    (35) write -> . expression COMMA write
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    STRING          shift and go to state 89
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 90
-    write                          shift and go to state 133
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 116
-
-    (36) read -> READ LPAREN id_list RPAREN . SEMICOLON
-
-    SEMICOLON       shift and go to state 134
-
-
-state 117
-
-    (8) define_function -> FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE .
-    (9) define_function -> FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE . define_function
-    (8) define_function -> . FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE
-    (9) define_function -> . FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE define_function
-
-    MAIN            reduce using rule 8 (define_function -> FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE .)
-    FUNCTION        shift and go to state 12
-
-    define_function                shift and go to state 135
-
-state 118
-
-    (37) expression -> expression PLUS term .
-    (43) term -> term . TIMES factor
-    (44) term -> term . DIVIDE factor
-
-    SEMICOLON       reduce using rule 37 (expression -> expression PLUS term .)
-    PLUS            reduce using rule 37 (expression -> expression PLUS term .)
-    MINUS           reduce using rule 37 (expression -> expression PLUS term .)
-    GREATERTHAN     reduce using rule 37 (expression -> expression PLUS term .)
-    SMALLERTHAN     reduce using rule 37 (expression -> expression PLUS term .)
-    EQUALTO         reduce using rule 37 (expression -> expression PLUS term .)
-    RPAREN          reduce using rule 37 (expression -> expression PLUS term .)
-    COMMA           reduce using rule 37 (expression -> expression PLUS term .)
-    TO              reduce using rule 37 (expression -> expression PLUS term .)
-    DO              reduce using rule 37 (expression -> expression PLUS term .)
-    TIMES           shift and go to state 101
-    DIVIDE          shift and go to state 102
-
-
-state 119
-
-    (38) expression -> expression MINUS term .
-    (43) term -> term . TIMES factor
-    (44) term -> term . DIVIDE factor
-
-    SEMICOLON       reduce using rule 38 (expression -> expression MINUS term .)
-    PLUS            reduce using rule 38 (expression -> expression MINUS term .)
-    MINUS           reduce using rule 38 (expression -> expression MINUS term .)
-    GREATERTHAN     reduce using rule 38 (expression -> expression MINUS term .)
-    SMALLERTHAN     reduce using rule 38 (expression -> expression MINUS term .)
-    EQUALTO         reduce using rule 38 (expression -> expression MINUS term .)
-    RPAREN          reduce using rule 38 (expression -> expression MINUS term .)
-    COMMA           reduce using rule 38 (expression -> expression MINUS term .)
-    TO              reduce using rule 38 (expression -> expression MINUS term .)
-    DO              reduce using rule 38 (expression -> expression MINUS term .)
-    TIMES           shift and go to state 101
-    DIVIDE          shift and go to state 102
-
-
-state 120
-
-    (39) expression -> expression GREATERTHAN term .
-    (43) term -> term . TIMES factor
-    (44) term -> term . DIVIDE factor
-
-    SEMICOLON       reduce using rule 39 (expression -> expression GREATERTHAN term .)
-    PLUS            reduce using rule 39 (expression -> expression GREATERTHAN term .)
-    MINUS           reduce using rule 39 (expression -> expression GREATERTHAN term .)
-    GREATERTHAN     reduce using rule 39 (expression -> expression GREATERTHAN term .)
-    SMALLERTHAN     reduce using rule 39 (expression -> expression GREATERTHAN term .)
-    EQUALTO         reduce using rule 39 (expression -> expression GREATERTHAN term .)
-    RPAREN          reduce using rule 39 (expression -> expression GREATERTHAN term .)
-    COMMA           reduce using rule 39 (expression -> expression GREATERTHAN term .)
-    TO              reduce using rule 39 (expression -> expression GREATERTHAN term .)
-    DO              reduce using rule 39 (expression -> expression GREATERTHAN term .)
-    TIMES           shift and go to state 101
-    DIVIDE          shift and go to state 102
-
-
-state 121
-
-    (40) expression -> expression SMALLERTHAN term .
-    (43) term -> term . TIMES factor
-    (44) term -> term . DIVIDE factor
-
-    SEMICOLON       reduce using rule 40 (expression -> expression SMALLERTHAN term .)
-    PLUS            reduce using rule 40 (expression -> expression SMALLERTHAN term .)
-    MINUS           reduce using rule 40 (expression -> expression SMALLERTHAN term .)
-    GREATERTHAN     reduce using rule 40 (expression -> expression SMALLERTHAN term .)
-    SMALLERTHAN     reduce using rule 40 (expression -> expression SMALLERTHAN term .)
-    EQUALTO         reduce using rule 40 (expression -> expression SMALLERTHAN term .)
-    RPAREN          reduce using rule 40 (expression -> expression SMALLERTHAN term .)
-    COMMA           reduce using rule 40 (expression -> expression SMALLERTHAN term .)
-    TO              reduce using rule 40 (expression -> expression SMALLERTHAN term .)
-    DO              reduce using rule 40 (expression -> expression SMALLERTHAN term .)
-    TIMES           shift and go to state 101
-    DIVIDE          shift and go to state 102
-
-
-state 122
-
-    (41) expression -> expression EQUALTO term .
-    (43) term -> term . TIMES factor
-    (44) term -> term . DIVIDE factor
-
-    SEMICOLON       reduce using rule 41 (expression -> expression EQUALTO term .)
-    PLUS            reduce using rule 41 (expression -> expression EQUALTO term .)
-    MINUS           reduce using rule 41 (expression -> expression EQUALTO term .)
-    GREATERTHAN     reduce using rule 41 (expression -> expression EQUALTO term .)
-    SMALLERTHAN     reduce using rule 41 (expression -> expression EQUALTO term .)
-    EQUALTO         reduce using rule 41 (expression -> expression EQUALTO term .)
-    RPAREN          reduce using rule 41 (expression -> expression EQUALTO term .)
-    COMMA           reduce using rule 41 (expression -> expression EQUALTO term .)
-    TO              reduce using rule 41 (expression -> expression EQUALTO term .)
-    DO              reduce using rule 41 (expression -> expression EQUALTO term .)
-    TIMES           shift and go to state 101
-    DIVIDE          shift and go to state 102
-
-
-state 123
-
-    (43) term -> term TIMES factor .
-
-    TIMES           reduce using rule 43 (term -> term TIMES factor .)
-    DIVIDE          reduce using rule 43 (term -> term TIMES factor .)
-    SEMICOLON       reduce using rule 43 (term -> term TIMES factor .)
-    PLUS            reduce using rule 43 (term -> term TIMES factor .)
-    MINUS           reduce using rule 43 (term -> term TIMES factor .)
-    GREATERTHAN     reduce using rule 43 (term -> term TIMES factor .)
-    SMALLERTHAN     reduce using rule 43 (term -> term TIMES factor .)
-    EQUALTO         reduce using rule 43 (term -> term TIMES factor .)
-    RPAREN          reduce using rule 43 (term -> term TIMES factor .)
-    COMMA           reduce using rule 43 (term -> term TIMES factor .)
-    TO              reduce using rule 43 (term -> term TIMES factor .)
-    DO              reduce using rule 43 (term -> term TIMES factor .)
-
-
-state 124
-
-    (44) term -> term DIVIDE factor .
-
-    TIMES           reduce using rule 44 (term -> term DIVIDE factor .)
-    DIVIDE          reduce using rule 44 (term -> term DIVIDE factor .)
-    SEMICOLON       reduce using rule 44 (term -> term DIVIDE factor .)
-    PLUS            reduce using rule 44 (term -> term DIVIDE factor .)
-    MINUS           reduce using rule 44 (term -> term DIVIDE factor .)
-    GREATERTHAN     reduce using rule 44 (term -> term DIVIDE factor .)
-    SMALLERTHAN     reduce using rule 44 (term -> term DIVIDE factor .)
-    EQUALTO         reduce using rule 44 (term -> term DIVIDE factor .)
-    RPAREN          reduce using rule 44 (term -> term DIVIDE factor .)
-    COMMA           reduce using rule 44 (term -> term DIVIDE factor .)
-    TO              reduce using rule 44 (term -> term DIVIDE factor .)
-    DO              reduce using rule 44 (term -> term DIVIDE factor .)
-
-
-state 125
-
-    (50) factor -> LPAREN expression RPAREN .
-
-    TIMES           reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    SEMICOLON       reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    PLUS            reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    GREATERTHAN     reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    SMALLERTHAN     reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    EQUALTO         reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    COMMA           reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    TO              reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-    DO              reduce using rule 50 (factor -> LPAREN expression RPAREN .)
-
-
-state 126
-
-    (10) function -> ID LPAREN expression RPAREN SEMICOLON .
-
-    ID              reduce using rule 10 (function -> ID LPAREN expression RPAREN SEMICOLON .)
-    IF              reduce using rule 10 (function -> ID LPAREN expression RPAREN SEMICOLON .)
-    WHILE           reduce using rule 10 (function -> ID LPAREN expression RPAREN SEMICOLON .)
-    FOR             reduce using rule 10 (function -> ID LPAREN expression RPAREN SEMICOLON .)
-    RETURN          reduce using rule 10 (function -> ID LPAREN expression RPAREN SEMICOLON .)
-    WRITE           reduce using rule 10 (function -> ID LPAREN expression RPAREN SEMICOLON .)
-    READ            reduce using rule 10 (function -> ID LPAREN expression RPAREN SEMICOLON .)
-    RBRACE          reduce using rule 10 (function -> ID LPAREN expression RPAREN SEMICOLON .)
-
-
-state 127
-
-    (26) decision -> IF LPAREN expression RPAREN THEN . LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> IF LPAREN expression RPAREN THEN . LBRACE statute RBRACE
-
-    LBRACE          shift and go to state 136
-
-
-state 128
-
-    (28) condition -> WHILE LPAREN expression RPAREN DO . LBRACE statute RBRACE
-
-    LBRACE          shift and go to state 137
-
-
-state 129
-
-    (29) no_condition -> FOR ID EQUAL expression TO . expression DO LBRACE statute RBRACE
-    (37) expression -> . expression PLUS term
-    (38) expression -> . expression MINUS term
-    (39) expression -> . expression GREATERTHAN term
-    (40) expression -> . expression SMALLERTHAN term
-    (41) expression -> . expression EQUALTO term
-    (42) expression -> . term
-    (43) term -> . term TIMES factor
-    (44) term -> . term DIVIDE factor
-    (45) term -> . factor
-    (46) factor -> . NUMBER
-    (47) factor -> . ID
-    (48) factor -> . PLUS factor
-    (49) factor -> . MINUS factor
-    (50) factor -> . LPAREN expression RPAREN
-
-    NUMBER          shift and go to state 78
-    ID              shift and go to state 72
-    PLUS            shift and go to state 74
-    MINUS           shift and go to state 76
-    LPAREN          shift and go to state 79
-
-    expression                     shift and go to state 138
-    term                           shift and go to state 75
-    factor                         shift and go to state 77
-
-state 130
-
-    (30) return -> RETURN LPAREN expression RPAREN SEMICOLON .
-
-    ID              reduce using rule 30 (return -> RETURN LPAREN expression RPAREN SEMICOLON .)
-    IF              reduce using rule 30 (return -> RETURN LPAREN expression RPAREN SEMICOLON .)
-    WHILE           reduce using rule 30 (return -> RETURN LPAREN expression RPAREN SEMICOLON .)
-    FOR             reduce using rule 30 (return -> RETURN LPAREN expression RPAREN SEMICOLON .)
-    RETURN          reduce using rule 30 (return -> RETURN LPAREN expression RPAREN SEMICOLON .)
-    WRITE           reduce using rule 30 (return -> RETURN LPAREN expression RPAREN SEMICOLON .)
-    READ            reduce using rule 30 (return -> RETURN LPAREN expression RPAREN SEMICOLON .)
-    RBRACE          reduce using rule 30 (return -> RETURN LPAREN expression RPAREN SEMICOLON .)
-
-
-state 131
-
-    (31) define_write -> WRITE LPAREN write RPAREN SEMICOLON .
-
-    ID              reduce using rule 31 (define_write -> WRITE LPAREN write RPAREN SEMICOLON .)
-    IF              reduce using rule 31 (define_write -> WRITE LPAREN write RPAREN SEMICOLON .)
-    WHILE           reduce using rule 31 (define_write -> WRITE LPAREN write RPAREN SEMICOLON .)
-    FOR             reduce using rule 31 (define_write -> WRITE LPAREN write RPAREN SEMICOLON .)
-    RETURN          reduce using rule 31 (define_write -> WRITE LPAREN write RPAREN SEMICOLON .)
-    WRITE           reduce using rule 31 (define_write -> WRITE LPAREN write RPAREN SEMICOLON .)
-    READ            reduce using rule 31 (define_write -> WRITE LPAREN write RPAREN SEMICOLON .)
-    RBRACE          reduce using rule 31 (define_write -> WRITE LPAREN write RPAREN SEMICOLON .)
-
-
-state 132
-
-    (34) write -> STRING COMMA write .
-
-    RPAREN          reduce using rule 34 (write -> STRING COMMA write .)
-
-
-state 133
-
-    (35) write -> expression COMMA write .
-
-    RPAREN          reduce using rule 35 (write -> expression COMMA write .)
-
-
-state 134
-
-    (36) read -> READ LPAREN id_list RPAREN SEMICOLON .
-
-    ID              reduce using rule 36 (read -> READ LPAREN id_list RPAREN SEMICOLON .)
-    IF              reduce using rule 36 (read -> READ LPAREN id_list RPAREN SEMICOLON .)
-    WHILE           reduce using rule 36 (read -> READ LPAREN id_list RPAREN SEMICOLON .)
-    FOR             reduce using rule 36 (read -> READ LPAREN id_list RPAREN SEMICOLON .)
-    RETURN          reduce using rule 36 (read -> READ LPAREN id_list RPAREN SEMICOLON .)
-    WRITE           reduce using rule 36 (read -> READ LPAREN id_list RPAREN SEMICOLON .)
-    READ            reduce using rule 36 (read -> READ LPAREN id_list RPAREN SEMICOLON .)
-    RBRACE          reduce using rule 36 (read -> READ LPAREN id_list RPAREN SEMICOLON .)
-
-
-state 135
-
-    (9) define_function -> FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE define_function .
-
-    MAIN            reduce using rule 9 (define_function -> FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE define_function .)
-
-
-state 136
-
-    (26) decision -> IF LPAREN expression RPAREN THEN LBRACE . statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> IF LPAREN expression RPAREN THEN LBRACE . statute RBRACE
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
-
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
-
-    statute                        shift and go to state 139
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
-
-state 137
-
-    (28) condition -> WHILE LPAREN expression RPAREN DO LBRACE . statute RBRACE
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
-
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
-
-    statute                        shift and go to state 140
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
-
-state 138
-
-    (29) no_condition -> FOR ID EQUAL expression TO expression . DO LBRACE statute RBRACE
-    (37) expression -> expression . PLUS term
-    (38) expression -> expression . MINUS term
-    (39) expression -> expression . GREATERTHAN term
-    (40) expression -> expression . SMALLERTHAN term
-    (41) expression -> expression . EQUALTO term
-
-    DO              shift and go to state 141
-    PLUS            shift and go to state 95
-    MINUS           shift and go to state 96
-    GREATERTHAN     shift and go to state 97
-    SMALLERTHAN     shift and go to state 98
-    EQUALTO         shift and go to state 99
-
-
-state 139
-
-    (26) decision -> IF LPAREN expression RPAREN THEN LBRACE statute . RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> IF LPAREN expression RPAREN THEN LBRACE statute . RBRACE
-
-    RBRACE          shift and go to state 142
-
-
-state 140
-
-    (28) condition -> WHILE LPAREN expression RPAREN DO LBRACE statute . RBRACE
-
-    RBRACE          shift and go to state 143
-
-
-state 141
-
-    (29) no_condition -> FOR ID EQUAL expression TO expression DO . LBRACE statute RBRACE
-
-    LBRACE          shift and go to state 144
-
-
-state 142
-
-    (26) decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE . ELSE LBRACE statute RBRACE
-    (27) decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE .
-
-    ELSE            shift and go to state 145
-    ID              reduce using rule 27 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE .)
-    IF              reduce using rule 27 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE .)
-    WHILE           reduce using rule 27 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE .)
-    FOR             reduce using rule 27 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE .)
-    RETURN          reduce using rule 27 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE .)
-    WRITE           reduce using rule 27 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE .)
-    READ            reduce using rule 27 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE .)
-    RBRACE          reduce using rule 27 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE .)
-
-
-state 143
-
-    (28) condition -> WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE .
-
-    ID              reduce using rule 28 (condition -> WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE .)
-    IF              reduce using rule 28 (condition -> WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE .)
-    WHILE           reduce using rule 28 (condition -> WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE .)
-    FOR             reduce using rule 28 (condition -> WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE .)
-    RETURN          reduce using rule 28 (condition -> WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE .)
-    WRITE           reduce using rule 28 (condition -> WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE .)
-    READ            reduce using rule 28 (condition -> WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE .)
-    RBRACE          reduce using rule 28 (condition -> WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE .)
-
-
-state 144
-
-    (29) no_condition -> FOR ID EQUAL expression TO expression DO LBRACE . statute RBRACE
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
-
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
-
-    statute                        shift and go to state 146
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
-
-state 145
-
-    (26) decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE . LBRACE statute RBRACE
-
-    LBRACE          shift and go to state 147
-
-
-state 146
-
-    (29) no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute . RBRACE
-
-    RBRACE          shift and go to state 148
-
-
-state 147
-
-    (26) decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE . statute RBRACE
-    (13) statute -> . assignation statute
-    (14) statute -> . decision statute
-    (15) statute -> . condition statute
-    (16) statute -> . no_condition statute
-    (17) statute -> . return statute
-    (18) statute -> . define_write statute
-    (19) statute -> . read statute
-    (20) statute -> . function statute
-    (21) statute -> . empty
-    (22) assignation -> . ID EQUAL expression SEMICOLON
-    (23) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (24) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (25) assignation -> . ID EQUALTO expression SEMICOLON
-    (26) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-    (27) decision -> . IF LPAREN expression RPAREN THEN LBRACE statute RBRACE
-    (28) condition -> . WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    (29) no_condition -> . FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
-    (30) return -> . RETURN LPAREN expression RPAREN SEMICOLON
-    (31) define_write -> . WRITE LPAREN write RPAREN SEMICOLON
-    (36) read -> . READ LPAREN id_list RPAREN SEMICOLON
-    (10) function -> . ID LPAREN expression RPAREN SEMICOLON
-    (51) empty -> .
-
-    ID              shift and go to state 41
-    IF              shift and go to state 42
-    WHILE           shift and go to state 43
-    FOR             shift and go to state 44
-    RETURN          shift and go to state 45
-    WRITE           shift and go to state 46
-    READ            shift and go to state 47
-    RBRACE          reduce using rule 51 (empty -> .)
-
-    statute                        shift and go to state 149
-    assignation                    shift and go to state 32
-    decision                       shift and go to state 33
-    condition                      shift and go to state 34
-    no_condition                   shift and go to state 35
-    return                         shift and go to state 36
-    define_write                   shift and go to state 37
-    read                           shift and go to state 38
-    function                       shift and go to state 39
-    empty                          shift and go to state 40
-
-state 148
-
-    (29) no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE .
-
-    ID              reduce using rule 29 (no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE .)
-    IF              reduce using rule 29 (no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE .)
-    WHILE           reduce using rule 29 (no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE .)
-    FOR             reduce using rule 29 (no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE .)
-    RETURN          reduce using rule 29 (no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE .)
-    WRITE           reduce using rule 29 (no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE .)
-    READ            reduce using rule 29 (no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE .)
-    RBRACE          reduce using rule 29 (no_condition -> FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE .)
-
-
-state 149
-
-    (26) decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute . RBRACE
-
-    RBRACE          shift and go to state 150
-
-
-state 150
-
-    (26) decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE .
-
-    ID              reduce using rule 26 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE .)
-    IF              reduce using rule 26 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE .)
-    WHILE           reduce using rule 26 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE .)
-    FOR             reduce using rule 26 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE .)
-    RETURN          reduce using rule 26 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE .)
-    WRITE           reduce using rule 26 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE .)
-    READ            reduce using rule 26 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE .)
-    RBRACE          reduce using rule 26 (decision -> IF LPAREN expression RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE .)
+    (22) factor -> LPAREN expression RPAREN .
+
+    TIMES           reduce using rule 22 (factor -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 22 (factor -> LPAREN expression RPAREN .)
+    SEMICOLON       reduce using rule 22 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 22 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 22 (factor -> LPAREN expression RPAREN .)
+    GREATERTHAN     reduce using rule 22 (factor -> LPAREN expression RPAREN .)
+    SMALLERTHAN     reduce using rule 22 (factor -> LPAREN expression RPAREN .)
+    EQUALTO         reduce using rule 22 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 22 (factor -> LPAREN expression RPAREN .)
 

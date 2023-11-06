@@ -1,19 +1,8 @@
 symbol_table = {}
 
-def add_symbol(name, type, value=None):
-    symbol_table[name] = {
-        "type": type,
-        "value": value
-    }
-
-def get_symbol_type(name):
-    if name in symbol_table:
-        return symbol_table[name]["type"]
+def get_variable_type(variable_id):
+    if variable_id in symbol_table:
+        return symbol_table[variable_id]
     else:
-        return None
-
-def get_symbol_value(name):
-    if name in symbol_table:
-        return symbol_table[name]["value"]
-    else:
-        return None
+        print(f"Error: La variable '{variable_id}' no ha sido declarada.")
+        return 'error'  # Devuelve un tipo de error para indicar que la variable no está en la tabla de símbolos
