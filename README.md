@@ -16,3 +16,6 @@ el cubo semantico.
 
 Avance 4
 Se completo el cubo semantico, aunque puede que haya correciones.
+
+Avance 5
+Ya funciona la declaracion de Ids con comas, aparte ya da error si se repiten ids.
