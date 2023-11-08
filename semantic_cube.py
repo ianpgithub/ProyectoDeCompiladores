@@ -59,11 +59,11 @@ class SemanticCube:
     }
 }
 
-    def get_result_type(self, operand1_type, operand2_type, operator):
-        if (operand1_type, operand2_type, operator) in self.cube:
-            return self.cube[(operand1_type, operand2_type, operator)]
+    def get_result_type(self, left_type, right_type, operator):
+        # Verifica si los tipos y el operador están en el cubo
+        if left_type in self.cube and right_type in self.cube[left_type] and operator in self.cube[left_type][right_type]:
+            return self.cube[left_type][right_type][operator]
         else:
-            print(f"Error: Operación no válida para tipos {operand1_type} y {operand2_type}.")
-            return 'error'  # Devuelve un tipo de error para indicar que la operación no es válida
+            return None
 
 semantic_cube = SemanticCube()

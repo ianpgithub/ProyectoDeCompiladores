@@ -15,23 +15,25 @@ def p_id_list(p):
     id_list : ID COMMA id_list
             | ID
     '''
-    # Construye una lista de identificadores
-    if len(p) == 2:
-        p[0] = [p[1]]  # Si hay solo un identificador
-    else:
+    if len(p) == 4:  # ID COMMA id_list
         p[0] = [p[1]] + p[3]
+    else:  # solo ID
+        p[0] = [p[1]]
 
 def p_define_vars(p):
     '''
     define_vars : type COLON id_list SEMICOLON define_vars
                 | empty
     '''
-    var_type = p[1]
-    id_list = p[3]
-
-    # Asocia cada identificador con su tipo en la tabla de símbolos
-    for var_id in id_list:
-        symbol_table[var_id] = var_type
+    if len(p) == 6:
+        var_type = p[1]
+        id_list = p[3]
+        for var_id in id_list:
+            symbol_table[var_id] = var_type
+        
+        p[0] = p[5]  
+    elif len(p) == 2:
+        p[0] = None  
 
 def p_type(p):
     '''
@@ -53,10 +55,14 @@ def p_assignation(p):
                 | ID SMALLERTHAN expression SEMICOLON
                 | ID EQUALTO expression SEMICOLON 
     '''
-    symbol_table[p[1]] = p[3]
-    print(f'Asignación: {p[1]} = {p[3]}')
-    print()
-
+    var_id = p[1]
+    check_variable_declared(var_id)
+    if var_id in symbol_table:
+        symbol_table[var_id] = p[3]
+        print(f'Asignación: {var_id} = {p[3]}')
+    else:
+        raise SyntaxError(f"Error: Variable '{var_id}' no ha sido declarada.")
+    
 def p_expression(p):
     '''
     expression : expression PLUS term
@@ -119,12 +125,12 @@ def p_factor_id(p):
     '''
     factor : ID
     '''
-    variable_name = p[1]
-    if variable_name in symbol_table:
-        p[0] = symbol_table[variable_name]
+    var_id = p[1]
+    check_variable_declared(var_id)
+    if var_id in symbol_table:
+        p[0] = symbol_table[var_id]
     else:
-        print(f'Error: Variable {variable_name} no definida')
-        p[0] = None  # O manejar el error de alguna otra manera
+        raise SyntaxError(f"Error: Variable '{var_id}' has not been declared.")
 
 def p_factor_unary(p):
     '''
@@ -142,6 +148,9 @@ def p_factor_grouped(p):
     '''
     p[0] = p[2]
 
+def check_variable_declared(var_id):
+    if var_id not in symbol_table:
+        print(f"Error semántico: Variable '{var_id}' no declarada.")
 
 def p_error(p):
     print(f'Syntax error at {p.value!r}')
@@ -150,6 +159,7 @@ def p_error(p):
 def p_empty(p):
     '''empty :'''
     pass
+
 
 # Build the parser
 yacc.yacc()
@@ -163,6 +173,7 @@ if __name__ == '__main__':
             data = f.read()
             f.close()
             dat = yacc.parse(data)
+            print(symbol_table)
             if dat == "COMPILED":
                 print("Compiled!")
         except EOFError:
