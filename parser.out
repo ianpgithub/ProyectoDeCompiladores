@@ -32,66 +32,67 @@ Rule 5     define_vars -> type COLON id_list SEMICOLON define_vars
 Rule 6     define_vars -> empty
 Rule 7     type -> INT
 Rule 8     type -> FLOAT
-Rule 9     statute -> assignation statute
-Rule 10    statute -> empty
-Rule 11    assignation -> ID EQUAL expression SEMICOLON
-Rule 12    assignation -> ID GREATERTHAN expression SEMICOLON
-Rule 13    assignation -> ID SMALLERTHAN expression SEMICOLON
-Rule 14    assignation -> ID EQUALTO expression SEMICOLON
-Rule 15    expression -> expression PLUS term
-Rule 16    expression -> expression MINUS term
-Rule 17    expression -> expression GREATERTHAN term
-Rule 18    expression -> expression SMALLERTHAN term
-Rule 19    expression -> expression EQUALTO term
-Rule 20    expression -> term
-Rule 21    term -> term TIMES factor
-Rule 22    term -> term DIVIDE factor
-Rule 23    term -> factor
-Rule 24    factor -> FLOAT
-Rule 25    factor -> INT
-Rule 26    factor -> STRING
-Rule 27    factor -> ID
-Rule 28    factor -> PLUS factor
-Rule 29    factor -> MINUS factor
-Rule 30    factor -> LPAREN expression RPAREN
-Rule 31    empty -> <empty>
+Rule 9     type -> STRING
+Rule 10    statute -> assignation statute
+Rule 11    statute -> empty
+Rule 12    assignation -> ID EQUAL expression SEMICOLON
+Rule 13    assignation -> ID GREATERTHAN expression SEMICOLON
+Rule 14    assignation -> ID SMALLERTHAN expression SEMICOLON
+Rule 15    assignation -> ID EQUALTO expression SEMICOLON
+Rule 16    expression -> expression PLUS term
+Rule 17    expression -> expression MINUS term
+Rule 18    expression -> expression GREATERTHAN term
+Rule 19    expression -> expression SMALLERTHAN term
+Rule 20    expression -> expression EQUALTO term
+Rule 21    expression -> term
+Rule 22    term -> term TIMES factor
+Rule 23    term -> term DIVIDE factor
+Rule 24    term -> factor
+Rule 25    factor -> FLOAT
+Rule 26    factor -> INT
+Rule 27    factor -> STRING
+Rule 28    factor -> ID
+Rule 29    factor -> PLUS factor
+Rule 30    factor -> MINUS factor
+Rule 31    factor -> LPAREN expression RPAREN
+Rule 32    empty -> <empty>
 
 Terminals, with rules where they appear
 
 COLON                : 5
 COMMA                : 3
-DIVIDE               : 22
+DIVIDE               : 23
 DO                   : 
 ELSE                 : 
 ENDL                 : 
-EQUAL                : 11
-EQUALTO              : 14 19
-FLOAT                : 8 24
+EQUAL                : 12
+EQUALTO              : 15 20
+FLOAT                : 8 25
 FOR                  : 
 FUNCTION             : 
-GREATERTHAN          : 12 17
-ID                   : 3 4 11 12 13 14 27
+GREATERTHAN          : 13 18
+ID                   : 3 4 12 13 14 15 28
 IF                   : 
-INT                  : 7 25
+INT                  : 7 26
 LBRACE               : 1 2
 LBRACKET             : 
-LPAREN               : 30
+LPAREN               : 31
 MAIN                 : 
-MINUS                : 16 29
+MINUS                : 17 30
 NUMBER               : 
 OR                   : 
-PLUS                 : 15 28
+PLUS                 : 16 29
 PROGRAM              : 
 RBRACE               : 1 2
 RBRACKET             : 
 READ                 : 
 RETURN               : 
-RPAREN               : 30
-SEMICOLON            : 5 11 12 13 14
-SMALLERTHAN          : 13 18
-STRING               : 26
+RPAREN               : 31
+SEMICOLON            : 5 12 13 14 15
+SMALLERTHAN          : 14 19
+STRING               : 9 27
 THEN                 : 
-TIMES                : 21
+TIMES                : 22
 TO                   : 
 VARS                 : 1 2
 WHILE                : 
@@ -100,15 +101,15 @@ error                :
 
 Nonterminals, with rules where they appear
 
-assignation          : 9
+assignation          : 10
 define_function      : 2 0
 define_vars          : 1 2 5
-empty                : 6 10
-expression           : 11 12 13 14 15 16 17 18 19 30
-factor               : 21 22 23 28 29
+empty                : 6 11
+expression           : 12 13 14 15 16 17 18 19 20 31
+factor               : 22 23 24 29 30
 id_list              : 3 5
-statute              : 1 2 9
-term                 : 15 16 17 18 19 20 21 22
+statute              : 1 2 10
+term                 : 16 17 18 19 20 21 22 23
 type                 : 5
 
 Parsing method: LALR
@@ -137,11 +138,13 @@ state 2
     (6) define_vars -> . empty
     (7) type -> . INT
     (8) type -> . FLOAT
-    (31) empty -> .
+    (9) type -> . STRING
+    (32) empty -> .
 
     INT             shift and go to state 6
     FLOAT           shift and go to state 7
-    LBRACE          reduce using rule 31 (empty -> .)
+    STRING          shift and go to state 8
+    LBRACE          reduce using rule 32 (empty -> .)
 
     define_vars                    shift and go to state 3
     type                           shift and go to state 4
@@ -152,14 +155,14 @@ state 3
     (1) define_function -> VARS define_vars . LBRACE statute RBRACE
     (2) define_function -> VARS define_vars . LBRACE statute RBRACE define_function
 
-    LBRACE          shift and go to state 8
+    LBRACE          shift and go to state 9
 
 
 state 4
 
     (5) define_vars -> type . COLON id_list SEMICOLON define_vars
 
-    COLON           shift and go to state 9
+    COLON           shift and go to state 10
 
 
 state 5
@@ -185,96 +188,103 @@ state 7
 
 state 8
 
-    (1) define_function -> VARS define_vars LBRACE . statute RBRACE
-    (2) define_function -> VARS define_vars LBRACE . statute RBRACE define_function
-    (9) statute -> . assignation statute
-    (10) statute -> . empty
-    (11) assignation -> . ID EQUAL expression SEMICOLON
-    (12) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (13) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (14) assignation -> . ID EQUALTO expression SEMICOLON
-    (31) empty -> .
+    (9) type -> STRING .
 
-    ID              shift and go to state 13
-    RBRACE          reduce using rule 31 (empty -> .)
+    COLON           reduce using rule 9 (type -> STRING .)
 
-    statute                        shift and go to state 10
-    assignation                    shift and go to state 11
-    empty                          shift and go to state 12
 
 state 9
+
+    (1) define_function -> VARS define_vars LBRACE . statute RBRACE
+    (2) define_function -> VARS define_vars LBRACE . statute RBRACE define_function
+    (10) statute -> . assignation statute
+    (11) statute -> . empty
+    (12) assignation -> . ID EQUAL expression SEMICOLON
+    (13) assignation -> . ID GREATERTHAN expression SEMICOLON
+    (14) assignation -> . ID SMALLERTHAN expression SEMICOLON
+    (15) assignation -> . ID EQUALTO expression SEMICOLON
+    (32) empty -> .
+
+    ID              shift and go to state 14
+    RBRACE          reduce using rule 32 (empty -> .)
+
+    statute                        shift and go to state 11
+    assignation                    shift and go to state 12
+    empty                          shift and go to state 13
+
+state 10
 
     (5) define_vars -> type COLON . id_list SEMICOLON define_vars
     (3) id_list -> . ID COMMA id_list
     (4) id_list -> . ID
 
-    ID              shift and go to state 15
+    ID              shift and go to state 16
 
-    id_list                        shift and go to state 14
+    id_list                        shift and go to state 15
 
-state 10
+state 11
 
     (1) define_function -> VARS define_vars LBRACE statute . RBRACE
     (2) define_function -> VARS define_vars LBRACE statute . RBRACE define_function
 
-    RBRACE          shift and go to state 16
+    RBRACE          shift and go to state 17
 
-
-state 11
-
-    (9) statute -> assignation . statute
-    (9) statute -> . assignation statute
-    (10) statute -> . empty
-    (11) assignation -> . ID EQUAL expression SEMICOLON
-    (12) assignation -> . ID GREATERTHAN expression SEMICOLON
-    (13) assignation -> . ID SMALLERTHAN expression SEMICOLON
-    (14) assignation -> . ID EQUALTO expression SEMICOLON
-    (31) empty -> .
-
-    ID              shift and go to state 13
-    RBRACE          reduce using rule 31 (empty -> .)
-
-    assignation                    shift and go to state 11
-    statute                        shift and go to state 17
-    empty                          shift and go to state 12
 
 state 12
 
-    (10) statute -> empty .
+    (10) statute -> assignation . statute
+    (10) statute -> . assignation statute
+    (11) statute -> . empty
+    (12) assignation -> . ID EQUAL expression SEMICOLON
+    (13) assignation -> . ID GREATERTHAN expression SEMICOLON
+    (14) assignation -> . ID SMALLERTHAN expression SEMICOLON
+    (15) assignation -> . ID EQUALTO expression SEMICOLON
+    (32) empty -> .
 
-    RBRACE          reduce using rule 10 (statute -> empty .)
+    ID              shift and go to state 14
+    RBRACE          reduce using rule 32 (empty -> .)
 
+    assignation                    shift and go to state 12
+    statute                        shift and go to state 18
+    empty                          shift and go to state 13
 
 state 13
 
-    (11) assignation -> ID . EQUAL expression SEMICOLON
-    (12) assignation -> ID . GREATERTHAN expression SEMICOLON
-    (13) assignation -> ID . SMALLERTHAN expression SEMICOLON
-    (14) assignation -> ID . EQUALTO expression SEMICOLON
+    (11) statute -> empty .
 
-    EQUAL           shift and go to state 18
-    GREATERTHAN     shift and go to state 19
-    SMALLERTHAN     shift and go to state 20
-    EQUALTO         shift and go to state 21
+    RBRACE          reduce using rule 11 (statute -> empty .)
 
 
 state 14
 
-    (5) define_vars -> type COLON id_list . SEMICOLON define_vars
+    (12) assignation -> ID . EQUAL expression SEMICOLON
+    (13) assignation -> ID . GREATERTHAN expression SEMICOLON
+    (14) assignation -> ID . SMALLERTHAN expression SEMICOLON
+    (15) assignation -> ID . EQUALTO expression SEMICOLON
 
-    SEMICOLON       shift and go to state 22
+    EQUAL           shift and go to state 19
+    GREATERTHAN     shift and go to state 20
+    SMALLERTHAN     shift and go to state 21
+    EQUALTO         shift and go to state 22
 
 
 state 15
 
-    (3) id_list -> ID . COMMA id_list
-    (4) id_list -> ID .
+    (5) define_vars -> type COLON id_list . SEMICOLON define_vars
 
-    COMMA           shift and go to state 23
-    SEMICOLON       reduce using rule 4 (id_list -> ID .)
+    SEMICOLON       shift and go to state 23
 
 
 state 16
+
+    (3) id_list -> ID . COMMA id_list
+    (4) id_list -> ID .
+
+    COMMA           shift and go to state 24
+    SEMICOLON       reduce using rule 4 (id_list -> ID .)
+
+
+state 17
 
     (1) define_function -> VARS define_vars LBRACE statute RBRACE .
     (2) define_function -> VARS define_vars LBRACE statute RBRACE . define_function
@@ -284,797 +294,799 @@ state 16
     $end            reduce using rule 1 (define_function -> VARS define_vars LBRACE statute RBRACE .)
     VARS            shift and go to state 2
 
-    define_function                shift and go to state 24
-
-state 17
-
-    (9) statute -> assignation statute .
-
-    RBRACE          reduce using rule 9 (statute -> assignation statute .)
-
+    define_function                shift and go to state 25
 
 state 18
 
-    (11) assignation -> ID EQUAL . expression SEMICOLON
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . expression GREATERTHAN term
-    (18) expression -> . expression SMALLERTHAN term
-    (19) expression -> . expression EQUALTO term
-    (20) expression -> . term
-    (21) term -> . term TIMES factor
-    (22) term -> . term DIVIDE factor
-    (23) term -> . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (10) statute -> assignation statute .
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    RBRACE          reduce using rule 10 (statute -> assignation statute .)
 
-    expression                     shift and go to state 26
-    term                           shift and go to state 28
-    factor                         shift and go to state 30
 
 state 19
 
-    (12) assignation -> ID GREATERTHAN . expression SEMICOLON
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . expression GREATERTHAN term
-    (18) expression -> . expression SMALLERTHAN term
-    (19) expression -> . expression EQUALTO term
-    (20) expression -> . term
-    (21) term -> . term TIMES factor
-    (22) term -> . term DIVIDE factor
-    (23) term -> . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (12) assignation -> ID EQUAL . expression SEMICOLON
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . expression GREATERTHAN term
+    (19) expression -> . expression SMALLERTHAN term
+    (20) expression -> . expression EQUALTO term
+    (21) expression -> . term
+    (22) term -> . term TIMES factor
+    (23) term -> . term DIVIDE factor
+    (24) term -> . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
-    expression                     shift and go to state 35
-    term                           shift and go to state 28
-    factor                         shift and go to state 30
+    expression                     shift and go to state 27
+    term                           shift and go to state 29
+    factor                         shift and go to state 31
 
 state 20
 
-    (13) assignation -> ID SMALLERTHAN . expression SEMICOLON
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . expression GREATERTHAN term
-    (18) expression -> . expression SMALLERTHAN term
-    (19) expression -> . expression EQUALTO term
-    (20) expression -> . term
-    (21) term -> . term TIMES factor
-    (22) term -> . term DIVIDE factor
-    (23) term -> . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (13) assignation -> ID GREATERTHAN . expression SEMICOLON
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . expression GREATERTHAN term
+    (19) expression -> . expression SMALLERTHAN term
+    (20) expression -> . expression EQUALTO term
+    (21) expression -> . term
+    (22) term -> . term TIMES factor
+    (23) term -> . term DIVIDE factor
+    (24) term -> . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
     expression                     shift and go to state 36
-    term                           shift and go to state 28
-    factor                         shift and go to state 30
+    term                           shift and go to state 29
+    factor                         shift and go to state 31
 
 state 21
 
-    (14) assignation -> ID EQUALTO . expression SEMICOLON
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . expression GREATERTHAN term
-    (18) expression -> . expression SMALLERTHAN term
-    (19) expression -> . expression EQUALTO term
-    (20) expression -> . term
-    (21) term -> . term TIMES factor
-    (22) term -> . term DIVIDE factor
-    (23) term -> . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (14) assignation -> ID SMALLERTHAN . expression SEMICOLON
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . expression GREATERTHAN term
+    (19) expression -> . expression SMALLERTHAN term
+    (20) expression -> . expression EQUALTO term
+    (21) expression -> . term
+    (22) term -> . term TIMES factor
+    (23) term -> . term DIVIDE factor
+    (24) term -> . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
     expression                     shift and go to state 37
-    term                           shift and go to state 28
-    factor                         shift and go to state 30
+    term                           shift and go to state 29
+    factor                         shift and go to state 31
 
 state 22
+
+    (15) assignation -> ID EQUALTO . expression SEMICOLON
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . expression GREATERTHAN term
+    (19) expression -> . expression SMALLERTHAN term
+    (20) expression -> . expression EQUALTO term
+    (21) expression -> . term
+    (22) term -> . term TIMES factor
+    (23) term -> . term DIVIDE factor
+    (24) term -> . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
+
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
+
+    expression                     shift and go to state 38
+    term                           shift and go to state 29
+    factor                         shift and go to state 31
+
+state 23
 
     (5) define_vars -> type COLON id_list SEMICOLON . define_vars
     (5) define_vars -> . type COLON id_list SEMICOLON define_vars
     (6) define_vars -> . empty
     (7) type -> . INT
     (8) type -> . FLOAT
-    (31) empty -> .
+    (9) type -> . STRING
+    (32) empty -> .
 
     INT             shift and go to state 6
     FLOAT           shift and go to state 7
-    LBRACE          reduce using rule 31 (empty -> .)
+    STRING          shift and go to state 8
+    LBRACE          reduce using rule 32 (empty -> .)
 
     type                           shift and go to state 4
-    define_vars                    shift and go to state 38
+    define_vars                    shift and go to state 39
     empty                          shift and go to state 5
 
-state 23
+state 24
 
     (3) id_list -> ID COMMA . id_list
     (3) id_list -> . ID COMMA id_list
     (4) id_list -> . ID
 
-    ID              shift and go to state 15
+    ID              shift and go to state 16
 
-    id_list                        shift and go to state 39
+    id_list                        shift and go to state 40
 
-state 24
+state 25
 
     (2) define_function -> VARS define_vars LBRACE statute RBRACE define_function .
 
     $end            reduce using rule 2 (define_function -> VARS define_vars LBRACE statute RBRACE define_function .)
 
 
-state 25
-
-    (27) factor -> ID .
-
-    TIMES           reduce using rule 27 (factor -> ID .)
-    DIVIDE          reduce using rule 27 (factor -> ID .)
-    SEMICOLON       reduce using rule 27 (factor -> ID .)
-    PLUS            reduce using rule 27 (factor -> ID .)
-    MINUS           reduce using rule 27 (factor -> ID .)
-    GREATERTHAN     reduce using rule 27 (factor -> ID .)
-    SMALLERTHAN     reduce using rule 27 (factor -> ID .)
-    EQUALTO         reduce using rule 27 (factor -> ID .)
-    RPAREN          reduce using rule 27 (factor -> ID .)
-
-
 state 26
 
-    (11) assignation -> ID EQUAL expression . SEMICOLON
-    (15) expression -> expression . PLUS term
-    (16) expression -> expression . MINUS term
-    (17) expression -> expression . GREATERTHAN term
-    (18) expression -> expression . SMALLERTHAN term
-    (19) expression -> expression . EQUALTO term
+    (28) factor -> ID .
 
-    SEMICOLON       shift and go to state 40
-    PLUS            shift and go to state 41
-    MINUS           shift and go to state 42
-    GREATERTHAN     shift and go to state 43
-    SMALLERTHAN     shift and go to state 44
-    EQUALTO         shift and go to state 45
+    TIMES           reduce using rule 28 (factor -> ID .)
+    DIVIDE          reduce using rule 28 (factor -> ID .)
+    SEMICOLON       reduce using rule 28 (factor -> ID .)
+    PLUS            reduce using rule 28 (factor -> ID .)
+    MINUS           reduce using rule 28 (factor -> ID .)
+    GREATERTHAN     reduce using rule 28 (factor -> ID .)
+    SMALLERTHAN     reduce using rule 28 (factor -> ID .)
+    EQUALTO         reduce using rule 28 (factor -> ID .)
+    RPAREN          reduce using rule 28 (factor -> ID .)
 
 
 state 27
 
-    (28) factor -> PLUS . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (12) assignation -> ID EQUAL expression . SEMICOLON
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (18) expression -> expression . GREATERTHAN term
+    (19) expression -> expression . SMALLERTHAN term
+    (20) expression -> expression . EQUALTO term
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    SEMICOLON       shift and go to state 41
+    PLUS            shift and go to state 42
+    MINUS           shift and go to state 43
+    GREATERTHAN     shift and go to state 44
+    SMALLERTHAN     shift and go to state 45
+    EQUALTO         shift and go to state 46
 
-    factor                         shift and go to state 46
 
 state 28
 
-    (20) expression -> term .
-    (21) term -> term . TIMES factor
-    (22) term -> term . DIVIDE factor
+    (29) factor -> PLUS . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    SEMICOLON       reduce using rule 20 (expression -> term .)
-    PLUS            reduce using rule 20 (expression -> term .)
-    MINUS           reduce using rule 20 (expression -> term .)
-    GREATERTHAN     reduce using rule 20 (expression -> term .)
-    SMALLERTHAN     reduce using rule 20 (expression -> term .)
-    EQUALTO         reduce using rule 20 (expression -> term .)
-    RPAREN          reduce using rule 20 (expression -> term .)
-    TIMES           shift and go to state 47
-    DIVIDE          shift and go to state 48
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
+    factor                         shift and go to state 47
 
 state 29
 
-    (29) factor -> MINUS . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (21) expression -> term .
+    (22) term -> term . TIMES factor
+    (23) term -> term . DIVIDE factor
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    SEMICOLON       reduce using rule 21 (expression -> term .)
+    PLUS            reduce using rule 21 (expression -> term .)
+    MINUS           reduce using rule 21 (expression -> term .)
+    GREATERTHAN     reduce using rule 21 (expression -> term .)
+    SMALLERTHAN     reduce using rule 21 (expression -> term .)
+    EQUALTO         reduce using rule 21 (expression -> term .)
+    RPAREN          reduce using rule 21 (expression -> term .)
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
 
-    factor                         shift and go to state 49
 
 state 30
 
-    (23) term -> factor .
+    (30) factor -> MINUS . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    TIMES           reduce using rule 23 (term -> factor .)
-    DIVIDE          reduce using rule 23 (term -> factor .)
-    SEMICOLON       reduce using rule 23 (term -> factor .)
-    PLUS            reduce using rule 23 (term -> factor .)
-    MINUS           reduce using rule 23 (term -> factor .)
-    GREATERTHAN     reduce using rule 23 (term -> factor .)
-    SMALLERTHAN     reduce using rule 23 (term -> factor .)
-    EQUALTO         reduce using rule 23 (term -> factor .)
-    RPAREN          reduce using rule 23 (term -> factor .)
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
+    factor                         shift and go to state 50
 
 state 31
 
-    (24) factor -> FLOAT .
+    (24) term -> factor .
 
-    TIMES           reduce using rule 24 (factor -> FLOAT .)
-    DIVIDE          reduce using rule 24 (factor -> FLOAT .)
-    SEMICOLON       reduce using rule 24 (factor -> FLOAT .)
-    PLUS            reduce using rule 24 (factor -> FLOAT .)
-    MINUS           reduce using rule 24 (factor -> FLOAT .)
-    GREATERTHAN     reduce using rule 24 (factor -> FLOAT .)
-    SMALLERTHAN     reduce using rule 24 (factor -> FLOAT .)
-    EQUALTO         reduce using rule 24 (factor -> FLOAT .)
-    RPAREN          reduce using rule 24 (factor -> FLOAT .)
+    TIMES           reduce using rule 24 (term -> factor .)
+    DIVIDE          reduce using rule 24 (term -> factor .)
+    SEMICOLON       reduce using rule 24 (term -> factor .)
+    PLUS            reduce using rule 24 (term -> factor .)
+    MINUS           reduce using rule 24 (term -> factor .)
+    GREATERTHAN     reduce using rule 24 (term -> factor .)
+    SMALLERTHAN     reduce using rule 24 (term -> factor .)
+    EQUALTO         reduce using rule 24 (term -> factor .)
+    RPAREN          reduce using rule 24 (term -> factor .)
 
 
 state 32
 
-    (25) factor -> INT .
+    (25) factor -> FLOAT .
 
-    TIMES           reduce using rule 25 (factor -> INT .)
-    DIVIDE          reduce using rule 25 (factor -> INT .)
-    SEMICOLON       reduce using rule 25 (factor -> INT .)
-    PLUS            reduce using rule 25 (factor -> INT .)
-    MINUS           reduce using rule 25 (factor -> INT .)
-    GREATERTHAN     reduce using rule 25 (factor -> INT .)
-    SMALLERTHAN     reduce using rule 25 (factor -> INT .)
-    EQUALTO         reduce using rule 25 (factor -> INT .)
-    RPAREN          reduce using rule 25 (factor -> INT .)
+    TIMES           reduce using rule 25 (factor -> FLOAT .)
+    DIVIDE          reduce using rule 25 (factor -> FLOAT .)
+    SEMICOLON       reduce using rule 25 (factor -> FLOAT .)
+    PLUS            reduce using rule 25 (factor -> FLOAT .)
+    MINUS           reduce using rule 25 (factor -> FLOAT .)
+    GREATERTHAN     reduce using rule 25 (factor -> FLOAT .)
+    SMALLERTHAN     reduce using rule 25 (factor -> FLOAT .)
+    EQUALTO         reduce using rule 25 (factor -> FLOAT .)
+    RPAREN          reduce using rule 25 (factor -> FLOAT .)
 
 
 state 33
 
-    (26) factor -> STRING .
+    (26) factor -> INT .
 
-    TIMES           reduce using rule 26 (factor -> STRING .)
-    DIVIDE          reduce using rule 26 (factor -> STRING .)
-    SEMICOLON       reduce using rule 26 (factor -> STRING .)
-    PLUS            reduce using rule 26 (factor -> STRING .)
-    MINUS           reduce using rule 26 (factor -> STRING .)
-    GREATERTHAN     reduce using rule 26 (factor -> STRING .)
-    SMALLERTHAN     reduce using rule 26 (factor -> STRING .)
-    EQUALTO         reduce using rule 26 (factor -> STRING .)
-    RPAREN          reduce using rule 26 (factor -> STRING .)
+    TIMES           reduce using rule 26 (factor -> INT .)
+    DIVIDE          reduce using rule 26 (factor -> INT .)
+    SEMICOLON       reduce using rule 26 (factor -> INT .)
+    PLUS            reduce using rule 26 (factor -> INT .)
+    MINUS           reduce using rule 26 (factor -> INT .)
+    GREATERTHAN     reduce using rule 26 (factor -> INT .)
+    SMALLERTHAN     reduce using rule 26 (factor -> INT .)
+    EQUALTO         reduce using rule 26 (factor -> INT .)
+    RPAREN          reduce using rule 26 (factor -> INT .)
 
 
 state 34
 
-    (30) factor -> LPAREN . expression RPAREN
-    (15) expression -> . expression PLUS term
-    (16) expression -> . expression MINUS term
-    (17) expression -> . expression GREATERTHAN term
-    (18) expression -> . expression SMALLERTHAN term
-    (19) expression -> . expression EQUALTO term
-    (20) expression -> . term
-    (21) term -> . term TIMES factor
-    (22) term -> . term DIVIDE factor
-    (23) term -> . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (27) factor -> STRING .
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    TIMES           reduce using rule 27 (factor -> STRING .)
+    DIVIDE          reduce using rule 27 (factor -> STRING .)
+    SEMICOLON       reduce using rule 27 (factor -> STRING .)
+    PLUS            reduce using rule 27 (factor -> STRING .)
+    MINUS           reduce using rule 27 (factor -> STRING .)
+    GREATERTHAN     reduce using rule 27 (factor -> STRING .)
+    SMALLERTHAN     reduce using rule 27 (factor -> STRING .)
+    EQUALTO         reduce using rule 27 (factor -> STRING .)
+    RPAREN          reduce using rule 27 (factor -> STRING .)
 
-    expression                     shift and go to state 50
-    term                           shift and go to state 28
-    factor                         shift and go to state 30
 
 state 35
 
-    (12) assignation -> ID GREATERTHAN expression . SEMICOLON
-    (15) expression -> expression . PLUS term
-    (16) expression -> expression . MINUS term
-    (17) expression -> expression . GREATERTHAN term
-    (18) expression -> expression . SMALLERTHAN term
-    (19) expression -> expression . EQUALTO term
+    (31) factor -> LPAREN . expression RPAREN
+    (16) expression -> . expression PLUS term
+    (17) expression -> . expression MINUS term
+    (18) expression -> . expression GREATERTHAN term
+    (19) expression -> . expression SMALLERTHAN term
+    (20) expression -> . expression EQUALTO term
+    (21) expression -> . term
+    (22) term -> . term TIMES factor
+    (23) term -> . term DIVIDE factor
+    (24) term -> . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    SEMICOLON       shift and go to state 51
-    PLUS            shift and go to state 41
-    MINUS           shift and go to state 42
-    GREATERTHAN     shift and go to state 43
-    SMALLERTHAN     shift and go to state 44
-    EQUALTO         shift and go to state 45
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
+    expression                     shift and go to state 51
+    term                           shift and go to state 29
+    factor                         shift and go to state 31
 
 state 36
 
-    (13) assignation -> ID SMALLERTHAN expression . SEMICOLON
-    (15) expression -> expression . PLUS term
-    (16) expression -> expression . MINUS term
-    (17) expression -> expression . GREATERTHAN term
-    (18) expression -> expression . SMALLERTHAN term
-    (19) expression -> expression . EQUALTO term
+    (13) assignation -> ID GREATERTHAN expression . SEMICOLON
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (18) expression -> expression . GREATERTHAN term
+    (19) expression -> expression . SMALLERTHAN term
+    (20) expression -> expression . EQUALTO term
 
     SEMICOLON       shift and go to state 52
-    PLUS            shift and go to state 41
-    MINUS           shift and go to state 42
-    GREATERTHAN     shift and go to state 43
-    SMALLERTHAN     shift and go to state 44
-    EQUALTO         shift and go to state 45
+    PLUS            shift and go to state 42
+    MINUS           shift and go to state 43
+    GREATERTHAN     shift and go to state 44
+    SMALLERTHAN     shift and go to state 45
+    EQUALTO         shift and go to state 46
 
 
 state 37
 
-    (14) assignation -> ID EQUALTO expression . SEMICOLON
-    (15) expression -> expression . PLUS term
-    (16) expression -> expression . MINUS term
-    (17) expression -> expression . GREATERTHAN term
-    (18) expression -> expression . SMALLERTHAN term
-    (19) expression -> expression . EQUALTO term
+    (14) assignation -> ID SMALLERTHAN expression . SEMICOLON
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (18) expression -> expression . GREATERTHAN term
+    (19) expression -> expression . SMALLERTHAN term
+    (20) expression -> expression . EQUALTO term
 
     SEMICOLON       shift and go to state 53
-    PLUS            shift and go to state 41
-    MINUS           shift and go to state 42
-    GREATERTHAN     shift and go to state 43
-    SMALLERTHAN     shift and go to state 44
-    EQUALTO         shift and go to state 45
+    PLUS            shift and go to state 42
+    MINUS           shift and go to state 43
+    GREATERTHAN     shift and go to state 44
+    SMALLERTHAN     shift and go to state 45
+    EQUALTO         shift and go to state 46
 
 
 state 38
+
+    (15) assignation -> ID EQUALTO expression . SEMICOLON
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (18) expression -> expression . GREATERTHAN term
+    (19) expression -> expression . SMALLERTHAN term
+    (20) expression -> expression . EQUALTO term
+
+    SEMICOLON       shift and go to state 54
+    PLUS            shift and go to state 42
+    MINUS           shift and go to state 43
+    GREATERTHAN     shift and go to state 44
+    SMALLERTHAN     shift and go to state 45
+    EQUALTO         shift and go to state 46
+
+
+state 39
 
     (5) define_vars -> type COLON id_list SEMICOLON define_vars .
 
     LBRACE          reduce using rule 5 (define_vars -> type COLON id_list SEMICOLON define_vars .)
 
 
-state 39
+state 40
 
     (3) id_list -> ID COMMA id_list .
 
     SEMICOLON       reduce using rule 3 (id_list -> ID COMMA id_list .)
 
 
-state 40
-
-    (11) assignation -> ID EQUAL expression SEMICOLON .
-
-    ID              reduce using rule 11 (assignation -> ID EQUAL expression SEMICOLON .)
-    RBRACE          reduce using rule 11 (assignation -> ID EQUAL expression SEMICOLON .)
-
-
 state 41
 
-    (15) expression -> expression PLUS . term
-    (21) term -> . term TIMES factor
-    (22) term -> . term DIVIDE factor
-    (23) term -> . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (12) assignation -> ID EQUAL expression SEMICOLON .
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    ID              reduce using rule 12 (assignation -> ID EQUAL expression SEMICOLON .)
+    RBRACE          reduce using rule 12 (assignation -> ID EQUAL expression SEMICOLON .)
 
-    term                           shift and go to state 54
-    factor                         shift and go to state 30
 
 state 42
 
-    (16) expression -> expression MINUS . term
-    (21) term -> . term TIMES factor
-    (22) term -> . term DIVIDE factor
-    (23) term -> . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (16) expression -> expression PLUS . term
+    (22) term -> . term TIMES factor
+    (23) term -> . term DIVIDE factor
+    (24) term -> . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
     term                           shift and go to state 55
-    factor                         shift and go to state 30
+    factor                         shift and go to state 31
 
 state 43
 
-    (17) expression -> expression GREATERTHAN . term
-    (21) term -> . term TIMES factor
-    (22) term -> . term DIVIDE factor
-    (23) term -> . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (17) expression -> expression MINUS . term
+    (22) term -> . term TIMES factor
+    (23) term -> . term DIVIDE factor
+    (24) term -> . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
     term                           shift and go to state 56
-    factor                         shift and go to state 30
+    factor                         shift and go to state 31
 
 state 44
 
-    (18) expression -> expression SMALLERTHAN . term
-    (21) term -> . term TIMES factor
-    (22) term -> . term DIVIDE factor
-    (23) term -> . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (18) expression -> expression GREATERTHAN . term
+    (22) term -> . term TIMES factor
+    (23) term -> . term DIVIDE factor
+    (24) term -> . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
     term                           shift and go to state 57
-    factor                         shift and go to state 30
+    factor                         shift and go to state 31
 
 state 45
 
-    (19) expression -> expression EQUALTO . term
-    (21) term -> . term TIMES factor
-    (22) term -> . term DIVIDE factor
-    (23) term -> . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (19) expression -> expression SMALLERTHAN . term
+    (22) term -> . term TIMES factor
+    (23) term -> . term DIVIDE factor
+    (24) term -> . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
     term                           shift and go to state 58
-    factor                         shift and go to state 30
+    factor                         shift and go to state 31
 
 state 46
 
-    (28) factor -> PLUS factor .
+    (20) expression -> expression EQUALTO . term
+    (22) term -> . term TIMES factor
+    (23) term -> . term DIVIDE factor
+    (24) term -> . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    TIMES           reduce using rule 28 (factor -> PLUS factor .)
-    DIVIDE          reduce using rule 28 (factor -> PLUS factor .)
-    SEMICOLON       reduce using rule 28 (factor -> PLUS factor .)
-    PLUS            reduce using rule 28 (factor -> PLUS factor .)
-    MINUS           reduce using rule 28 (factor -> PLUS factor .)
-    GREATERTHAN     reduce using rule 28 (factor -> PLUS factor .)
-    SMALLERTHAN     reduce using rule 28 (factor -> PLUS factor .)
-    EQUALTO         reduce using rule 28 (factor -> PLUS factor .)
-    RPAREN          reduce using rule 28 (factor -> PLUS factor .)
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
+    term                           shift and go to state 59
+    factor                         shift and go to state 31
 
 state 47
 
-    (21) term -> term TIMES . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (29) factor -> PLUS factor .
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    TIMES           reduce using rule 29 (factor -> PLUS factor .)
+    DIVIDE          reduce using rule 29 (factor -> PLUS factor .)
+    SEMICOLON       reduce using rule 29 (factor -> PLUS factor .)
+    PLUS            reduce using rule 29 (factor -> PLUS factor .)
+    MINUS           reduce using rule 29 (factor -> PLUS factor .)
+    GREATERTHAN     reduce using rule 29 (factor -> PLUS factor .)
+    SMALLERTHAN     reduce using rule 29 (factor -> PLUS factor .)
+    EQUALTO         reduce using rule 29 (factor -> PLUS factor .)
+    RPAREN          reduce using rule 29 (factor -> PLUS factor .)
 
-    factor                         shift and go to state 59
 
 state 48
 
-    (22) term -> term DIVIDE . factor
-    (24) factor -> . FLOAT
-    (25) factor -> . INT
-    (26) factor -> . STRING
-    (27) factor -> . ID
-    (28) factor -> . PLUS factor
-    (29) factor -> . MINUS factor
-    (30) factor -> . LPAREN expression RPAREN
+    (22) term -> term TIMES . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    FLOAT           shift and go to state 31
-    INT             shift and go to state 32
-    STRING          shift and go to state 33
-    ID              shift and go to state 25
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 29
-    LPAREN          shift and go to state 34
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
     factor                         shift and go to state 60
 
 state 49
 
-    (29) factor -> MINUS factor .
+    (23) term -> term DIVIDE . factor
+    (25) factor -> . FLOAT
+    (26) factor -> . INT
+    (27) factor -> . STRING
+    (28) factor -> . ID
+    (29) factor -> . PLUS factor
+    (30) factor -> . MINUS factor
+    (31) factor -> . LPAREN expression RPAREN
 
-    TIMES           reduce using rule 29 (factor -> MINUS factor .)
-    DIVIDE          reduce using rule 29 (factor -> MINUS factor .)
-    SEMICOLON       reduce using rule 29 (factor -> MINUS factor .)
-    PLUS            reduce using rule 29 (factor -> MINUS factor .)
-    MINUS           reduce using rule 29 (factor -> MINUS factor .)
-    GREATERTHAN     reduce using rule 29 (factor -> MINUS factor .)
-    SMALLERTHAN     reduce using rule 29 (factor -> MINUS factor .)
-    EQUALTO         reduce using rule 29 (factor -> MINUS factor .)
-    RPAREN          reduce using rule 29 (factor -> MINUS factor .)
+    FLOAT           shift and go to state 32
+    INT             shift and go to state 33
+    STRING          shift and go to state 34
+    ID              shift and go to state 26
+    PLUS            shift and go to state 28
+    MINUS           shift and go to state 30
+    LPAREN          shift and go to state 35
 
+    factor                         shift and go to state 61
 
 state 50
 
-    (30) factor -> LPAREN expression . RPAREN
-    (15) expression -> expression . PLUS term
-    (16) expression -> expression . MINUS term
-    (17) expression -> expression . GREATERTHAN term
-    (18) expression -> expression . SMALLERTHAN term
-    (19) expression -> expression . EQUALTO term
+    (30) factor -> MINUS factor .
 
-    RPAREN          shift and go to state 61
-    PLUS            shift and go to state 41
-    MINUS           shift and go to state 42
-    GREATERTHAN     shift and go to state 43
-    SMALLERTHAN     shift and go to state 44
-    EQUALTO         shift and go to state 45
+    TIMES           reduce using rule 30 (factor -> MINUS factor .)
+    DIVIDE          reduce using rule 30 (factor -> MINUS factor .)
+    SEMICOLON       reduce using rule 30 (factor -> MINUS factor .)
+    PLUS            reduce using rule 30 (factor -> MINUS factor .)
+    MINUS           reduce using rule 30 (factor -> MINUS factor .)
+    GREATERTHAN     reduce using rule 30 (factor -> MINUS factor .)
+    SMALLERTHAN     reduce using rule 30 (factor -> MINUS factor .)
+    EQUALTO         reduce using rule 30 (factor -> MINUS factor .)
+    RPAREN          reduce using rule 30 (factor -> MINUS factor .)
 
 
 state 51
 
-    (12) assignation -> ID GREATERTHAN expression SEMICOLON .
+    (31) factor -> LPAREN expression . RPAREN
+    (16) expression -> expression . PLUS term
+    (17) expression -> expression . MINUS term
+    (18) expression -> expression . GREATERTHAN term
+    (19) expression -> expression . SMALLERTHAN term
+    (20) expression -> expression . EQUALTO term
 
-    ID              reduce using rule 12 (assignation -> ID GREATERTHAN expression SEMICOLON .)
-    RBRACE          reduce using rule 12 (assignation -> ID GREATERTHAN expression SEMICOLON .)
+    RPAREN          shift and go to state 62
+    PLUS            shift and go to state 42
+    MINUS           shift and go to state 43
+    GREATERTHAN     shift and go to state 44
+    SMALLERTHAN     shift and go to state 45
+    EQUALTO         shift and go to state 46
 
 
 state 52
 
-    (13) assignation -> ID SMALLERTHAN expression SEMICOLON .
+    (13) assignation -> ID GREATERTHAN expression SEMICOLON .
 
-    ID              reduce using rule 13 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
-    RBRACE          reduce using rule 13 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
+    ID              reduce using rule 13 (assignation -> ID GREATERTHAN expression SEMICOLON .)
+    RBRACE          reduce using rule 13 (assignation -> ID GREATERTHAN expression SEMICOLON .)
 
 
 state 53
 
-    (14) assignation -> ID EQUALTO expression SEMICOLON .
+    (14) assignation -> ID SMALLERTHAN expression SEMICOLON .
 
-    ID              reduce using rule 14 (assignation -> ID EQUALTO expression SEMICOLON .)
-    RBRACE          reduce using rule 14 (assignation -> ID EQUALTO expression SEMICOLON .)
+    ID              reduce using rule 14 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
+    RBRACE          reduce using rule 14 (assignation -> ID SMALLERTHAN expression SEMICOLON .)
 
 
 state 54
 
-    (15) expression -> expression PLUS term .
-    (21) term -> term . TIMES factor
-    (22) term -> term . DIVIDE factor
+    (15) assignation -> ID EQUALTO expression SEMICOLON .
 
-    SEMICOLON       reduce using rule 15 (expression -> expression PLUS term .)
-    PLUS            reduce using rule 15 (expression -> expression PLUS term .)
-    MINUS           reduce using rule 15 (expression -> expression PLUS term .)
-    GREATERTHAN     reduce using rule 15 (expression -> expression PLUS term .)
-    SMALLERTHAN     reduce using rule 15 (expression -> expression PLUS term .)
-    EQUALTO         reduce using rule 15 (expression -> expression PLUS term .)
-    RPAREN          reduce using rule 15 (expression -> expression PLUS term .)
-    TIMES           shift and go to state 47
-    DIVIDE          shift and go to state 48
+    ID              reduce using rule 15 (assignation -> ID EQUALTO expression SEMICOLON .)
+    RBRACE          reduce using rule 15 (assignation -> ID EQUALTO expression SEMICOLON .)
 
 
 state 55
 
-    (16) expression -> expression MINUS term .
-    (21) term -> term . TIMES factor
-    (22) term -> term . DIVIDE factor
+    (16) expression -> expression PLUS term .
+    (22) term -> term . TIMES factor
+    (23) term -> term . DIVIDE factor
 
-    SEMICOLON       reduce using rule 16 (expression -> expression MINUS term .)
-    PLUS            reduce using rule 16 (expression -> expression MINUS term .)
-    MINUS           reduce using rule 16 (expression -> expression MINUS term .)
-    GREATERTHAN     reduce using rule 16 (expression -> expression MINUS term .)
-    SMALLERTHAN     reduce using rule 16 (expression -> expression MINUS term .)
-    EQUALTO         reduce using rule 16 (expression -> expression MINUS term .)
-    RPAREN          reduce using rule 16 (expression -> expression MINUS term .)
-    TIMES           shift and go to state 47
-    DIVIDE          shift and go to state 48
+    SEMICOLON       reduce using rule 16 (expression -> expression PLUS term .)
+    PLUS            reduce using rule 16 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 16 (expression -> expression PLUS term .)
+    GREATERTHAN     reduce using rule 16 (expression -> expression PLUS term .)
+    SMALLERTHAN     reduce using rule 16 (expression -> expression PLUS term .)
+    EQUALTO         reduce using rule 16 (expression -> expression PLUS term .)
+    RPAREN          reduce using rule 16 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
 
 
 state 56
 
-    (17) expression -> expression GREATERTHAN term .
-    (21) term -> term . TIMES factor
-    (22) term -> term . DIVIDE factor
+    (17) expression -> expression MINUS term .
+    (22) term -> term . TIMES factor
+    (23) term -> term . DIVIDE factor
 
-    SEMICOLON       reduce using rule 17 (expression -> expression GREATERTHAN term .)
-    PLUS            reduce using rule 17 (expression -> expression GREATERTHAN term .)
-    MINUS           reduce using rule 17 (expression -> expression GREATERTHAN term .)
-    GREATERTHAN     reduce using rule 17 (expression -> expression GREATERTHAN term .)
-    SMALLERTHAN     reduce using rule 17 (expression -> expression GREATERTHAN term .)
-    EQUALTO         reduce using rule 17 (expression -> expression GREATERTHAN term .)
-    RPAREN          reduce using rule 17 (expression -> expression GREATERTHAN term .)
-    TIMES           shift and go to state 47
-    DIVIDE          shift and go to state 48
+    SEMICOLON       reduce using rule 17 (expression -> expression MINUS term .)
+    PLUS            reduce using rule 17 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 17 (expression -> expression MINUS term .)
+    GREATERTHAN     reduce using rule 17 (expression -> expression MINUS term .)
+    SMALLERTHAN     reduce using rule 17 (expression -> expression MINUS term .)
+    EQUALTO         reduce using rule 17 (expression -> expression MINUS term .)
+    RPAREN          reduce using rule 17 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
 
 
 state 57
 
-    (18) expression -> expression SMALLERTHAN term .
-    (21) term -> term . TIMES factor
-    (22) term -> term . DIVIDE factor
+    (18) expression -> expression GREATERTHAN term .
+    (22) term -> term . TIMES factor
+    (23) term -> term . DIVIDE factor
 
-    SEMICOLON       reduce using rule 18 (expression -> expression SMALLERTHAN term .)
-    PLUS            reduce using rule 18 (expression -> expression SMALLERTHAN term .)
-    MINUS           reduce using rule 18 (expression -> expression SMALLERTHAN term .)
-    GREATERTHAN     reduce using rule 18 (expression -> expression SMALLERTHAN term .)
-    SMALLERTHAN     reduce using rule 18 (expression -> expression SMALLERTHAN term .)
-    EQUALTO         reduce using rule 18 (expression -> expression SMALLERTHAN term .)
-    RPAREN          reduce using rule 18 (expression -> expression SMALLERTHAN term .)
-    TIMES           shift and go to state 47
-    DIVIDE          shift and go to state 48
+    SEMICOLON       reduce using rule 18 (expression -> expression GREATERTHAN term .)
+    PLUS            reduce using rule 18 (expression -> expression GREATERTHAN term .)
+    MINUS           reduce using rule 18 (expression -> expression GREATERTHAN term .)
+    GREATERTHAN     reduce using rule 18 (expression -> expression GREATERTHAN term .)
+    SMALLERTHAN     reduce using rule 18 (expression -> expression GREATERTHAN term .)
+    EQUALTO         reduce using rule 18 (expression -> expression GREATERTHAN term .)
+    RPAREN          reduce using rule 18 (expression -> expression GREATERTHAN term .)
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
 
 
 state 58
 
-    (19) expression -> expression EQUALTO term .
-    (21) term -> term . TIMES factor
-    (22) term -> term . DIVIDE factor
+    (19) expression -> expression SMALLERTHAN term .
+    (22) term -> term . TIMES factor
+    (23) term -> term . DIVIDE factor
 
-    SEMICOLON       reduce using rule 19 (expression -> expression EQUALTO term .)
-    PLUS            reduce using rule 19 (expression -> expression EQUALTO term .)
-    MINUS           reduce using rule 19 (expression -> expression EQUALTO term .)
-    GREATERTHAN     reduce using rule 19 (expression -> expression EQUALTO term .)
-    SMALLERTHAN     reduce using rule 19 (expression -> expression EQUALTO term .)
-    EQUALTO         reduce using rule 19 (expression -> expression EQUALTO term .)
-    RPAREN          reduce using rule 19 (expression -> expression EQUALTO term .)
-    TIMES           shift and go to state 47
-    DIVIDE          shift and go to state 48
+    SEMICOLON       reduce using rule 19 (expression -> expression SMALLERTHAN term .)
+    PLUS            reduce using rule 19 (expression -> expression SMALLERTHAN term .)
+    MINUS           reduce using rule 19 (expression -> expression SMALLERTHAN term .)
+    GREATERTHAN     reduce using rule 19 (expression -> expression SMALLERTHAN term .)
+    SMALLERTHAN     reduce using rule 19 (expression -> expression SMALLERTHAN term .)
+    EQUALTO         reduce using rule 19 (expression -> expression SMALLERTHAN term .)
+    RPAREN          reduce using rule 19 (expression -> expression SMALLERTHAN term .)
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
 
 
 state 59
 
-    (21) term -> term TIMES factor .
+    (20) expression -> expression EQUALTO term .
+    (22) term -> term . TIMES factor
+    (23) term -> term . DIVIDE factor
 
-    TIMES           reduce using rule 21 (term -> term TIMES factor .)
-    DIVIDE          reduce using rule 21 (term -> term TIMES factor .)
-    SEMICOLON       reduce using rule 21 (term -> term TIMES factor .)
-    PLUS            reduce using rule 21 (term -> term TIMES factor .)
-    MINUS           reduce using rule 21 (term -> term TIMES factor .)
-    GREATERTHAN     reduce using rule 21 (term -> term TIMES factor .)
-    SMALLERTHAN     reduce using rule 21 (term -> term TIMES factor .)
-    EQUALTO         reduce using rule 21 (term -> term TIMES factor .)
-    RPAREN          reduce using rule 21 (term -> term TIMES factor .)
+    SEMICOLON       reduce using rule 20 (expression -> expression EQUALTO term .)
+    PLUS            reduce using rule 20 (expression -> expression EQUALTO term .)
+    MINUS           reduce using rule 20 (expression -> expression EQUALTO term .)
+    GREATERTHAN     reduce using rule 20 (expression -> expression EQUALTO term .)
+    SMALLERTHAN     reduce using rule 20 (expression -> expression EQUALTO term .)
+    EQUALTO         reduce using rule 20 (expression -> expression EQUALTO term .)
+    RPAREN          reduce using rule 20 (expression -> expression EQUALTO term .)
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
 
 
 state 60
 
-    (22) term -> term DIVIDE factor .
+    (22) term -> term TIMES factor .
 
-    TIMES           reduce using rule 22 (term -> term DIVIDE factor .)
-    DIVIDE          reduce using rule 22 (term -> term DIVIDE factor .)
-    SEMICOLON       reduce using rule 22 (term -> term DIVIDE factor .)
-    PLUS            reduce using rule 22 (term -> term DIVIDE factor .)
-    MINUS           reduce using rule 22 (term -> term DIVIDE factor .)
-    GREATERTHAN     reduce using rule 22 (term -> term DIVIDE factor .)
-    SMALLERTHAN     reduce using rule 22 (term -> term DIVIDE factor .)
-    EQUALTO         reduce using rule 22 (term -> term DIVIDE factor .)
-    RPAREN          reduce using rule 22 (term -> term DIVIDE factor .)
+    TIMES           reduce using rule 22 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 22 (term -> term TIMES factor .)
+    SEMICOLON       reduce using rule 22 (term -> term TIMES factor .)
+    PLUS            reduce using rule 22 (term -> term TIMES factor .)
+    MINUS           reduce using rule 22 (term -> term TIMES factor .)
+    GREATERTHAN     reduce using rule 22 (term -> term TIMES factor .)
+    SMALLERTHAN     reduce using rule 22 (term -> term TIMES factor .)
+    EQUALTO         reduce using rule 22 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 22 (term -> term TIMES factor .)
 
 
 state 61
 
-    (30) factor -> LPAREN expression RPAREN .
+    (23) term -> term DIVIDE factor .
 
-    TIMES           reduce using rule 30 (factor -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 30 (factor -> LPAREN expression RPAREN .)
-    SEMICOLON       reduce using rule 30 (factor -> LPAREN expression RPAREN .)
-    PLUS            reduce using rule 30 (factor -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 30 (factor -> LPAREN expression RPAREN .)
-    GREATERTHAN     reduce using rule 30 (factor -> LPAREN expression RPAREN .)
-    SMALLERTHAN     reduce using rule 30 (factor -> LPAREN expression RPAREN .)
-    EQUALTO         reduce using rule 30 (factor -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 30 (factor -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 23 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 23 (term -> term DIVIDE factor .)
+    SEMICOLON       reduce using rule 23 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 23 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 23 (term -> term DIVIDE factor .)
+    GREATERTHAN     reduce using rule 23 (term -> term DIVIDE factor .)
+    SMALLERTHAN     reduce using rule 23 (term -> term DIVIDE factor .)
+    EQUALTO         reduce using rule 23 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 23 (term -> term DIVIDE factor .)
+
+
+state 62
+
+    (31) factor -> LPAREN expression RPAREN .
+
+    TIMES           reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    SEMICOLON       reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    GREATERTHAN     reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    SMALLERTHAN     reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    EQUALTO         reduce using rule 31 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 31 (factor -> LPAREN expression RPAREN .)
 

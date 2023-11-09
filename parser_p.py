@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 from lexer import tokens
 from symbol_table import symbol_table, get_variable_type
-from semantic_cube import SemanticCube
+from semantic_cube import semantic_cube, get_result_type
 import sys
 
 def p_define_function(p):
@@ -30,6 +30,7 @@ def p_define_vars(p):
         id_list = p[3]
         for var_id in id_list:
             symbol_table[var_id] = var_type
+            print(symbol_table)
         
         p[0] = p[5]  
     elif len(p) == 2:
@@ -39,6 +40,7 @@ def p_type(p):
     '''
     type : INT
          | FLOAT
+         | STRING
     '''
     p[0] = p[1]
    
@@ -71,18 +73,9 @@ def p_expression(p):
                | expression SMALLERTHAN term
                | expression EQUALTO term
     '''
-    if p[2] == '+':
-        p[0] = p[1] + p[3]
-    elif p[2] == '-':
-        p[0] = p[1] - p[3]
-    elif p[2] == '>':
-        p[0] = p[1] > p[3]
-    elif p[2] == '<':
-        p[0] = p[1] < p[3]
-    elif p[2] == '==':
-        p[0] = p[1] == p[3]
+   
     
-    print(f'Operación: {p[1]} {p[2]} {p[3]} = {p[0]}')
+    #print(f'Operación: {p[1]} {p[2]} {p[3]} = {p[0]}')
 
 def p_expression_term(p):
     '''
@@ -95,31 +88,20 @@ def p_term(p):
     term : term TIMES factor
          | term DIVIDE factor
     '''
-    if p[2] == '*':
-        p[0] = p[1] * p[3]
-    elif p[2] == '/':
-        if p[3] != 0:
-            p[0] = p[1] / p[3]
-        else:
-            print("Error: División por cero.")
-            p[0] = None
-
+   
 def p_term_factor(p):
     '''
     term : factor
     '''
     p[0] = p[1]
 
-
 def p_factor_number(p):
     '''
     factor : FLOAT
            | INT
-           | STRING
-           
+           | STRING        
     '''
     p[0] = p[1]
-
 
 def p_factor_id(p):
     '''
@@ -152,6 +134,15 @@ def check_variable_declared(var_id):
     if var_id not in symbol_table:
         print(f"Error semántico: Variable '{var_id}' no declarada.")
 
+def get_expression_type(expression):
+    if isinstance(expression, str):  # Un identificador.
+        if expression in symbol_table:
+            return symbol_table[expression]['type']
+        else:
+            raise SyntaxError(f"Error: Variable '{expression}' no ha sido declarada.")
+    elif isinstance(expression, (int, float)):
+        return 'int' if isinstance(expression, int) else 'float'
+
 def p_error(p):
     print(f'Syntax error at {p.value!r}')
 
@@ -173,7 +164,6 @@ if __name__ == '__main__':
             data = f.read()
             f.close()
             dat = yacc.parse(data)
-            print(symbol_table)
             if dat == "COMPILED":
                 print("Compiled!")
         except EOFError:

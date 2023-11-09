@@ -1,5 +1,5 @@
 VARS
 int: y,x,j;
-{x = 2 + 2;
-y = 1 + x;
-j = 3.4;}
+float: i;
+string: er;
+{x = 2 + 2;}

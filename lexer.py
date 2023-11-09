@@ -10,6 +10,7 @@ reserved = {
    'VARS' : 'VARS',
    'int' : 'INT',
    'float' : 'FLOAT',
+   'string' : 'STRING',
    'program' : 'PROGRAM',
    'function' : 'FUNCTION',
    'return' : 'RETURN',
