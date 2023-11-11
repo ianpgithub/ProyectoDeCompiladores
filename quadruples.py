@@ -39,6 +39,7 @@ def process_operator():
             generate_quad(operator, left_operand, right_operand, result)
             PilaO.append(result)
             PTypes.append(result_type)
+            print(result_type)
             # Si alguno de los operandos era una variable temporal, debería devolverse a AVAIL aquí
         else:
             raise TypeError("Type mismatch")
@@ -55,18 +56,19 @@ def process_operator():
             generate_quad(operator, left_operand, right_operand, result)
             PilaO.append(result)
             PTypes.append(result_type)
+            print(result_type)
             # Si alguno de los operandos era una variable temporal, debería devolverse a AVAIL aquí
         else:
             raise TypeError("Type mismatch")
 
 # Ejemplo de configuración
-PilaO.extend(['x', 'y'])  
-PTypes.extend(['int', 'int'])  
-POper.append('+') 
+#PilaO.extend(['x', 'y'])  
+#PTypes.extend(['int', 'int'])  
+#POper.append('+') 
 
 # Llamada a la función
-process_operator()  # Procesará los operandos y el operador en las pilas
+#process_operator()  # Procesará los operandos y el operador en las pilas
 
 # Ahora deberías poder ver los cuádruplos generados
-print(Quads)
+#print(Quads)
 

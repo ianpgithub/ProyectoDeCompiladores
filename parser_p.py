@@ -2,6 +2,7 @@ import ply.yacc as yacc
 from lexer import tokens
 from symbol_table import symbol_table, get_variable_type
 from semantic_cube import semantic_cube, get_result_type
+from quadruples import PilaO,POper,PTypes,process_operator,Quads
 import sys
 
 def p_define_function(p):
@@ -29,7 +30,7 @@ def p_define_vars(p):
         var_type = p[1]
         id_list = p[3]
         for var_id in id_list:
-            symbol_table[var_id] = var_type
+            symbol_table[var_id] = {'name': var_id, 'type': var_type}
             print(symbol_table)
         
         p[0] = p[5]  
@@ -57,13 +58,18 @@ def p_assignation(p):
                 | ID SMALLERTHAN expression SEMICOLON
                 | ID EQUALTO expression SEMICOLON 
     '''
-    var_id = p[1]
-    check_variable_declared(var_id)
-    if var_id in symbol_table:
-        symbol_table[var_id] = p[3]
-        print(f'Asignación: {var_id} = {p[3]}')
+    var_id = p[1]  # Nombre de la variable (lado izquierdo)
+    expression_result = p[3]  # Resultado de la expresión (lado derecho)
+    # Generar cuádruplo para la asignación
+    if 'name' in expression_result:
+        # Si el lado derecho es una variable o un resultado de una expresión
+        right_operand = expression_result['name']
     else:
-        raise SyntaxError(f"Error: Variable '{var_id}' no ha sido declarada.")
+        # Si el lado derecho es un literal
+        right_operand = expression_result
+
+    quad = ('=', right_operand, None, var_id)
+    Quads.append(quad)
     
 def p_expression(p):
     '''
@@ -73,8 +79,15 @@ def p_expression(p):
                | expression SMALLERTHAN term
                | expression EQUALTO term
     '''
-   
-    
+    if len(p) == 4:  # Es una operación binaria
+        PilaO.append(p[1]['name'])  # Operando izquierdo
+        PilaO.append(p[3]['name'])  # Operando derecho
+        PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
+        PTypes.append(p[3]['type'])  # Tipo del operando derecho
+        POper.append(p[2])           # Operador
+        process_operator()           # Procesar la operación
+        p[0] = {'name': PilaO[-1], 'type': PTypes[-1]}  # Resultado
+        
     #print(f'Operación: {p[1]} {p[2]} {p[3]} = {p[0]}')
 
 def p_expression_term(p):
@@ -88,6 +101,14 @@ def p_term(p):
     term : term TIMES factor
          | term DIVIDE factor
     '''
+    if len(p) == 4:  # Es una operación binaria (multiplicación o división)
+        PilaO.append(p[1]['name'])  # Operando izquierdo
+        PilaO.append(p[3]['name'])  # Operando derecho
+        PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
+        PTypes.append(p[3]['type'])  # Tipo del operando derecho
+        POper.append(p[2])           # Operador (TIMES o DIVIDE)
+        process_operator()           # Procesar la operación
+        p[0] = {'name': PilaO[-1], 'type': PTypes[-1]}  # Resultado
    
 def p_term_factor(p):
     '''
@@ -101,7 +122,12 @@ def p_factor_number(p):
            | INT
            | STRING        
     '''
-    p[0] = p[1]
+    if isinstance(p[1], float):  # Verifica si el literal es un float
+        p[0] = {'name': str(p[1]), 'type': 'float'}
+    elif isinstance(p[1], int):  # Verifica si el literal es un int
+        p[0] = {'name': str(p[1]), 'type': 'int'}
+    elif isinstance(p[1], str):  # Verifica si el literal es una cadena de texto
+        p[0] = {'name': p[1], 'type': 'string'}
 
 def p_factor_id(p):
     '''
@@ -132,7 +158,7 @@ def p_factor_grouped(p):
 
 def check_variable_declared(var_id):
     if var_id not in symbol_table:
-        print(f"Error semántico: Variable '{var_id}' no declarada.")
+        print(f"Error: Variable '{var_id}' has not been declared.")
 
 def get_expression_type(expression):
     if isinstance(expression, str):  # Un identificador.
@@ -164,6 +190,8 @@ if __name__ == '__main__':
             data = f.read()
             f.close()
             dat = yacc.parse(data)
+            for quad in Quads:
+                print(quad)
             if dat == "COMPILED":
                 print("Compiled!")
         except EOFError:

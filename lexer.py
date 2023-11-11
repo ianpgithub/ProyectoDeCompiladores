@@ -23,12 +23,10 @@ reserved = {
 
 # List of token names.   This is always required
 tokens = [
-   'NUMBER',
    'PLUS',
    'MINUS',
    'TIMES',
    'DIVIDE',
-   'STRING',
    'LPAREN',
    'RPAREN',
    'EQUAL',
@@ -54,7 +52,6 @@ t_TIMES   = r'\*'
 t_DIVIDE  = r'\/'
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
-t_STRING = r'\".*?\"'
 t_EQUAL   = r'='
 t_EQUALTO = r'=='
 t_LBRACKET = r'\['
@@ -78,6 +75,11 @@ def t_FLOAT(t):
 def t_INT(t):
     r'\d+'
     t.value = int(t.value)    
+    return t
+
+def t_STRING(t):
+    r'\".*?\"'
+    t.value = str(t.value)
     return t
 
 #Defines PROGRAM before id so it doesnt gets confused
@@ -133,7 +135,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test
-#data = " while (x + 2) do{ write read for x to y do 1 \"Hola\"} main"
+#data = " while (x + 2) string do{ write read for x to y do 1 \"Hola\"} main"
 #lexer.input(data)
 
 # Print tokens

@@ -1,5 +1,7 @@
 VARS
 int: y,x,j;
-float: i;
+float: i,j;
 string: er;
-{x = 2 + 2;}
+{x = 2 + 2;
+i = x / 3 * x;
+j = 1;}

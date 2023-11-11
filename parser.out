@@ -10,7 +10,6 @@ Unused terminals:
     IF
     LBRACKET
     MAIN
-    NUMBER
     OR
     PROGRAM
     RBRACKET
@@ -79,7 +78,6 @@ LBRACKET             :
 LPAREN               : 31
 MAIN                 : 
 MINUS                : 17 30
-NUMBER               : 
 OR                   : 
 PLUS                 : 16 29
 PROGRAM              : 
