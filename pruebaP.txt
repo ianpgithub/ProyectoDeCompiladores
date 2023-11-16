@@ -1,7 +1,9 @@
 VARS
 int: y,x,j;
 float: i,j;
-string: er;
-{x = 2 + 2;
-i = x / 3 * x;
-j = 1;}
+bool: b,p;
+{if (b == b) then {
+    x = x + 2;
+    y = 3 / 2;
+}
+}

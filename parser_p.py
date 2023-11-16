@@ -2,7 +2,7 @@ import ply.yacc as yacc
 from lexer import tokens
 from symbol_table import symbol_table, get_variable_type
 from semantic_cube import semantic_cube, get_result_type
-from quadruples import PilaO,POper,PTypes,process_operator,Quads
+from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes
 import sys
 
 def p_define_function(p):
@@ -42,21 +42,21 @@ def p_type(p):
     type : INT
          | FLOAT
          | STRING
+         | BOOL
     '''
     p[0] = p[1]
    
 def p_statute(p):
     '''
     statute : assignation statute
+            | decision statute
             | empty
     '''
 
 def p_assignation(p):
     '''
     assignation : ID EQUAL expression SEMICOLON
-                | ID GREATERTHAN expression SEMICOLON
-                | ID SMALLERTHAN expression SEMICOLON
-                | ID EQUALTO expression SEMICOLON 
+    
     '''
     var_id = p[1]  # Nombre de la variable (lado izquierdo)
     expression_result = p[3]  # Resultado de la expresión (lado derecho)
@@ -70,16 +70,72 @@ def p_assignation(p):
 
     quad = ('=', right_operand, None, var_id)
     Quads.append(quad)
+
+def p_decision(p):
+    '''
+    decision : IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
+             | IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE
+    '''
+    if not PBoolTypes:  # Verifica si hay un resultado booleano
+        raise Exception("Internal error: No boolean type found for 'if' condition")
     
+    print("El pop es:", PTypes.pop())
+    exp_type = PBoolTypes.pop()
+    print("El exp_type es:", exp_type)
+    if exp_type != 'bool':
+        raise TypeError("Type mismatch: Expected boolean expression in 'if'")
+    else:
+        result = PilaO.pop()
+        print("result", result)
+        Quads.append(('GotoF', result, None, '_'))
+        PJumps.append(len(Quads) - 1)  # Guardar posición del cuádruplo 'GotoF'
+
+    if len(p) == 10:  # Estructura con 'else'
+        # Rellenar 'GotoF' del 'if'
+        fill_gotoF(PJumps.pop())
+
+        # Generar cuádruplo 'Goto' para saltar sobre el 'else'
+        Quads.append(('Goto', None, None, '_'))
+        false_jump = PJumps.pop()
+        PJumps.push(len(Quads) - 1)
+
+        # ... Código para manejar el cuerpo del 'else' ...
+
+        # Rellenar 'Goto' después del 'else'
+        fill_goto(PJumps.pop())
+    else:  # Estructura sin 'else'
+        # Rellenar 'GotoF' del 'if'
+        fill_gotoF(PJumps.pop())
+
+def p_expression_bool(p):
+    '''
+    expression_bool : expression GREATERTHAN term
+                    | expression SMALLERTHAN term
+                    | expression EQUALTO term 
+    '''
+    if len(p) == 4:
+        # Asumiendo que p[1] y p[3] ya han sido evaluados y sus resultados están en PilaO
+        PilaO.append(p[1]['name'])  # Operando izquierdo
+        PilaO.append(p[3]['name'])  # Operando derecho
+        PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
+        PTypes.append(p[3]['type'])  # Tipo del operando derecho
+        POper.append(p[2])           # Operador de comparación
+        process_operator()           # Procesar la operación de comparación
+
+        # Asumiendo que process_operator maneja correctamente las comparaciones
+        # y pone el resultado en PilaO y el tipo en PTypes
+        result_type = PTypes.pop()  # El tipo resultante debe ser 'bool'
+        result = PilaO.pop()        # El resultado de la comparación
+
+        p[0] = {'name': result, 'type': result_type}  # Guardar el resultado y el tipo
+        PBoolTypes.append(result_type) 
+
 def p_expression(p):
     '''
     expression : expression PLUS term
-               | expression MINUS term
-               | expression GREATERTHAN term
-               | expression SMALLERTHAN term
-               | expression EQUALTO term
+               | expression MINUS term      
     '''
-    if len(p) == 4:  # Es una operación binaria
+    if len(p) == 4: 
         PilaO.append(p[1]['name'])  # Operando izquierdo
         PilaO.append(p[3]['name'])  # Operando derecho
         PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
@@ -88,7 +144,6 @@ def p_expression(p):
         process_operator()           # Procesar la operación
         p[0] = {'name': PilaO[-1], 'type': PTypes[-1]}  # Resultado
         
-    #print(f'Operación: {p[1]} {p[2]} {p[3]} = {p[0]}')
 
 def p_expression_term(p):
     '''
@@ -120,7 +175,7 @@ def p_factor_number(p):
     '''
     factor : FLOAT
            | INT
-           | STRING        
+           | STRING 
     '''
     if isinstance(p[1], float):  # Verifica si el literal es un float
         p[0] = {'name': str(p[1]), 'type': 'float'}

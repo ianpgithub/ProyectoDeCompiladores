@@ -16,3 +16,6 @@ el cubo semantico.
 
 Avance 4
 Se completo el cubo semantico, aunque puede que haya correciones.
+
+Avance 5
+Se realizaron los cuadruplos y ya funciona el +,-,*,/ y =.

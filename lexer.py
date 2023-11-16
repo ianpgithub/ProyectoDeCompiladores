@@ -11,6 +11,9 @@ reserved = {
    'int' : 'INT',
    'float' : 'FLOAT',
    'string' : 'STRING',
+   'bool' : 'BOOL',
+   'true' : 'TRUE',
+   'false' : 'FALSE',
    'program' : 'PROGRAM',
    'function' : 'FUNCTION',
    'return' : 'RETURN',
@@ -82,6 +85,16 @@ def t_STRING(t):
     t.value = str(t.value)
     return t
 
+def t_TRUE(t):
+    r'TRUE'
+    t.value = True
+    return t
+
+def t_FALSE(t):
+    r'FALSE'
+    t.value = False
+    return t
+
 #Defines PROGRAM before id so it doesnt gets confused
 def t_PROGRAM(t):
     r'PROGRAM'
@@ -135,7 +148,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test
-#data = " while (x + 2) string do{ write read for x to y do 1 \"Hola\"} main"
+#data = " true > bool while (x + 2) string do{ write read for x to y do 1 \"Hola\"} main"
 #lexer.input(data)
 
 # Print tokens
