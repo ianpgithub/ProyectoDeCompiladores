@@ -37,12 +37,15 @@ def process_operator():
 
         result_type = get_result_type(left_type, right_type, operator)
         if result_type != 'ERROR':
-            result = next_temp()  # Generar variable temporal para el resultado
+            result = next_temp()
+            resultBool = result
+            print("Result del process", result)
             generate_quad(operator, left_operand, right_operand, result)
+            Quads.append(('GotoF', resultBool, None, '_'))
+            PJumps.append(len(Quads) - 1) #Guardar donde se debe colocar el
             PilaO.append(result)
             PTypes.append('bool')
             PBoolTypes.append('bool')
-            print(result_type)  # El resultado de una comparación es siempre booleano
         else:
             raise TypeError("Type mismatch")
         
@@ -82,10 +85,15 @@ def process_operator():
         else:
             raise TypeError("Type mismatch")
 
-def fill_gotoF(jump_index):
-    Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], len(Quads))
 
-def fill_goto(jump_index):
-    Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], len(Quads))
+def fill_gotoF():
+    if PJumps:
+        jump_index = PJumps.pop()
+        Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], len(Quads)+1)
+
+def fill_goto():
+    if PJumps:
+        jump_index = PJumps.pop()
+        Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], len(Quads))
 
 

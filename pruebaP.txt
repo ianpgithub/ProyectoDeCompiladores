@@ -2,8 +2,13 @@ VARS
 int: y,x,j;
 float: i,j;
 bool: b,p;
-{if (b == b) then {
+{
+if (b == b) then {
     x = x + 2;
     y = 3 / 2;
+    j = x + y;
+} else {
+    x = 2;
 }
+x = 1 + 2;
 }

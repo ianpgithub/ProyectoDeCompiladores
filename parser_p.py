@@ -79,33 +79,21 @@ def p_decision(p):
     if not PBoolTypes:  # Verifica si hay un resultado booleano
         raise Exception("Internal error: No boolean type found for 'if' condition")
     
-    print("El pop es:", PTypes.pop())
-    exp_type = PBoolTypes.pop()
-    print("El exp_type es:", exp_type)
-    if exp_type != 'bool':
-        raise TypeError("Type mismatch: Expected boolean expression in 'if'")
-    else:
-        result = PilaO.pop()
-        print("result", result)
-        Quads.append(('GotoF', result, None, '_'))
-        PJumps.append(len(Quads) - 1)  # Guardar posición del cuádruplo 'GotoF'
+    PBoolTypes.pop()
+    
+    if len(p) == 13:  # Estructura con 'else'
 
-    if len(p) == 10:  # Estructura con 'else'
+        
         # Rellenar 'GotoF' del 'if'
-        fill_gotoF(PJumps.pop())
+        fill_gotoF()
 
         # Generar cuádruplo 'Goto' para saltar sobre el 'else'
         Quads.append(('Goto', None, None, '_'))
-        false_jump = PJumps.pop()
-        PJumps.push(len(Quads) - 1)
-
-        # ... Código para manejar el cuerpo del 'else' ...
-
-        # Rellenar 'Goto' después del 'else'
-        fill_goto(PJumps.pop())
-    else:  # Estructura sin 'else'
-        # Rellenar 'GotoF' del 'if'
-        fill_gotoF(PJumps.pop())
+        PJumps.append(len(Quads) - 1)
+        
+        fill_goto()
+    else:  
+        fill_gotoF()
 
 def p_expression_bool(p):
     '''
