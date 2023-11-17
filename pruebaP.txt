@@ -1,14 +1,14 @@
 VARS
-int: y,x,j;
+int: y,x,j,variable;
 float: i,j;
 bool: b,p;
 {
 if (b == b) then {
     x = x + 2;
-    y = 3 / 2;
-    j = x + y;
+    y = 1;
 } else {
-    x = 2;
+    y =  2 + 1;
+    x = variable;
 }
 x = 1 + 2;
 }

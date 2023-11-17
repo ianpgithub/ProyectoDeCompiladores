@@ -17,6 +17,7 @@ PBoolTypes = [] #Pila de tipos booleanos
 POper = []  # Pila de operadores
 Quads = []  # Lista de cuádruplos
 PJumps = [] #Lista de saltos
+PCond = []
 
 # Suponiendo que `generate_quad` es una función que genera un cuádruplo y lo agrega a la lista Quads.
 # También suponemos que `AVAIL.next()` te da el siguiente nombre de variable temporal disponible.
@@ -27,29 +28,8 @@ def generate_quad(operator, left_operand, right_operand, result):
     return quad
 
 # Procesar los cuadruplos
-def process_operator():
-    if POper and (POper[-1] == '>' or POper[-1] == '<' or POper[-1] == '=='):
-        right_operand = PilaO.pop()
-        right_type = PTypes.pop()
-        left_operand = PilaO.pop()
-        left_type = PTypes.pop()
-        operator = POper.pop()
-
-        result_type = get_result_type(left_type, right_type, operator)
-        if result_type != 'ERROR':
-            result = next_temp()
-            resultBool = result
-            print("Result del process", result)
-            generate_quad(operator, left_operand, right_operand, result)
-            Quads.append(('GotoF', resultBool, None, '_'))
-            PJumps.append(len(Quads) - 1) #Guardar donde se debe colocar el
-            PilaO.append(result)
-            PTypes.append('bool')
-            PBoolTypes.append('bool')
-        else:
-            raise TypeError("Type mismatch")
-        
-    elif POper and (POper[-1] == '+' or POper[-1] == '-'):
+def process_operator():  
+    if POper and (POper[-1] == '+' or POper[-1] == '-'):
         right_operand = PilaO.pop()
         right_type = PTypes.pop()
         left_operand = PilaO.pop()
@@ -62,7 +42,6 @@ def process_operator():
             generate_quad(operator, left_operand, right_operand, result)
             PilaO.append(result)
             PTypes.append(result_type)
-            print(result_type)
             # Si alguno de los operandos era una variable temporal, debería devolverse a AVAIL aquí
         else:
             raise TypeError("Type mismatch")
@@ -80,16 +59,38 @@ def process_operator():
             generate_quad(operator, left_operand, right_operand, result)
             PilaO.append(result)
             PTypes.append(result_type)
-            print(result_type)
             # Si alguno de los operandos era una variable temporal, debería devolverse a AVAIL aquí
         else:
             raise TypeError("Type mismatch")
+
+def process_condition():
+     if POper and (POper[-1] == '>' or POper[-1] == '<' or POper[-1] == '=='):
+        right_operand = PilaO.pop()
+        right_type = PTypes.pop()
+        left_operand = PilaO.pop()
+        left_type = PTypes.pop()
+        operator = POper.pop()
+
+        result_type = get_result_type(left_type, right_type, operator)
+        if result_type != 'ERROR':
+            result = next_temp()
+            resultBool = result
+            generate_quad(operator, left_operand, right_operand, result)
+            Quads.append(('GotoF', resultBool, None, '_'))
+            PJumps.append(len(Quads) - 1) #Guardar donde se debe colocar el
+            PilaO.append(result)
+            PTypes.append('bool')
+            PBoolTypes.append('bool')
+        else:
+            raise TypeError("Type mismatch")
+
+#def process_else():
 
 
 def fill_gotoF():
     if PJumps:
         jump_index = PJumps.pop()
-        Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], len(Quads)+1)
+        Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], len(Quads)+2)
 
 def fill_goto():
     if PJumps:

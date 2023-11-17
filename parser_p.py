@@ -2,7 +2,7 @@ import ply.yacc as yacc
 from lexer import tokens
 from symbol_table import symbol_table, get_variable_type
 from semantic_cube import semantic_cube, get_result_type
-from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes
+from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition,PCond
 import sys
 
 def p_define_function(p):
@@ -49,7 +49,7 @@ def p_type(p):
 def p_statute(p):
     '''
     statute : assignation statute
-            | decision statute
+            | decision def_else statute
             | empty
     '''
 
@@ -73,27 +73,36 @@ def p_assignation(p):
 
 def p_decision(p):
     '''
-    decision : IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE ELSE LBRACE statute RBRACE
-             | IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE
+    decision : IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE def_else
     '''
+    
     if not PBoolTypes:  # Verifica si hay un resultado booleano
         raise Exception("Internal error: No boolean type found for 'if' condition")
     
     PBoolTypes.pop()
-    
-    if len(p) == 13:  # Estructura con 'else'
+    PCond.append(p[1])
+    print("PCond", PCond)
+    fill_gotoF()
 
-        
-        # Rellenar 'GotoF' del 'if'
-        fill_gotoF()
-
-        # Generar cuádruplo 'Goto' para saltar sobre el 'else'
+    if len(p) > 10:  # Estructura con 'else'
         Quads.append(('Goto', None, None, '_'))
-        PJumps.append(len(Quads) - 1)
-        
+        PJumps.append(len(Quads)-1)
+
+
+        # Llama a la función para procesar 'def_else', que manejará el bloque 'else'
+
+        # Rellenar el 'Goto' después de procesar el 'else'
         fill_goto()
+
     else:  
-        fill_gotoF()
+        pass
+
+def p_def_else(p):
+    '''
+    def_else : ELSE LBRACE statute RBRACE
+             | empty
+    '''
+    
 
 def p_expression_bool(p):
     '''
@@ -102,13 +111,12 @@ def p_expression_bool(p):
                     | expression EQUALTO term 
     '''
     if len(p) == 4:
-        # Asumiendo que p[1] y p[3] ya han sido evaluados y sus resultados están en PilaO
         PilaO.append(p[1]['name'])  # Operando izquierdo
         PilaO.append(p[3]['name'])  # Operando derecho
         PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
         PTypes.append(p[3]['type'])  # Tipo del operando derecho
         POper.append(p[2])           # Operador de comparación
-        process_operator()           # Procesar la operación de comparación
+        process_condition()           # Procesar la operación de comparación
 
         # Asumiendo que process_operator maneja correctamente las comparaciones
         # y pone el resultado en PilaO y el tipo en PTypes
