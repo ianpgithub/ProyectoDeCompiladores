@@ -2,7 +2,7 @@ import ply.yacc as yacc
 from lexer import tokens
 from symbol_table import symbol_table, get_variable_type
 from semantic_cube import semantic_cube, get_result_type
-from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition,PCond
+from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition
 import sys
 
 def p_define_function(p):
@@ -49,9 +49,10 @@ def p_type(p):
 def p_statute(p):
     '''
     statute : assignation statute
-            | decision def_else statute
+            | decision statute
             | empty
     '''
+    p[0] = p[1]
 
 def p_assignation(p):
     '''
@@ -70,39 +71,34 @@ def p_assignation(p):
 
     quad = ('=', right_operand, None, var_id)
     Quads.append(quad)
-
+    p[0] = p[1]
+    
 def p_decision(p):
     '''
-    decision : IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE def_else
+    decision : IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE
+             | IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE ELSE LBRACE def_else statute RBRACE
     '''
     
     if not PBoolTypes:  # Verifica si hay un resultado booleano
         raise Exception("Internal error: No boolean type found for 'if' condition")
     
     PBoolTypes.pop()
-    PCond.append(p[1])
-    print("PCond", PCond)
-    fill_gotoF()
-
-    if len(p) > 10:  # Estructura con 'else'
-        Quads.append(('Goto', None, None, '_'))
-        PJumps.append(len(Quads)-1)
-
-
-        # Llama a la función para procesar 'def_else', que manejará el bloque 'else'
-
-        # Rellenar el 'Goto' después de procesar el 'else'
-        fill_goto()
-
-    else:  
-        pass
+    fill_gotoF
+    if len(p) == 9:
+        fill_gotoF()
+    
 
 def p_def_else(p):
     '''
-    def_else : ELSE LBRACE statute RBRACE
-             | empty
+    def_else : empty
     '''
-    
+    if len(p) == 2:
+        fill_gotoF
+        Quads.append(('Goto', None, None, '_'))
+        PJumps.append(len(Quads)-1)
+        print(PJumps)
+        fill_goto
+        
 
 def p_expression_bool(p):
     '''
@@ -117,7 +113,7 @@ def p_expression_bool(p):
         PTypes.append(p[3]['type'])  # Tipo del operando derecho
         POper.append(p[2])           # Operador de comparación
         process_condition()           # Procesar la operación de comparación
-
+        
         # Asumiendo que process_operator maneja correctamente las comparaciones
         # y pone el resultado en PilaO y el tipo en PTypes
         result_type = PTypes.pop()  # El tipo resultante debe ser 'bool'
@@ -139,7 +135,6 @@ def p_expression(p):
         POper.append(p[2])           # Operador
         process_operator()           # Procesar la operación
         p[0] = {'name': PilaO[-1], 'type': PTypes[-1]}  # Resultado
-        
 
 def p_expression_term(p):
     '''
