@@ -77,8 +77,7 @@ def process_condition():
             resultBool = result
             generate_quad(operator, left_operand, right_operand, result)
             Quads.append(('GotoF', resultBool, None, '_'))
-            PJumps.append(len(Quads))
-            print(PJumps) #Guardar donde se debe colocar el
+            PJumps.append(len(Quads)-1) #Guardar donde se debe colocar el salto.
             PilaO.append(result)
             PTypes.append('bool')
             PBoolTypes.append('bool')
@@ -88,11 +87,14 @@ def process_condition():
 def fill_gotoF():
     if PJumps:
         jump_index = PJumps.pop()
-        Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], len(Quads)+1)
+        target_index = len(Quads) + 1  # Salta al cuádruplo después del bloque if
+        Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
 
 def fill_goto():
     if PJumps:
         jump_index = PJumps.pop()
-        Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], len(Quads))
+        target_index = len(Quads) # Salta al cuádruplo después del bloque else
+        Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
+
 
 

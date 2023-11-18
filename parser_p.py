@@ -83,23 +83,21 @@ def p_decision(p):
         raise Exception("Internal error: No boolean type found for 'if' condition")
     
     PBoolTypes.pop()
-    fill_gotoF
+   
     if len(p) == 9:
         fill_gotoF()
-    
+    if len(p) == 14:
+        fill_gotoF()
 
 def p_def_else(p):
     '''
     def_else : empty
     '''
     if len(p) == 2:
-        fill_gotoF
         Quads.append(('Goto', None, None, '_'))
+        fill_gotoF()
         PJumps.append(len(Quads)-1)
-        print(PJumps)
-        fill_goto
         
-
 def p_expression_bool(p):
     '''
     expression_bool : expression GREATERTHAN term
