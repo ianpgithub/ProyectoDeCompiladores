@@ -53,7 +53,6 @@ def p_statute(p):
     statute : assignation statute
             | decision statute
             | condition statute
-            | no_condition statute
             | return statute
             | define_write statute
             | read statute
@@ -80,11 +79,6 @@ def p_decision(p):
 def p_condition(p):
     '''
     condition : WHILE LPAREN expression RPAREN DO LBRACE statute RBRACE
-    '''
-
-def p_no_condition(p):
-    '''
-    no_condition : FOR ID EQUAL expression TO expression DO LBRACE statute RBRACE
     '''
 
 def p_return(p):

@@ -5,7 +5,6 @@ Unused terminals:
     DO
     ENDL
     FALSE
-    FOR
     FUNCTION
     LBRACKET
     MAIN
@@ -70,7 +69,6 @@ EQUAL                : 14
 EQUALTO              : 20
 FALSE                : 
 FLOAT                : 8 27
-FOR                  : 
 FUNCTION             : 
 GREATERTHAN          : 18
 ID                   : 3 4 14 30

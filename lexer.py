@@ -19,7 +19,6 @@ reserved = {
    'return' : 'RETURN',
    'read' : 'READ',
    'write' : 'WRITE',
-   'for' : 'FOR',
    'to' : 'TO',
    'main' : 'MAIN'
 }
