@@ -3,14 +3,7 @@ int: y,x,j,variable;
 float: i,j;
 bool: b,p;
 {
-if ( x == 2) then {
-    x = 2 + 1;
-    while ( x > 2) do {
-        j = 1;
-    } 
-    while ( x == 1) do {
-        x = 9;
-    } 
-}
+    j = 1;
 x = 3 + 5;
+return (j + 1 / 2);
 }

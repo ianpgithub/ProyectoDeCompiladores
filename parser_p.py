@@ -51,6 +51,7 @@ def p_statute(p):
     statute : assignation statute
             | decision statute
             | condition statute
+            | return statute
             | empty
     '''
     p[0] = p[1]
@@ -151,6 +152,13 @@ def p_expression_bool_while(p):
 
         p[0] = {'name': result, 'type': result_type}  # Guardar el resultado y el tipo
         PBoolTypes.append(result_type)  
+
+def p_return(p):
+    '''
+    return : RETURN LPAREN expression RPAREN SEMICOLON
+    '''
+    valor_expression = p[3].get('name')
+    Quads.append(('RETURN', None, None, valor_expression))
 
 def p_expression(p):
     '''
