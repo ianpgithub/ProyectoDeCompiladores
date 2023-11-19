@@ -10,18 +10,17 @@ def next_temp():
     temp_counter += 1
     return temp_name
 
-# Pseudo-código: 1.- PilaO.Push(id.name) and PTypes.Push(id.type)
+
 PilaO = []  # Pila de operandos
 PTypes = []  # Pila de tipos
 PBoolTypes = [] #Pila de tipos booleanos
 POper = []  # Pila de operadores
 Quads = []  # Lista de cuádruplos
 PJumps = [] #Lista de saltos
-PWhile = []
+PWhile = [] #Pila para guardar el goto del while
 
-# Suponiendo que `generate_quad` es una función que genera un cuádruplo y lo agrega a la lista Quads.
-# También suponemos que `AVAIL.next()` te da el siguiente nombre de variable temporal disponible.
 
+#Generador de cuadruplos
 def generate_quad(operator, left_operand, right_operand, result):
     quad = (operator, left_operand, right_operand, result)
     Quads.append(quad)
@@ -38,11 +37,11 @@ def process_operator():
         
         result_type = get_result_type(left_type, right_type, operator)
         if result_type != 'ERROR':
-            result = next_temp() #next_temp.next()
+            result = next_temp()
             generate_quad(operator, left_operand, right_operand, result)
             PilaO.append(result)
             PTypes.append(result_type)
-            # Si alguno de los operandos era una variable temporal, debería devolverse a AVAIL aquí
+            
         else:
             raise TypeError("Type mismatch")
         
@@ -55,11 +54,11 @@ def process_operator():
 
         result_type = get_result_type(left_type, right_type, operator)
         if result_type != 'ERROR':
-            result = next_temp() #next_temp.next()
+            result = next_temp() 
             generate_quad(operator, left_operand, right_operand, result)
             PilaO.append(result)
             PTypes.append(result_type)
-            # Si alguno de los operandos era una variable temporal, debería devolverse a AVAIL aquí
+            
         else:
             raise TypeError("Type mismatch")
 
@@ -109,14 +108,13 @@ def process_condition():
 def fill_gotoF():
     if PJumps:
         jump_index = PJumps.pop()
-        target_index = len(Quads) + 1  # Salta al cuádruplo después del bloque if
+        target_index = len(Quads) + 1
         Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
 
 def fill_goto():
     if PJumps:
         jump_index = PJumps.pop()
-        print(PWhile)
-        target_index = PWhile.pop() - 1 # Salta al cuádruplo inicial de while
+        target_index = PWhile.pop() - 1 
         Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
 
 

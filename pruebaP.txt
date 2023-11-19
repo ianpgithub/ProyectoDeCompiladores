@@ -1,9 +1,18 @@
+PROGRAM MyR;
 VARS
-int: y,x,j,variable;
-float: i,j;
-bool: b,p;
+int: y,x;
+float: i;
+
+function int sumar (int: j)
+VARS int: j;
 {
-    j = 1;
-x = 3 + 5;
-return (j + 1 / 2);
+    x = y;
+    while (x > 2) do {
+        x = 2 + 2;
+    }
+}
+
+main(){
+    y = 1;
+    return(y);
 }

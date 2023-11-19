@@ -1,15 +1,15 @@
 import ply.yacc as yacc
 from lexer import tokens
-from symbol_table import symbol_table, get_variable_type
+from symbol_table import symbol_table, dirFunc
 from semantic_cube import semantic_cube, get_result_type
 from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition,process_decision
 import sys
 
-def p_define_function(p):
+def p_program(p):
     '''
-    define_function : VARS define_vars LBRACE statute RBRACE
-                    | VARS define_vars LBRACE statute RBRACE define_function
+    program : PROGRAM ID SEMICOLON VARS define_vars define_function main
     '''
+    p[0] = "COMPILED"
 
 def p_id_list(p):
     '''
@@ -31,8 +31,9 @@ def p_define_vars(p):
         id_list = p[3]
         for var_id in id_list:
             symbol_table[var_id] = {'name': var_id, 'type': var_type}
-            print(symbol_table)
-        
+            nameFunc = 'global'
+            dirFunc[nameFunc] = {'funcType' : 'void', 'vars' : symbol_table}
+            print(dirFunc)
         p[0] = p[5]  
     elif len(p) == 2:
         p[0] = None  
@@ -46,12 +47,34 @@ def p_type(p):
     '''
     p[0] = p[1]
    
+def p_define_function(p):
+    '''
+    define_function : FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE define_function
+                    | empty
+    '''
+
+def p_function(p):
+    '''
+    function : ID LPAREN expression RPAREN SEMICOLON
+    '''
+
+def p_main(p):
+    '''
+    main : MAIN LPAREN RPAREN LBRACE statute RBRACE
+    '''
+
+def p_parameters(p):
+    '''
+    parameters : LPAREN type COLON id_list RPAREN
+    '''
+
 def p_statute(p):
     '''
     statute : assignation statute
             | decision statute
             | condition statute
             | return statute
+            | function statute
             | empty
     '''
     p[0] = p[1]

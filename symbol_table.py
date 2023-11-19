@@ -1,4 +1,5 @@
 symbol_table = {}
+dirFunc = {}
 
 def add_variable(name, data_type):
     symbol_table[name] = data_type
