@@ -10,24 +10,25 @@ reserved = {
    'VARS' : 'VARS',
    'int' : 'INT',
    'float' : 'FLOAT',
+   'string' : 'STRING',
+   'bool' : 'BOOL',
+   'true' : 'TRUE',
+   'false' : 'FALSE',
    'program' : 'PROGRAM',
    'function' : 'FUNCTION',
    'return' : 'RETURN',
    'read' : 'READ',
    'write' : 'WRITE',
-   'for' : 'FOR',
    'to' : 'TO',
    'main' : 'MAIN'
 }
 
 # List of token names.   This is always required
 tokens = [
-   'NUMBER',
    'PLUS',
    'MINUS',
    'TIMES',
    'DIVIDE',
-   'STRING',
    'LPAREN',
    'RPAREN',
    'EQUAL',
@@ -53,7 +54,6 @@ t_TIMES   = r'\*'
 t_DIVIDE  = r'\/'
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
-t_STRING = r'\".*?\"'
 t_EQUAL   = r'='
 t_EQUALTO = r'=='
 t_LBRACKET = r'\['
@@ -65,14 +65,33 @@ t_SEMICOLON = r';'
 t_COMMA   = r','
 t_GREATERTHAN = '>'
 t_SMALLERTHAN = '<'
-t_INT = r'\d+'
-t_FLOAT = r'\d+\.\d+'
 t_OR = r'\|'
 
 # A regular expression rule with some action code
-def t_NUMBER(t):
+def t_FLOAT(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)    
+    return t
+
+# A regular expression rule with some action code
+def t_INT(t):
     r'\d+'
     t.value = int(t.value)    
+    return t
+
+def t_STRING(t):
+    r'\".*?\"'
+    t.value = str(t.value)
+    return t
+
+def t_TRUE(t):
+    r'TRUE'
+    t.value = True
+    return t
+
+def t_FALSE(t):
+    r'FALSE'
+    t.value = False
     return t
 
 #Defines PROGRAM before id so it doesnt gets confused
@@ -128,7 +147,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test
-#data = " while (x + 2) do{ write read for x to y do 1 \"Hola\"} main"
+#data = " true > bool while (x + 2) string do{ write read for x to y do 1 \"Hola\"} main"
 #lexer.input(data)
 
 # Print tokens

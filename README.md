@@ -19,3 +19,7 @@ Se completo el cubo semantico, aunque puede que haya correciones.
 
 Avance 5
 Ya funciona la declaracion de Ids con comas, aparte ya da error si se repiten ids.
+Se realizaron los cuadruplos y ya funciona el +,-,*,/ y =.
+
+Avance 6
+Las condicionales ya funcionan, if y while

@@ -1,19 +1,9 @@
 symbol_table = {}
+dirFunc = {}
 
-def add_symbol(name, type, value=None):
-    symbol_table[name] = {
-        "type": type,
-        "value": value
-    }
+def add_variable(name, data_type):
+    symbol_table[name] = data_type
 
-def get_symbol_type(name):
-    if name in symbol_table:
-        return symbol_table[name]["type"]
-    else:
-        return None
-
-def get_symbol_value(name):
-    if name in symbol_table:
-        return symbol_table[name]["value"]
-    else:
-        return None
+# Función para obtener el tipo de una variable de la tabla de símbolos
+def get_variable_type(name):
+    return symbol_table.get(name, None)
