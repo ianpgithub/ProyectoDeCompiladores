@@ -2,7 +2,7 @@ import ply.yacc as yacc
 from lexer import tokens
 from symbol_table import symbol_table, get_variable_type
 from semantic_cube import semantic_cube, get_result_type
-from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition
+from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition,process_decision
 import sys
 
 def p_define_function(p):
@@ -50,6 +50,7 @@ def p_statute(p):
     '''
     statute : assignation statute
             | decision statute
+            | condition statute
             | empty
     '''
     p[0] = p[1]
@@ -75,8 +76,8 @@ def p_assignation(p):
     
 def p_decision(p):
     '''
-    decision : IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE
-             | IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE ELSE LBRACE def_else statute RBRACE
+    decision : IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE ELSE LBRACE def_else statute RBRACE
+             | IF LPAREN expression_bool RPAREN THEN LBRACE statute RBRACE
     '''
     
     if not PBoolTypes:  # Verifica si hay un resultado booleano
@@ -97,12 +98,43 @@ def p_def_else(p):
         Quads.append(('Goto', None, None, '_'))
         fill_gotoF()
         PJumps.append(len(Quads)-1)
-        
+
+def p_condition(p):
+    '''
+    condition : WHILE LPAREN expression_bool_while RPAREN DO LBRACE statute RBRACE
+    '''
+    Quads.append(('Goto', None, None, '_'))
+    fill_gotoF()
+    PJumps.append(len(Quads)-1)
+    fill_goto()
+
 def p_expression_bool(p):
     '''
     expression_bool : expression GREATERTHAN term
                     | expression SMALLERTHAN term
                     | expression EQUALTO term 
+    '''
+    if len(p) == 4:
+        PilaO.append(p[1]['name'])  # Operando izquierdo
+        PilaO.append(p[3]['name'])  # Operando derecho
+        PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
+        PTypes.append(p[3]['type'])  # Tipo del operando derecho
+        POper.append(p[2])           # Operador de comparación
+        process_decision()           # Procesar la operación de comparación
+        
+        # Asumiendo que process_operator maneja correctamente las comparaciones
+        # y pone el resultado en PilaO y el tipo en PTypes
+        result_type = PTypes.pop()  # El tipo resultante debe ser 'bool'
+        result = PilaO.pop()        # El resultado de la comparación
+
+        p[0] = {'name': result, 'type': result_type}  # Guardar el resultado y el tipo
+        PBoolTypes.append(result_type)
+
+def p_expression_bool_while(p):
+    '''
+    expression_bool_while : expression GREATERTHAN term
+                          | expression SMALLERTHAN term
+                          | expression EQUALTO term 
     '''
     if len(p) == 4:
         PilaO.append(p[1]['name'])  # Operando izquierdo
@@ -118,7 +150,7 @@ def p_expression_bool(p):
         result = PilaO.pop()        # El resultado de la comparación
 
         p[0] = {'name': result, 'type': result_type}  # Guardar el resultado y el tipo
-        PBoolTypes.append(result_type) 
+        PBoolTypes.append(result_type)  
 
 def p_expression(p):
     '''

@@ -17,7 +17,7 @@ PBoolTypes = [] #Pila de tipos booleanos
 POper = []  # Pila de operadores
 Quads = []  # Lista de cuádruplos
 PJumps = [] #Lista de saltos
-PCode = []
+PWhile = []
 
 # Suponiendo que `generate_quad` es una función que genera un cuádruplo y lo agrega a la lista Quads.
 # También suponemos que `AVAIL.next()` te da el siguiente nombre de variable temporal disponible.
@@ -63,7 +63,7 @@ def process_operator():
         else:
             raise TypeError("Type mismatch")
 
-def process_condition():
+def process_decision():
      if POper and (POper[-1] == '>' or POper[-1] == '<' or POper[-1] == '=='):
         right_operand = PilaO.pop()
         right_type = PTypes.pop()
@@ -83,6 +83,28 @@ def process_condition():
             PBoolTypes.append('bool')
         else:
             raise TypeError("Type mismatch")
+        
+def process_condition():
+     if POper and (POper[-1] == '>' or POper[-1] == '<' or POper[-1] == '=='):
+        right_operand = PilaO.pop()
+        right_type = PTypes.pop()
+        left_operand = PilaO.pop()
+        left_type = PTypes.pop()
+        operator = POper.pop()
+
+        result_type = get_result_type(left_type, right_type, operator)
+        if result_type != 'ERROR':
+            result = next_temp()
+            resultBool = result
+            generate_quad(operator, left_operand, right_operand, result)
+            Quads.append(('GotoF', resultBool, None, '_'))
+            PJumps.append(len(Quads)-1) #Guardar donde se debe colocar el salto.
+            PWhile.append(len(Quads)) #Guarda el salto para el while
+            PilaO.append(result)
+            PTypes.append('bool')
+            PBoolTypes.append('bool')
+        else:
+            raise TypeError("Type mismatch")
 
 def fill_gotoF():
     if PJumps:
@@ -93,7 +115,8 @@ def fill_gotoF():
 def fill_goto():
     if PJumps:
         jump_index = PJumps.pop()
-        target_index = len(Quads) # Salta al cuádruplo después del bloque else
+        print(PWhile)
+        target_index = PWhile.pop() - 1 # Salta al cuádruplo inicial de while
         Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
 
 
