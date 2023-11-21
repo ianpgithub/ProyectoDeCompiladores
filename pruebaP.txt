@@ -4,15 +4,30 @@ int: y,x;
 float: i;
 
 function int sumar (int: j)
-VARS int: j;
+VARS int: j, q;
 {
-    x = y;
-    while (x > 2) do {
+    z = y;
+    if (x > 2) then {
         x = 2 + 2;
+    } else {
+        x = 3;
+        y = 1 + 1;
     }
+    j = 4;
+}
+
+function float restar (int: u)
+VARS int: u, w;
+{
+   j = 2;
+   return (j);
 }
 
 main(){
     y = 1;
-    return(y);
+    while ( x == 2) do {
+        x = 3;
+        j = 1;
+    }
+    x = 5;
 }

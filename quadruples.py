@@ -76,7 +76,7 @@ def process_decision():
             resultBool = result
             generate_quad(operator, left_operand, right_operand, result)
             Quads.append(('GotoF', resultBool, None, '_'))
-            PJumps.append(len(Quads)-1) #Guardar donde se debe colocar el salto.
+            PJumps.append(len(Quads)-1) #Guardar donde se debe cambiar el cuadruplo.
             PilaO.append(result)
             PTypes.append('bool')
             PBoolTypes.append('bool')
@@ -97,7 +97,7 @@ def process_condition():
             resultBool = result
             generate_quad(operator, left_operand, right_operand, result)
             Quads.append(('GotoF', resultBool, None, '_'))
-            PJumps.append(len(Quads)-1) #Guardar donde se debe colocar el salto.
+            PJumps.append(len(Quads)-1) #Guardar donde se debe cambiar el cuadruplo.
             PWhile.append(len(Quads)) #Guarda el salto para el while
             PilaO.append(result)
             PTypes.append('bool')
@@ -108,13 +108,13 @@ def process_condition():
 def fill_gotoF():
     if PJumps:
         jump_index = PJumps.pop()
-        target_index = len(Quads) + 1
+        target_index = len(Quads)
         Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
 
 def fill_goto():
     if PJumps:
         jump_index = PJumps.pop()
-        target_index = PWhile.pop() - 1 
+        target_index = PWhile.pop() - 2 
         Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
 
 

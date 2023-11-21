@@ -1,15 +1,16 @@
 import ply.yacc as yacc
 from lexer import tokens
-from symbol_table import symbol_table, dirFunc
+from symbol_table import symbol_table, dirFunc, current_function
 from semantic_cube import semantic_cube, get_result_type
 from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition,process_decision
 import sys
 
 def p_program(p):
     '''
-    program : PROGRAM ID SEMICOLON VARS define_vars define_function main
+    program : PROGRAM ID SEMICOLON VARS define_vars_global define_function main
     '''
     p[0] = "COMPILED"
+
 
 def p_id_list(p):
     '''
@@ -21,19 +22,22 @@ def p_id_list(p):
     else:  # solo ID
         p[0] = [p[1]]
 
-def p_define_vars(p):
+def p_define_vars_global(p):
     '''
-    define_vars : type COLON id_list SEMICOLON define_vars
+    define_vars_global : type COLON id_list SEMICOLON define_vars_global
                 | empty
     '''
     if len(p) == 6:
         var_type = p[1]
         id_list = p[3]
+        nameFunc = 'global'
+        if nameFunc not in dirFunc:
+            dirFunc[nameFunc] = {'funcType': 'void', 'vars': {}}
+
         for var_id in id_list:
             symbol_table[var_id] = {'name': var_id, 'type': var_type}
-            nameFunc = 'global'
-            dirFunc[nameFunc] = {'funcType' : 'void', 'vars' : symbol_table}
-            print(dirFunc)
+            
+            dirFunc[nameFunc]['vars'][var_id] = {'name': var_id, 'type': var_type}
         p[0] = p[5]  
     elif len(p) == 2:
         p[0] = None  
@@ -49,9 +53,38 @@ def p_type(p):
    
 def p_define_function(p):
     '''
-    define_function : FUNCTION type ID parameters VARS define_vars LBRACE statute RBRACE define_function
+    define_function : FUNCTION type ID parameters VARS define_vars_function LBRACE statute RBRACE define_function
                     | empty
     '''
+    if len(p) > 2:
+        func_name = p[3]
+        func_type = p[2]
+        p[0] = func_name
+    else:
+        p[0] = None
+
+def p_define_vars_function(p):
+    '''
+    define_vars_function : type COLON id_list SEMICOLON define_vars_function
+                | empty
+    '''
+    if len(p) == 6:
+        var_type = p[1]
+        id_list = p[3]
+        nameFunc = p[-3]
+        funcType = p[-4]
+        if nameFunc not in dirFunc:
+            dirFunc[nameFunc] = {'funcType': funcType, 'vars': {}}
+
+        for var_id in id_list:
+            symbol_table[var_id] = {'name': var_id, 'type': var_type}
+            
+            dirFunc[nameFunc]['vars'][var_id] = {'name': var_id, 'type': var_type}
+        print(symbol_table)
+        print(dirFunc)
+        p[0] = p[5]  
+    elif len(p) == 2:
+        p[0] = None  
 
 def p_function(p):
     '''
@@ -85,6 +118,7 @@ def p_assignation(p):
     
     '''
     var_id = p[1]  # Nombre de la variable (lado izquierdo)
+    check_variable_declared(var_id)
     expression_result = p[3]  # Resultado de la expresión (lado derecho)
     # Generar cuádruplo para la asignación
     if 'name' in expression_result:
@@ -105,7 +139,7 @@ def p_decision(p):
     '''
     
     if not PBoolTypes:  # Verifica si hay un resultado booleano
-        raise Exception("Internal error: No boolean type found for 'if' condition")
+        raise Exception("No boolean type found for 'if' condition")
     
     PBoolTypes.pop()
    
@@ -146,8 +180,6 @@ def p_expression_bool(p):
         POper.append(p[2])           # Operador de comparación
         process_decision()           # Procesar la operación de comparación
         
-        # Asumiendo que process_operator maneja correctamente las comparaciones
-        # y pone el resultado en PilaO y el tipo en PTypes
         result_type = PTypes.pop()  # El tipo resultante debe ser 'bool'
         result = PilaO.pop()        # El resultado de la comparación
 
@@ -168,8 +200,6 @@ def p_expression_bool_while(p):
         POper.append(p[2])           # Operador de comparación
         process_condition()           # Procesar la operación de comparación
         
-        # Asumiendo que process_operator maneja correctamente las comparaciones
-        # y pone el resultado en PilaO y el tipo en PTypes
         result_type = PTypes.pop()  # El tipo resultante debe ser 'bool'
         result = PilaO.pop()        # El resultado de la comparación
 
@@ -208,7 +238,7 @@ def p_term(p):
     term : term TIMES factor
          | term DIVIDE factor
     '''
-    if len(p) == 4:  # Es una operación binaria (multiplicación o división)
+    if len(p) == 4:
         PilaO.append(p[1]['name'])  # Operando izquierdo
         PilaO.append(p[3]['name'])  # Operando derecho
         PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
@@ -267,14 +297,10 @@ def check_variable_declared(var_id):
     if var_id not in symbol_table:
         print(f"Error: Variable '{var_id}' has not been declared.")
 
-def get_expression_type(expression):
-    if isinstance(expression, str):  # Un identificador.
-        if expression in symbol_table:
-            return symbol_table[expression]['type']
-        else:
-            raise SyntaxError(f"Error: Variable '{expression}' no ha sido declarada.")
-    elif isinstance(expression, (int, float)):
-        return 'int' if isinstance(expression, int) else 'float'
+def check_variable_declared_function(var_id):
+    current_function = 'sumar'
+    if var_id not in dirFunc[current_function]['vars']:
+        raise Exception(f"Variable '{var_id}' no declarada en la función '{current_function}'.")
 
 def p_error(p):
     print(f'Syntax error at {p.value!r}')
@@ -297,8 +323,10 @@ if __name__ == '__main__':
             data = f.read()
             f.close()
             dat = yacc.parse(data)
+            cont = 0
             for quad in Quads:
-                print(quad)
+                print(cont, quad)
+                cont = cont + 1
             if dat == "COMPILED":
                 print("Compiled!")
         except EOFError:
