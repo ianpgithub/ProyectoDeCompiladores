@@ -1,9 +1,11 @@
 import ply.yacc as yacc
 from lexer import tokens
-from symbol_table import symbol_table, dirFunc, current_function
+from symbol_table import symbol_table, dirFunc
 from semantic_cube import semantic_cube, get_result_type
-from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition,process_decision
+from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition,process_decision,next_temp
 import sys
+
+current_function = 'global'
 
 def p_program(p):
     '''
@@ -57,10 +59,10 @@ def p_define_function(p):
                     | empty
     '''
     if len(p) > 2:
-        func_name = p[3]
-        func_type = p[2]
-        p[0] = func_name
+      print("Hola")
     else:
+        global current_function
+        current_function = 'global'
         p[0] = None
 
 def p_define_vars_function(p):
@@ -73,6 +75,9 @@ def p_define_vars_function(p):
         id_list = p[3]
         nameFunc = p[-3]
         funcType = p[-4]
+        global current_function
+        current_function = p[-3]
+
         if nameFunc not in dirFunc:
             dirFunc[nameFunc] = {'funcType': funcType, 'vars': {}}
 
@@ -88,8 +93,27 @@ def p_define_vars_function(p):
 
 def p_function(p):
     '''
-    function : ID LPAREN expression RPAREN SEMICOLON
+    function : ID LPAREN era_function expression RPAREN SEMICOLON
     '''
+    vars_param = (p[4]['name'])
+    func_id = p[1]
+    next = next_temp()
+    Quads.append(('Param', vars_param, None, 'Param'))
+    Quads.append(('Gosub', None, None, func_id))
+    Quads.append(('=', func_id, None, next))
+    p[0] = {'name': next, 'type': dirFunc[func_id]['funcType']}
+
+def p_era_function(p):
+    '''
+    era_function : empty
+    '''
+    func_id = p[-2]
+    if func_id in dirFunc and func_id != 'global':
+        Quads.append(('ERA', None, None, func_id))
+    
+    else:
+        raise Exception(f"Function '{func_id}' has not been declared.")
+
 
 def p_main(p):
     '''
@@ -119,6 +143,7 @@ def p_assignation(p):
     '''
     var_id = p[1]  # Nombre de la variable (lado izquierdo)
     check_variable_declared(var_id)
+    check_variable_declared_function(var_id)
     expression_result = p[3]  # Resultado de la expresión (lado derecho)
     # Generar cuádruplo para la asignación
     if 'name' in expression_result:
@@ -161,6 +186,7 @@ def p_condition(p):
     '''
     condition : WHILE LPAREN expression_bool_while RPAREN DO LBRACE statute RBRACE
     '''
+    PBoolTypes.pop()
     Quads.append(('Goto', None, None, '_'))
     fill_gotoF()
     PJumps.append(len(Quads)-1)
@@ -218,7 +244,7 @@ def p_expression(p):
     expression : expression PLUS term
                | expression MINUS term      
     '''
-    if len(p) == 4: 
+    if len(p) == 4:
         PilaO.append(p[1]['name'])  # Operando izquierdo
         PilaO.append(p[3]['name'])  # Operando derecho
         PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
@@ -266,12 +292,20 @@ def p_factor_number(p):
     elif isinstance(p[1], str):  # Verifica si el literal es una cadena de texto
         p[0] = {'name': p[1], 'type': 'string'}
 
+def p_factor_function(p):
+    '''
+    factor : function
+    '''
+    p[0] = p[1]
+
+
 def p_factor_id(p):
     '''
     factor : ID
     '''
     var_id = p[1]
     check_variable_declared(var_id)
+    check_variable_declared_function(var_id)
     if var_id in symbol_table:
         p[0] = symbol_table[var_id]
     else:
@@ -296,9 +330,10 @@ def p_factor_grouped(p):
 def check_variable_declared(var_id):
     if var_id not in symbol_table:
         print(f"Error: Variable '{var_id}' has not been declared.")
+        raise SyntaxError
 
 def check_variable_declared_function(var_id):
-    current_function = 'sumar'
+    global current_function
     if var_id not in dirFunc[current_function]['vars']:
         raise Exception(f"Variable '{var_id}' no declarada en la función '{current_function}'.")
 

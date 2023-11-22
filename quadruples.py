@@ -116,6 +116,3 @@ def fill_goto():
         jump_index = PJumps.pop()
         target_index = PWhile.pop() - 2 
         Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
-
-
-
