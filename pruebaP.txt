@@ -10,7 +10,7 @@ VARS int: j, q;
     return (j * sumar(1 + 2););
 }
 
-function float restar (int: u)
+function float restar (int: u, d)
 VARS int: x, w;
 {
    w = 2;

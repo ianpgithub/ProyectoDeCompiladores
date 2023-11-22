@@ -2,17 +2,28 @@ import ply.yacc as yacc
 from lexer import tokens
 from symbol_table import symbol_table, dirFunc
 from semantic_cube import semantic_cube, get_result_type
-from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition,process_decision,next_temp
+from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition,process_decision,next_temp,reset_temp, fill_goto_main
 import sys
+
+dir_global_int = 1000
+dir_global_float = 2000
+dir_local_int = 3000
+dir_local_float = 4000
+dir_cte = 5000
 
 current_function = 'global'
 
 def p_program(p):
     '''
-    program : PROGRAM ID SEMICOLON VARS define_vars_global define_function main
+    program : goto_main PROGRAM ID SEMICOLON VARS define_vars_global define_function main
     '''
     p[0] = "COMPILED"
 
+def p_goto_main(p):
+    '''
+    goto_main : empty
+    '''
+    Quads.append(('Goto', 'Main', None, None))
 
 def p_id_list(p):
     '''
@@ -55,15 +66,23 @@ def p_type(p):
    
 def p_define_function(p):
     '''
-    define_function : FUNCTION type ID parameters VARS define_vars_function LBRACE statute RBRACE define_function
+    define_function : FUNCTION type ID parameters VARS define_vars_function LBRACE statute RBRACE endfunc define_function
                     | empty
     '''
     if len(p) > 2:
-      print("Hola")
+        print("Hola")
     else:
         global current_function
         current_function = 'global'
+        fill_goto_main()
         p[0] = None
+
+def p_endfunc(p):
+    '''
+    endfunc : empty
+    '''
+    Quads.append(('EndFunc', None, None, None))
+    reset_temp()
 
 def p_define_vars_function(p):
     '''
@@ -124,7 +143,7 @@ def p_parameters(p):
     '''
     parameters : LPAREN type COLON id_list RPAREN
     '''
-
+    
 def p_statute(p):
     '''
     statute : assignation statute
