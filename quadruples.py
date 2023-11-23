@@ -1,12 +1,12 @@
 from semantic_cube import get_result_type
 
 # Contador global para las variables temporales
-temp_counter = 0
+temp_counter = 19000
 
 # Función para obtener el siguiente nombre de variable temporal disponible
 def next_temp():
     global temp_counter
-    temp_name = f"t{temp_counter}"
+    temp_name = f"{temp_counter}"
     temp_counter += 1
     return temp_name
 
@@ -124,4 +124,5 @@ def fill_goto_main():
 
 def reset_temp():
     global temp_counter
-    temp_counter = 0
+    temp_counter = 19000
+

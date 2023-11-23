@@ -6,23 +6,22 @@ float: i;
 function int sumar (int: j)
 VARS int: j, q;
 {
-    j = j;
-    return (j * sumar(1 + 2););
+    j = q;
+    return (j * sumar(2 + 2););
 }
 
 function float restar (int: u, d)
-VARS int: x, w;
+VARS int: d, w;
 {
-   w = 2;
-   return (x);
-   sumar(w + 1 / 2);
+   w = 2.5 + 1;
+   return (d);
+   sumar(w);
 }
 
 main(){
-    x = 1;
+    x = 3;
     while ( y == 2) do {
-        y = 3;
-        i = 1;
+        y = 3 / 5;
     }
     x = 5;
 }

@@ -1,15 +1,44 @@
 import ply.yacc as yacc
 from lexer import tokens
 from symbol_table import symbol_table, dirFunc
-from semantic_cube import semantic_cube, get_result_type
 from quadruples import PilaO,POper,PTypes,process_operator,Quads,PJumps,fill_goto,fill_gotoF, PBoolTypes,process_condition,process_decision,next_temp,reset_temp, fill_goto_main
 import sys
 
 dir_global_int = 1000
-dir_global_float = 2000
-dir_local_int = 3000
-dir_local_float = 4000
-dir_cte = 5000
+dir_global_float = 3000
+dir_global_string = 5000
+
+dir_global_int_max = 3000
+dir_global_float_max = 5000
+dir_global_string_max = 7000
+
+dir_local_int = 7000
+dir_local_float = 9000
+dir_local_string = 11000
+
+dir_local_int_max = 9000
+dir_local_float_max = 11000
+dir_local_string_max = 13000
+
+dir_cte_int = 13000
+dir_cte_float = 15000
+dir_cte_string = 17000
+
+dir_cte_int_max = 15000
+dir_cte_float_max = 17000
+dir_cte_string_max = 19000
+
+current_dir_global_int = dir_global_int
+current_dir_global_float = dir_global_float
+current_dir_global_string = dir_global_string
+current_dir_local_int = dir_local_int
+current_dir_local_float = dir_local_float
+current_dir_local_string = dir_local_string
+current_dir_cte_int = dir_cte_int
+current_dir_cte_float = dir_cte_float
+current_dir_cte_string = dir_cte_string
+
+cte_table = {}
 
 current_function = 'global'
 
@@ -40,6 +69,7 @@ def p_define_vars_global(p):
     define_vars_global : type COLON id_list SEMICOLON define_vars_global
                 | empty
     '''
+    global current_dir_global_int, current_dir_global_float, current_dir_global_string
     if len(p) == 6:
         var_type = p[1]
         id_list = p[3]
@@ -48,9 +78,19 @@ def p_define_vars_global(p):
             dirFunc[nameFunc] = {'funcType': 'void', 'vars': {}}
 
         for var_id in id_list:
-            symbol_table[var_id] = {'name': var_id, 'type': var_type}
+            if var_type == 'int' and current_dir_global_int < dir_global_int_max:
+                dir_virtual = current_dir_global_int
+                current_dir_global_int += 1
+            elif var_type == 'float' and current_dir_global_float < dir_global_float_max:
+                dir_virtual = current_dir_global_float
+                current_dir_global_float += 1
+            elif var_type == 'string' and current_dir_global_string < dir_global_string_max:
+                dir_virtual = current_dir_global_string
+                current_dir_global_string += 1
+
+            symbol_table[var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
             
-            dirFunc[nameFunc]['vars'][var_id] = {'name': var_id, 'type': var_type}
+            dirFunc[nameFunc]['vars'][var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
         p[0] = p[5]  
     elif len(p) == 2:
         p[0] = None  
@@ -60,7 +100,6 @@ def p_type(p):
     type : INT
          | FLOAT
          | STRING
-         | BOOL
     '''
     p[0] = p[1]
    
@@ -69,13 +108,12 @@ def p_define_function(p):
     define_function : FUNCTION type ID parameters VARS define_vars_function LBRACE statute RBRACE endfunc define_function
                     | empty
     '''
-    if len(p) > 2:
-        print("Hola")
-    else:
+    if len(p) == 2:
         global current_function
         current_function = 'global'
         fill_goto_main()
         p[0] = None
+        print('/////////////')
 
 def p_endfunc(p):
     '''
@@ -94,18 +132,28 @@ def p_define_vars_function(p):
         id_list = p[3]
         nameFunc = p[-3]
         funcType = p[-4]
-        global current_function
+        global current_function, current_dir_local_int, current_dir_local_float, current_dir_local_string
         current_function = p[-3]
 
         if nameFunc not in dirFunc:
             dirFunc[nameFunc] = {'funcType': funcType, 'vars': {}}
 
         for var_id in id_list:
-            symbol_table[var_id] = {'name': var_id, 'type': var_type}
+            if var_type == 'int' and current_dir_local_int < dir_local_int_max:
+                dir_virtual = current_dir_local_int
+                current_dir_local_int += 1
+            elif var_type == 'float' and current_dir_local_float < dir_local_float_max:
+                dir_virtual = current_dir_local_float
+                current_dir_local_float += 1
+            elif var_type == 'string' and current_dir_local_string < dir_local_string_max:
+                dir_virtual = current_dir_local_string
+                current_dir_local_string += 1 
+
+            symbol_table[var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
             
-            dirFunc[nameFunc]['vars'][var_id] = {'name': var_id, 'type': var_type}
-        print(symbol_table)
-        print(dirFunc)
+            dirFunc[nameFunc]['vars'][var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
+        #print(symbol_table)
+        #print(dirFunc)
         p[0] = p[5]  
     elif len(p) == 2:
         p[0] = None  
@@ -114,13 +162,13 @@ def p_function(p):
     '''
     function : ID LPAREN era_function expression RPAREN SEMICOLON
     '''
-    vars_param = (p[4]['name'])
+    vars_param = (p[4]['dirVirtual'])
     func_id = p[1]
     next = next_temp()
     Quads.append(('Param', vars_param, None, 'Param'))
     Quads.append(('Gosub', None, None, func_id))
     Quads.append(('=', func_id, None, next))
-    p[0] = {'name': next, 'type': dirFunc[func_id]['funcType']}
+    p[0] = {'dirVirtual': next, 'type': dirFunc[func_id]['funcType']}
 
 def p_era_function(p):
     '''
@@ -165,14 +213,14 @@ def p_assignation(p):
     check_variable_declared_function(var_id)
     expression_result = p[3]  # Resultado de la expresión (lado derecho)
     # Generar cuádruplo para la asignación
-    if 'name' in expression_result:
+    if 'dirVirtual' in expression_result:
         # Si el lado derecho es una variable o un resultado de una expresión
-        right_operand = expression_result['name']
+        right_operand = expression_result['dirVirtual']
     else:
         # Si el lado derecho es un literal
         right_operand = expression_result
 
-    quad = ('=', right_operand, None, var_id)
+    quad = ('=', right_operand, None, symbol_table[var_id]['dirVirtual'])
     Quads.append(quad)
     p[0] = p[1]
     
@@ -218,8 +266,8 @@ def p_expression_bool(p):
                     | expression EQUALTO term 
     '''
     if len(p) == 4:
-        PilaO.append(p[1]['name'])  # Operando izquierdo
-        PilaO.append(p[3]['name'])  # Operando derecho
+        PilaO.append(p[1]['dirVirtual'])  # Operando izquierdo
+        PilaO.append(p[3]['dirVirtual'])  # Operando derecho
         PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
         PTypes.append(p[3]['type'])  # Tipo del operando derecho
         POper.append(p[2])           # Operador de comparación
@@ -228,7 +276,7 @@ def p_expression_bool(p):
         result_type = PTypes.pop()  # El tipo resultante debe ser 'bool'
         result = PilaO.pop()        # El resultado de la comparación
 
-        p[0] = {'name': result, 'type': result_type}  # Guardar el resultado y el tipo
+        p[0] = {'dirVirtual': result, 'type': result_type}  # Guardar el resultado y el tipo
         PBoolTypes.append(result_type)
 
 def p_expression_bool_while(p):
@@ -238,8 +286,8 @@ def p_expression_bool_while(p):
                           | expression EQUALTO term 
     '''
     if len(p) == 4:
-        PilaO.append(p[1]['name'])  # Operando izquierdo
-        PilaO.append(p[3]['name'])  # Operando derecho
+        PilaO.append(p[1]['dirVirtual'])  # Operando izquierdo
+        PilaO.append(p[3]['dirVirtual'])  # Operando derecho
         PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
         PTypes.append(p[3]['type'])  # Tipo del operando derecho
         POper.append(p[2])           # Operador de comparación
@@ -248,14 +296,14 @@ def p_expression_bool_while(p):
         result_type = PTypes.pop()  # El tipo resultante debe ser 'bool'
         result = PilaO.pop()        # El resultado de la comparación
 
-        p[0] = {'name': result, 'type': result_type}  # Guardar el resultado y el tipo
+        p[0] = {'dirVirtual': result, 'type': result_type}  # Guardar el resultado y el tipo
         PBoolTypes.append(result_type)  
 
 def p_return(p):
     '''
     return : RETURN LPAREN expression RPAREN SEMICOLON
     '''
-    valor_expression = p[3].get('name')
+    valor_expression = p[3].get('dirVirtual')
     Quads.append(('RETURN', None, None, valor_expression))
 
 def p_expression(p):
@@ -264,13 +312,13 @@ def p_expression(p):
                | expression MINUS term      
     '''
     if len(p) == 4:
-        PilaO.append(p[1]['name'])  # Operando izquierdo
-        PilaO.append(p[3]['name'])  # Operando derecho
+        PilaO.append(p[1]['dirVirtual'])  # Operando izquierdo
+        PilaO.append(p[3]['dirVirtual'])  # Operando derecho
         PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
         PTypes.append(p[3]['type'])  # Tipo del operando derecho
         POper.append(p[2])           # Operador
         process_operator()           # Procesar la operación
-        p[0] = {'name': PilaO[-1], 'type': PTypes[-1]}  # Resultado
+        p[0] = {'dirVirtual': PilaO[-1], 'type': PTypes[-1]}  # Resultado
 
 def p_expression_term(p):
     '''
@@ -284,13 +332,13 @@ def p_term(p):
          | term DIVIDE factor
     '''
     if len(p) == 4:
-        PilaO.append(p[1]['name'])  # Operando izquierdo
-        PilaO.append(p[3]['name'])  # Operando derecho
+        PilaO.append(p[1]['dirVirtual'])  # Operando izquierdo
+        PilaO.append(p[3]['dirVirtual'])  # Operando derecho
         PTypes.append(p[1]['type'])  # Tipo del operando izquierdo
         PTypes.append(p[3]['type'])  # Tipo del operando derecho
         POper.append(p[2])           # Operador (TIMES o DIVIDE)
         process_operator()           # Procesar la operación
-        p[0] = {'name': PilaO[-1], 'type': PTypes[-1]}  # Resultado
+        p[0] = {'dirVirtual': PilaO[-1], 'type': PTypes[-1]}  # Resultado
    
 def p_term_factor(p):
     '''
@@ -304,12 +352,31 @@ def p_factor_number(p):
            | INT
            | STRING 
     '''
-    if isinstance(p[1], float):  # Verifica si el literal es un float
-        p[0] = {'name': str(p[1]), 'type': 'float'}
-    elif isinstance(p[1], int):  # Verifica si el literal es un int
-        p[0] = {'name': str(p[1]), 'type': 'int'}
-    elif isinstance(p[1], str):  # Verifica si el literal es una cadena de texto
-        p[0] = {'name': p[1], 'type': 'string'}
+    global cte_table, current_dir_cte_int, current_dir_cte_float, current_dir_cte_string
+    if isinstance(p[1], int):  # Verifica si la constante es un int
+        constante = str(p[1])
+        
+        if constante in cte_table:
+            # La constante ya existe, usa la dirección virtual existente
+            dir_virtual = cte_table[constante]['dirVirtual']
+        else: 
+            dir_virtual = current_dir_cte_int
+            current_dir_cte_int += 1
+            cte_table[dir_virtual] = {'name': str(p[1]), 'type': 'int', 'dirVirtual': dir_virtual}
+        p[0] = {'name': str(p[1]), 'type': 'int', 'dirVirtual': dir_virtual}
+        
+
+    elif isinstance(p[1], float):  # Verifica si la constante es un float
+        dir_virtual = current_dir_cte_float
+        current_dir_cte_float += 1
+        cte_table[dir_virtual] = {'name': str(p[1]), 'type': 'float', 'dirVirtual': dir_virtual}
+        p[0] = {'name': str(p[1]), 'type': 'float', 'dirVirtual': dir_virtual}
+    
+    elif isinstance(p[1], str):  # Verifica si la constante es un string
+        dir_virtual = current_dir_cte_string
+        current_dir_cte_string += 1
+        cte_table[dir_virtual] = {'name': str(p[1]), 'type': 'string', 'dirVirtual': dir_virtual}
+        p[0] = {'name': str(p[1]), 'type': 'string', 'dirVirtual': dir_virtual}
 
 def p_factor_function(p):
     '''
