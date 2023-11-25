@@ -16,7 +16,7 @@ PTypes = []  # Pila de tipos
 PBoolTypes = [] #Pila de tipos booleanos
 POper = []  # Pila de operadores
 Quads = []  # Lista de cuádruplos
-PJumps = [] #Lista de saltos
+PJumps = [] #Lista de saltos donde debe cambiarse el cuadruplo
 PWhile = [] #Pila para guardar el goto del while
 
 

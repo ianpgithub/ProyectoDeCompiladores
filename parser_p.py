@@ -91,6 +91,7 @@ def p_define_vars_global(p):
             symbol_table[var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
             
             dirFunc[nameFunc]['vars'][var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
+            
         p[0] = p[5]  
     elif len(p) == 2:
         p[0] = None  
@@ -105,7 +106,7 @@ def p_type(p):
    
 def p_define_function(p):
     '''
-    define_function : FUNCTION type ID parameters VARS define_vars_function LBRACE statute RBRACE endfunc define_function
+    define_function : FUNCTION start_func type ID parameters VARS define_vars_function LBRACE statute RBRACE end_func define_function
                     | empty
     '''
     if len(p) == 2:
@@ -113,11 +114,17 @@ def p_define_function(p):
         current_function = 'global'
         fill_goto_main()
         p[0] = None
-        print('/////////////')
 
-def p_endfunc(p):
+def p_start_func(p):
     '''
-    endfunc : empty
+    start_func : empty
+    '''
+    func_start = len(Quads)
+    p[0] = func_start
+
+def p_end_func(p):
+    '''
+    end_func : empty
     '''
     Quads.append(('EndFunc', None, None, None))
     reset_temp()
@@ -132,11 +139,12 @@ def p_define_vars_function(p):
         id_list = p[3]
         nameFunc = p[-3]
         funcType = p[-4]
+        funcDirVirtual = p[-5]
         global current_function, current_dir_local_int, current_dir_local_float, current_dir_local_string
         current_function = p[-3]
 
         if nameFunc not in dirFunc:
-            dirFunc[nameFunc] = {'funcType': funcType, 'vars': {}}
+            dirFunc[nameFunc] = {'funcType': funcType, 'funcDirVirtual' : funcDirVirtual, 'vars': {}}
 
         for var_id in id_list:
             if var_type == 'int' and current_dir_local_int < dir_local_int_max:
@@ -153,20 +161,21 @@ def p_define_vars_function(p):
             
             dirFunc[nameFunc]['vars'][var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
         #print(symbol_table)
-        #print(dirFunc)
+        print(dirFunc)
         p[0] = p[5]  
     elif len(p) == 2:
         p[0] = None  
 
 def p_function(p):
     '''
-    function : ID LPAREN era_function expression RPAREN SEMICOLON
+    function : ID LPAREN era_function expression RPAREN
     '''
     vars_param = (p[4]['dirVirtual'])
     func_id = p[1]
+    func_start = dirFunc[func_id]['funcDirVirtual']
     next = next_temp()
     Quads.append(('Param', vars_param, None, 'Param'))
-    Quads.append(('Gosub', None, None, func_id))
+    Quads.append(('Gosub', None, None, func_start))
     Quads.append(('=', func_id, None, next))
     p[0] = {'dirVirtual': next, 'type': dirFunc[func_id]['funcType']}
 
@@ -199,6 +208,8 @@ def p_statute(p):
             | condition statute
             | return statute
             | function statute
+            | write statute
+            | read statute
             | empty
     '''
     p[0] = p[1]
@@ -259,6 +270,20 @@ def p_condition(p):
     PJumps.append(len(Quads)-1)
     fill_goto()
 
+def p_write(p):
+    '''
+    write : WRITE LPAREN expression RPAREN
+    '''
+    valor_expression = p[3].get('dirVirtual')
+    Quads.append(('WRITE', None, None, valor_expression))
+
+def p_read(p):
+    '''
+    read : READ LPAREN expression RPAREN
+    '''
+    valor_expression = p[3].get('dirVirtual')
+    Quads.append(('READ', None, None, valor_expression))
+
 def p_expression_bool(p):
     '''
     expression_bool : expression GREATERTHAN term
@@ -301,7 +326,7 @@ def p_expression_bool_while(p):
 
 def p_return(p):
     '''
-    return : RETURN LPAREN expression RPAREN SEMICOLON
+    return : RETURN LPAREN expression RPAREN
     '''
     valor_expression = p[3].get('dirVirtual')
     Quads.append(('RETURN', None, None, valor_expression))
@@ -346,7 +371,7 @@ def p_term_factor(p):
     '''
     p[0] = p[1]
 
-def p_factor_number(p):
+def p_factor_cte(p):
     '''
     factor : FLOAT
            | INT
@@ -362,20 +387,19 @@ def p_factor_number(p):
         else: 
             dir_virtual = current_dir_cte_int
             current_dir_cte_int += 1
-            cte_table[dir_virtual] = {'name': str(p[1]), 'type': 'int', 'dirVirtual': dir_virtual}
+            cte_table[dir_virtual] = {'name': p[1], 'type': 'int', 'dirVirtual': dir_virtual}
         p[0] = {'name': str(p[1]), 'type': 'int', 'dirVirtual': dir_virtual}
-        
 
     elif isinstance(p[1], float):  # Verifica si la constante es un float
         dir_virtual = current_dir_cte_float
         current_dir_cte_float += 1
-        cte_table[dir_virtual] = {'name': str(p[1]), 'type': 'float', 'dirVirtual': dir_virtual}
+        cte_table[dir_virtual] = {'name': p[1], 'type': 'float', 'dirVirtual': dir_virtual}
         p[0] = {'name': str(p[1]), 'type': 'float', 'dirVirtual': dir_virtual}
     
     elif isinstance(p[1], str):  # Verifica si la constante es un string
         dir_virtual = current_dir_cte_string
         current_dir_cte_string += 1
-        cte_table[dir_virtual] = {'name': str(p[1]), 'type': 'string', 'dirVirtual': dir_virtual}
+        cte_table[dir_virtual] = {'name': p[1], 'type': 'string', 'dirVirtual': dir_virtual}
         p[0] = {'name': str(p[1]), 'type': 'string', 'dirVirtual': dir_virtual}
 
 def p_factor_function(p):
@@ -435,22 +459,18 @@ def p_empty(p):
 # Build the parser
 yacc.yacc()
 
-if __name__ == '__main__':
-
-    if len(sys.argv) > 1:
-        file = sys.argv[1]
-        try:
-            f = open(file, 'r')
-            data = f.read()
-            f.close()
+def parse_file(file_name):
+    try:
+        with open(file_name, 'r') as file:
+            data = file.read()
             dat = yacc.parse(data)
+            print(cte_table)
+            print(symbol_table)
             cont = 0
             for quad in Quads:
                 print(cont, quad)
                 cont = cont + 1
             if dat == "COMPILED":
                 print("Compiled!")
-        except EOFError:
-            print(EOFError)
-    else:
-        print("No hay archivo")
+    except EOFError:
+        print(EOFError)

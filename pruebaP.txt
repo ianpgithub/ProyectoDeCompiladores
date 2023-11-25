@@ -3,25 +3,17 @@ VARS
 int: y,x;
 float: i;
 
-function int sumar (int: j)
-VARS int: j, q;
-{
-    j = q;
-    return (j * sumar(2 + 2););
-}
-
-function float restar (int: u, d)
-VARS int: d, w;
-{
-   w = 2.5 + 1;
-   return (d);
-   sumar(w);
+function int sumar(int: x)
+VARS int: j,k; {
+    j = 1;
+    k = 2;
+    j = j + k;
+    return(j)
 }
 
 main(){
-    x = 3;
-    while ( y == 2) do {
-        y = 3 / 5;
-    }
-    x = 5;
+    x = 1;
+    y = 5;
+    i = sumar(x + 1) + 10;
+    write(i)
 }
