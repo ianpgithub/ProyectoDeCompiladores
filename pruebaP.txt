@@ -1,19 +1,29 @@
 PROGRAM MyR;
 VARS
-int: y,x;
+int: a,b,c,count,n;
 float: i;
 
 function int sumar(int: x)
 VARS int: j,k; {
-    j = 1;
-    k = 2;
-    j = j + k;
-    return(j)
+    if (x < 10) then {
+        write("Menor a 10, se le suma:")
+        j = 10 - x;
+        write(j)
+        return(j)
+    } else {
+        write("Mayor a 10, se le resta:")
+        k = x - 10;
+        write(k)
+        return(k)
+    }
 }
 
 main(){
-    x = 1;
-    y = 5;
-    i = sumar(x + 1) + 10;
-    write(i)
+    read(a)
+    if (a < 10) then {
+        write(sumar(a) + a)
+    } else {
+        write(a - sumar(a))
+    }
+    
 }

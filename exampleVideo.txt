@@ -1,0 +1,28 @@
+PROGRAM Miprograma;
+VARS
+int: a;
+
+function int diez(int: x)
+VARS int: j,k; {
+    if (x < 10) then{
+        write("Valor menor a 10, se le suma:")
+        j = 10 - x;
+        write(j)
+        return(j)
+    } else {
+        write("Valor mayor a 10, se le resta:")
+        k = x - 10;
+        write(k)
+        return(k)
+    }
+}
+
+main(){
+    read(a)
+    if(a < 10) then {
+        write(diez(a) + a)
+    }
+    else {
+        write(a - diez(a))
+    }
+}

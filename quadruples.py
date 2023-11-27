@@ -3,7 +3,7 @@ from semantic_cube import get_result_type
 # Contador global para las variables temporales
 temp_counter = 19000
 
-# Función para obtener el siguiente nombre de variable temporal disponible
+# Funcion para obtener el siguiente nombre de variable temporal disponible
 def next_temp():
     global temp_counter
     temp_name = f"{temp_counter}"
@@ -11,22 +11,22 @@ def next_temp():
     return temp_name
 
 
-PilaO = []  # Pila de operandos
-PTypes = []  # Pila de tipos
-PBoolTypes = [] #Pila de tipos booleanos
-POper = []  # Pila de operadores
-Quads = []  # Lista de cuádruplos
-PJumps = [] #Lista de saltos donde debe cambiarse el cuadruplo
-PWhile = [] #Pila para guardar el goto del while
+PilaO = []  # Pila de operandos.
+PTypes = []  # Pila de tipos.
+PBoolTypes = [] #Pila de tipos booleanos.
+POper = []  # Pila de operadores.
+Quads = []  # Lista de cuádruplos.
+PJumps = [] #Lista de saltos donde debe cambiarse el cuadruplo.
+PWhile = [] #Pila para guardar el goto del while.
 
 
-#Generador de cuadruplos
+#Generador de cuadruplos con el operador, los operandos y la temporal.
 def generate_quad(operator, left_operand, right_operand, result):
     quad = (operator, left_operand, right_operand, result)
     Quads.append(quad)
     return quad
 
-# Procesar los cuadruplos
+# Procesar los cuadruplos de expresiones. Primero * y /, despues + y -.
 def process_operator():  
     if POper and (POper[-1] == '+' or POper[-1] == '-'):
         right_operand = PilaO.pop()
@@ -62,6 +62,7 @@ def process_operator():
         else:
             raise TypeError("Type mismatch")
 
+#Procesa los cuadruplos para el estatuto if. Guarda el cuadruplo para llenar el Gotof.
 def process_decision():
      if POper and (POper[-1] == '>' or POper[-1] == '<' or POper[-1] == '=='):
         right_operand = PilaO.pop()
@@ -82,7 +83,8 @@ def process_decision():
             PBoolTypes.append('bool')
         else:
             raise TypeError("Type mismatch")
-        
+
+#Procesa los cuadruplos para el estatuto de while. Guarda el cuadruplo para llenar el Gotof y la posicion a donde debe regresar el Goto.       
 def process_condition():
      if POper and (POper[-1] == '>' or POper[-1] == '<' or POper[-1] == '=='):
         right_operand = PilaO.pop()
@@ -105,23 +107,27 @@ def process_condition():
         else:
             raise TypeError("Type mismatch")
 
+#Funcion para llenar el gotof.
 def fill_gotoF():
     if PJumps:
-        jump_index = PJumps.pop()
-        target_index = len(Quads)
-        Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
+        jump_index = PJumps.pop() #Se asigna a donde debe cambiarse el cuadruplo.
+        target_index = len(Quads) #Se asigna la longitud de los cuadruplos en el momento en que se llama.
+        Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index) #Se accede al numero de cuadruplo para cambiarlo.
 
+#Funcion para llenar el goto.
 def fill_goto():
     if PJumps:
         jump_index = PJumps.pop()
-        target_index = PWhile.pop() - 2 
+        target_index = PWhile.pop() - 2 #Se asigna al momento donde se evalua la expresion booleana.
         Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
 
+#Funcion para llenar el goto main. Siempre se ira al cuadruplo 0 porque es donde siempre se llama al goto main.
 def fill_goto_main():
     jump_index = 0
     target_index = len(Quads)
     Quads[jump_index] = (Quads[jump_index][0], Quads[jump_index][1], Quads[jump_index][2], target_index)
 
+#Reinicia el contador de temporales para cuando una funcion acaba.
 def reset_temp():
     global temp_counter
     temp_counter = 19000

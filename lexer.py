@@ -22,7 +22,7 @@ reserved = {
    'main' : 'MAIN'
 }
 
-# List of token names.   This is always required
+# List of token names.
 tokens = [
    'PLUS',
    'MINUS',
@@ -145,10 +145,4 @@ def t_error(t):
 # Build the lexer
 lexer = lex.lex()
 
-# Test
-#data = " true > bool while (x + 2) string do{ write read for x to y do 1 \"Hola\"} main"
-#lexer.input(data)
 
-# Print tokens
-#for token in lexer:
-#    print(token)

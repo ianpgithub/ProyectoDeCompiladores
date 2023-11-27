@@ -1,0 +1,26 @@
+PROGRAM MyR;
+VARS
+int: a,b,n ,count;
+float: c;
+
+function int sumar(int: n)
+VARS {
+    if (n < 2) then{
+    return(n)
+    }
+    else {
+        return(sumar(n - 1) + sumar(n - 2))
+    }
+}
+
+main(){
+    a= 0;
+    b= 5;
+    count = 0;
+    
+    while (count < b) do {
+        write(sumar(count))
+        count = count + 1;
+    }
+   
+}
