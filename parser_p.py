@@ -576,12 +576,12 @@ def parse_file(file_name):
         with open(file_name, 'r') as file:
             data = file.read()
             dat = yacc.parse(data)
-            print(cte_table)
-            print(symbol_table)
-            print(dirFunc)
-            cont = 0
-            for quad in Quads:
-                print(cont, quad)
-                cont = cont + 1  
+            #print(cte_table)
+            #print(symbol_table)
+            #print(dirFunc)
+            #cont = 0
+            #for quad in Quads:
+                #print(cont, quad)
+                #cont = cont + 1  
     except EOFError:
         print(EOFError)

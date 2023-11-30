@@ -3,7 +3,7 @@ from parser_p import parse_file, Quads, symbol_table, cte_table
 
 def main():
     # Llama al parser para generar los cuadruplos
-    parse_file('exampleVideo.txt')
+    parse_file('FibonacciWhile.txt')
 
     # Crea una instancia de la maquina virtual con los cuadruplos y tablas generados
     vm = VirtualMachine(Quads, symbol_table, cte_table)
