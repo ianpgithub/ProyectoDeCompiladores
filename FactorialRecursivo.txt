@@ -1,0 +1,19 @@
+PROGRAM MyR;
+VARS
+int: x,i;
+
+function int factorial(int: n)
+VARS {
+    if (n == 1) then{
+    return(n)
+    }
+    else {
+        return( n * factorial(n - 1))
+    }
+}
+
+main(){
+    read(x)
+    i = factorial(x);
+    write(i)
+}

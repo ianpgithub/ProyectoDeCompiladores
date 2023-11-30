@@ -15,12 +15,11 @@ VARS {
 
 main(){
     a= 0;
-    b= 5;
+    b= 1;
     count = 0;
     
     while (count < b) do {
         write(sumar(count))
         count = count + 1;
     }
-   
 }

@@ -51,6 +51,9 @@ class VirtualMachine:
         elif op == '>':
             self.memory[result] = self.get_value(left_op) > self.get_value(right_op)
 
+        elif op == '==':
+            self.memory[result] = self.get_value(left_op) == self.get_value(right_op)
+
         #Realiza el print.
         elif op == 'WRITE':
             print_value = self.get_value(result)

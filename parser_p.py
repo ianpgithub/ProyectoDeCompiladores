@@ -38,7 +38,7 @@ current_dir_cte_float = dir_cte_float
 current_dir_cte_string = dir_cte_string
 
 cte_table = {}
-
+array_table = {}
 current_function = 'global'
 
 #Define la estructura principal del programa
@@ -58,13 +58,28 @@ def p_goto_main(p):
 #Genera la lista de ids
 def p_id_list(p):
     '''
-    id_list : ID COMMA id_list
-            | ID
+    id_list : id_or_array COMMA id_list
+            | id_or_array
     '''
     if len(p) == 4:  
         p[0] = [p[1]] + p[3]
     else:  
         p[0] = [p[1]]
+
+def p_id_or_array(p):
+    '''
+    id_or_array : ID
+                | array
+    '''
+    p[0] = p[1]
+
+def p_array(p):
+    '''
+    array : ID LBRACKET INT RBRACKET
+    '''
+    array_name = p[1]
+    size = p[3]
+    p[0] = {'name': array_name, 'type': 'array', 'size': size}
 
 #Define las variables globales en la tabla de funciones, por default su tipo es void. Se asignan las direcciones virtuales globales.
 def p_define_vars_global(p):
@@ -80,24 +95,45 @@ def p_define_vars_global(p):
         if nameFunc not in dirFunc:
             dirFunc[nameFunc] = {'funcType': 'void', 'param' : {}, 'vars': {}}
 
-        for var_id in id_list:
-            if var_type == 'int' and current_dir_global_int < dir_global_int_max:
-                dir_virtual = current_dir_global_int
-                current_dir_global_int += 1
-            elif var_type == 'float' and current_dir_global_float < dir_global_float_max:
-                dir_virtual = current_dir_global_float
-                current_dir_global_float += 1
-            elif var_type == 'string' and current_dir_global_string < dir_global_string_max:
-                dir_virtual = current_dir_global_string
-                current_dir_global_string += 1
+        for var in id_list:
+            if isinstance(var, dict) and var['type'] == 'array':
+                
+                array_name = var['name']
+                array_size = int(var['size'])
+                array_dir_virtual = []
 
-            symbol_table[var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
-            
-            dirFunc[nameFunc]['vars'][var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
-            
-        p[0] = p[5]  
-    elif len(p) == 2:
-        p[0] = None  
+                for _ in range(array_size):
+                    if var_type == 'int' and current_dir_global_int < dir_global_int_max:
+                        dir_virtual = current_dir_global_int
+                        current_dir_global_int += 1
+                    elif var_type == 'float' and current_dir_global_float < dir_global_float_max:
+                        dir_virtual = current_dir_global_float
+                        current_dir_global_float += 1
+                    elif var_type == 'string' and current_dir_global_string < dir_global_string_max:
+                        dir_virtual = current_dir_global_string
+                        current_dir_global_string += 1
+                    array_dir_virtual.append(dir_virtual)
+
+                symbol_table[array_name] = {'name': array_name, 'type': var_type, 'dirVirtual': array_dir_virtual}
+                dirFunc[nameFunc]['vars'][array_name] = {'name': array_name, 'type': var_type, 'dirVirtual': array_dir_virtual}
+            else:
+                # Manejar variable normal
+                var_id = var
+                if var_type == 'int' and current_dir_global_int < dir_global_int_max:
+                    dir_virtual = current_dir_global_int
+                    current_dir_global_int += 1
+                elif var_type == 'float' and current_dir_global_float < dir_global_float_max:
+                    dir_virtual = current_dir_global_float
+                    current_dir_global_float += 1
+                elif var_type == 'string' and current_dir_global_string < dir_global_string_max:
+                    dir_virtual = current_dir_global_string
+                    current_dir_global_string += 1
+
+                symbol_table[var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
+                dirFunc[nameFunc]['vars'][var_id] = {'name': var_id, 'type': var_type, 'dirVirtual': dir_virtual}
+        p[0] = p[5]
+    else:
+        p[0] = None
 
 #Tipo de variables
 def p_type(p):
@@ -250,15 +286,32 @@ def p_statute(p):
     '''
     p[0] = p[1]
 
+def p_access_array(p):
+    '''
+    access_array : ID LBRACKET INT RBRACKET
+    '''
+    global current_function
+    array_name = p[1]
+    direccion = dirFunc[current_function]['vars'][array_name]['dirVirtual'][p[3]]
+    array_type = dirFunc[current_function]['vars'][array_name]['type']
+    p[0] = {'dirVirtual': direccion, 'type': array_type} 
+
 #Estatuto de asignacion. Se le asigna a un id una expresion y se genera su cuadruplo.
 def p_assignation(p):
     '''
     assignation : ID EQUAL expression SEMICOLON
-    
+                | access_array EQUAL expression SEMICOLON
     '''
-    var_id = p[1] 
-    check_variable_declared(var_id)
-    check_variable_declared_function(var_id)
+    left_hand_side = p[1]
+    
+    # Revisa si el lado izquierdo es un acceso a un arreglo o una variable normal
+    if isinstance(left_hand_side, dict) and 'dirVirtual' in left_hand_side:
+        left_operand = left_hand_side['dirVirtual']
+    else:
+        var_id = left_hand_side
+        check_variable_declared(var_id)
+        check_variable_declared_function(var_id)
+        left_operand = symbol_table[var_id]['dirVirtual']
     expression_result = p[3] 
     
     if 'dirVirtual' in expression_result:
@@ -268,7 +321,7 @@ def p_assignation(p):
         # Si el lado derecho es un literal
         right_operand = expression_result
 
-    quad = ('=', right_operand, None, symbol_table[var_id]['dirVirtual'])
+    quad = ('=', right_operand, None, left_operand)
     Quads.append(quad)
     p[0] = p[1]
     
@@ -456,6 +509,12 @@ def p_factor_function(p):
     '''
     p[0] = p[1]
 
+def p_factor_array(p):
+    '''
+    factor : access_array
+    '''
+    p[0] = p[1]
+
 #Procesa los identificadores. Se revisa que esten declarados antes en la tabla de variables o en la de funciones.
 def p_factor_id(p):
     '''
@@ -517,11 +576,12 @@ def parse_file(file_name):
         with open(file_name, 'r') as file:
             data = file.read()
             dat = yacc.parse(data)
-            #print(cte_table)
-            #print(symbol_table)
+            print(cte_table)
+            print(symbol_table)
+            print(dirFunc)
             cont = 0
-            #for quad in Quads:
-                #print(cont, quad)
-                #cont = cont + 1  
+            for quad in Quads:
+                print(cont, quad)
+                cont = cont + 1  
     except EOFError:
         print(EOFError)

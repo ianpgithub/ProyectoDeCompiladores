@@ -1,0 +1,18 @@
+PROGRAM MyR;
+VARS
+int: a,b,n,count,c;
+
+main(){
+    a = 0;
+    b = 1;
+    count = 0;
+    read(n)
+    
+    while (count < n) do {
+        write(a)
+        c = a + b;
+        a = b;
+        b = c;
+        count = count + 1;
+    }
+}

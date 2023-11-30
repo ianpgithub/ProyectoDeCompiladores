@@ -1,28 +1,17 @@
 PROGRAM Miprograma;
 VARS
-int: a;
+int: a,b[4],x;
 
-function int diez(int: x)
-VARS int: j,k; {
-    if (x < 10) then{
-        write("Valor menor a 10, se le suma:")
-        j = 10 - x;
-        write(j)
-        return(j)
-    } else {
-        write("Valor mayor a 10, se le resta:")
-        k = x - 10;
-        write(k)
-        return(k)
-    }
+function int hola(int: b)
+VARS int: i;{
+    write(b)
 }
 
 main(){
-    read(a)
-    if(a < 10) then {
-        write(diez(a) + a)
-    }
-    else {
-        write(a - diez(a))
-    }
+    a = 2;
+    b[1] = 2;
+    b[0] = 3;
+    x = b[1] + b[0] + a;
+    write(x)
+    hola(b)
 }
